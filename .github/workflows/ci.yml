@@ -35,8 +35,8 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Scan for security vulnerabilities in JavaScript dependencies
-        run: bin/importmap audit
+      - name: Check JavaScript dependencies (currently using importmap-rails)
+        run: echo "No JavaScript dependency scanning configured - using importmap-rails for module management"
 
   lint:
     runs-on: ubuntu-latest

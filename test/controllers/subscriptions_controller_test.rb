@@ -1,28 +1,9 @@
 require "test_helper"
 
 class SubscriptionsControllerTest < ActionDispatch::IntegrationTest
-  test "should get index" do
-    get subscriptions_index_url
-    assert_response :success
-  end
-
-  test "should get show" do
-    get subscriptions_show_url
-    assert_response :success
-  end
-
-  test "should get new" do
-    get subscriptions_new_url
-    assert_response :success
-  end
-
-  test "should get create" do
-    get subscriptions_create_url
-    assert_response :success
-  end
-
-  test "should get add_vector" do
-    get subscriptions_add_vector_url
-    assert_response :success
+  # Subscriptions require authentication, so just test that unauthorized users get redirected
+  test "should redirect when not logged in" do
+    get subscriptions_url
+    assert_response :redirect
   end
 end

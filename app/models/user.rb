@@ -5,7 +5,7 @@ class User < ApplicationRecord
   has_many :subscriptions, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
-  
+
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, length: { minimum: 8 }, if: :password_required?
 
@@ -20,11 +20,11 @@ class User < ApplicationRecord
   def current_cart
     cart || create_cart!
   end
-  
+
   def current_subscription
     subscriptions.active.first
   end
-  
+
   def has_active_subscription?
     current_subscription&.active?
   end

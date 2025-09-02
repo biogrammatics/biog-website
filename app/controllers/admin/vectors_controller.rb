@@ -1,7 +1,7 @@
 class Admin::VectorsController < ApplicationController
   before_action :require_admin!
-  before_action :set_vector, only: [:show, :edit, :update, :destroy]
-  before_action :load_form_data, only: [:new, :edit, :create, :update]
+  before_action :set_vector, only: [ :show, :edit, :update, :destroy ]
+  before_action :load_form_data, only: [ :new, :edit, :create, :update ]
 
   def index
     @vectors = Vector.includes(:promoter, :selection_marker, :vector_type, :host_organism, :product_status)
@@ -17,9 +17,9 @@ class Admin::VectorsController < ApplicationController
 
   def create
     @vector = Vector.new(vector_params)
-    
+
     if @vector.save
-      redirect_to admin_vector_path(@vector), notice: 'Vector was successfully created.'
+      redirect_to admin_vector_path(@vector), notice: "Vector was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -30,7 +30,7 @@ class Admin::VectorsController < ApplicationController
 
   def update
     if @vector.update(vector_params)
-      redirect_to admin_vector_path(@vector), notice: 'Vector was successfully updated.'
+      redirect_to admin_vector_path(@vector), notice: "Vector was successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -38,7 +38,7 @@ class Admin::VectorsController < ApplicationController
 
   def destroy
     @vector.destroy
-    redirect_to admin_vectors_path, notice: 'Vector was successfully deleted.'
+    redirect_to admin_vectors_path, notice: "Vector was successfully deleted."
   end
 
   private
@@ -56,10 +56,10 @@ class Admin::VectorsController < ApplicationController
   end
 
   def vector_params
-    params.require(:vector).permit(:name, :description, :category, :available_for_sale, 
+    params.require(:vector).permit(:name, :description, :category, :available_for_sale,
                                    :available_for_subscription, :sale_price, :subscription_price,
-                                   :promoter_id, :selection_marker_id, :vector_type_id, 
-                                   :host_organism_id, :has_lox_sites, :vector_size, 
+                                   :promoter_id, :selection_marker_id, :vector_type_id,
+                                   :host_organism_id, :has_lox_sites, :vector_size,
                                    :file_version, :features, :product_status_id, :has_files)
   end
 end

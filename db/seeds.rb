@@ -91,7 +91,7 @@ end
 puts "Database seeded successfully!"
 puts "Created:"
 puts "- #{ProductStatus.count} product statuses"
-puts "- #{Promoter.count} promoters" 
+puts "- #{Promoter.count} promoters"
 puts "- #{SelectionMarker.count} selection markers"
 puts "- #{VectorType.count} vector types"
 puts "- #{HostOrganism.count} host organisms"

@@ -2,11 +2,11 @@ namespace :db do
   desc "Create additional test Pichia strains"
   task create_test_strains: :environment do
     puts "Creating additional test Pichia strains..."
-    
+
     strain_type = StrainType.first || StrainType.create!(name: "Wild-type", description: "Wild-type strain")
     mutant_type = StrainType.create_with(description: "Protease deficient mutant").find_or_create_by(name: "Protease deficient")
     status = ProductStatus.find_or_create_by(name: "Available") { |s| s.is_available = true }
-    
+
     test_strains = [
       {
         name: "X-33",
@@ -34,7 +34,7 @@ namespace :db do
         advantages: "Reduced proteolysis\nImproved protein stability\nHigher yields",
         applications: "Therapeutic proteins\nSensitive enzymes\nPharmaceutical applications",
         sale_price: 165.00,
-        availability: "In Stock", 
+        availability: "In Stock",
         shipping_requirements: "Dry ice required",
         storage_conditions: "-80°C",
         viability_period: "2 years",
@@ -51,7 +51,7 @@ namespace :db do
         applications: "Secreted proteins\nIndustrial enzymes\nBioprocessing",
         sale_price: 185.00,
         availability: "In Stock",
-        shipping_requirements: "Dry ice required", 
+        shipping_requirements: "Dry ice required",
         storage_conditions: "-80°C",
         viability_period: "2 years",
         culture_media: "YPD, BMGY, BMMY, Minimal media",
@@ -68,13 +68,13 @@ namespace :db do
         sale_price: 135.00,
         availability: "Limited Stock",
         shipping_requirements: "Dry ice required",
-        storage_conditions: "-80°C", 
+        storage_conditions: "-80°C",
         viability_period: "2 years",
         culture_media: "YPD, BMGY, BMMY, His- media",
         growth_conditions: "30°C, shaking at 250 rpm"
       }
     ]
-    
+
     test_strains.each do |strain_data|
       strain = PichiaStrain.find_or_create_by(name: strain_data[:name]) do |s|
         strain_data.each do |key, value|
@@ -83,10 +83,10 @@ namespace :db do
         end
         s.product_status = status
       end
-      
+
       puts "  Created/Updated: #{strain.name} - $#{strain.sale_price}"
     end
-    
+
     puts "\nStrain creation completed!"
     puts "Total Pichia strains: #{PichiaStrain.count}"
   end

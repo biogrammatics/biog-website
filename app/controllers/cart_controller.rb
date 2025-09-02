@@ -11,12 +11,19 @@ class CartController < ApplicationController
     item_id = params[:item_id]
     quantity = params[:quantity]&.to_i || 1
 
-    # Find the item (Vector or PichiaStrain)
-    item = item_type.constantize.find(item_id)
-    
+    # Find the item (Vector or PichiaStrain) - secure lookup
+    case item_type
+    when "Vector"
+      item = Vector.find(item_id)
+    when "PichiaStrain"
+      item = PichiaStrain.find(item_id)
+    else
+      raise ActiveRecord::RecordNotFound, "Invalid item type"
+    end
+
     # Add item to cart
     @cart.add_item(item, quantity)
-    
+
     redirect_to cart_path, notice: "#{item.name} added to cart!"
   rescue ActiveRecord::RecordNotFound
     redirect_back(fallback_location: root_path, alert: "Item not found.")

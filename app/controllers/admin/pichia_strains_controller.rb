@@ -1,7 +1,7 @@
 class Admin::PichiaStrainsController < ApplicationController
   before_action :require_admin!
-  before_action :set_pichia_strain, only: [:show, :edit, :update, :destroy]
-  before_action :load_form_data, only: [:new, :edit, :create, :update]
+  before_action :set_pichia_strain, only: [ :show, :edit, :update, :destroy ]
+  before_action :load_form_data, only: [ :new, :edit, :create, :update ]
 
   def index
     @pichia_strains = PichiaStrain.includes(:strain_type, :product_status).order(:name)
@@ -16,9 +16,9 @@ class Admin::PichiaStrainsController < ApplicationController
 
   def create
     @pichia_strain = PichiaStrain.new(pichia_strain_params)
-    
+
     if @pichia_strain.save
-      redirect_to admin_pichia_strain_path(@pichia_strain), notice: 'Pichia strain was successfully created.'
+      redirect_to admin_pichia_strain_path(@pichia_strain), notice: "Pichia strain was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -29,7 +29,7 @@ class Admin::PichiaStrainsController < ApplicationController
 
   def update
     if @pichia_strain.update(pichia_strain_params)
-      redirect_to admin_pichia_strain_path(@pichia_strain), notice: 'Pichia strain was successfully updated.'
+      redirect_to admin_pichia_strain_path(@pichia_strain), notice: "Pichia strain was successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -37,7 +37,7 @@ class Admin::PichiaStrainsController < ApplicationController
 
   def destroy
     @pichia_strain.destroy
-    redirect_to admin_pichia_strains_path, notice: 'Pichia strain was successfully deleted.'
+    redirect_to admin_pichia_strains_path, notice: "Pichia strain was successfully deleted."
   end
 
   private
@@ -52,7 +52,7 @@ class Admin::PichiaStrainsController < ApplicationController
   end
 
   def pichia_strain_params
-    params.require(:pichia_strain).permit(:name, :description, :strain_type_id, :genotype, 
+    params.require(:pichia_strain).permit(:name, :description, :strain_type_id, :genotype,
                                           :phenotype, :advantages, :applications, :sale_price,
                                           :availability, :shipping_requirements, :storage_conditions,
                                           :viability_period, :culture_media, :growth_conditions,

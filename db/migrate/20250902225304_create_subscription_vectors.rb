@@ -8,8 +8,8 @@ class CreateSubscriptionVectors < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
-    
-    add_index :subscription_vectors, [:subscription_id, :vector_id], unique: true
+
+    add_index :subscription_vectors, [ :subscription_id, :vector_id ], unique: true
     add_index :subscription_vectors, :added_at
   end
 end

@@ -22,10 +22,10 @@ class Vector < ApplicationRecord
   end
 
   def snapgene_file
-    files.find { |file| file.filename.to_s.include?('.dna') }
+    files.find { |file| file.filename.to_s.include?(".dna") }
   end
 
   def genbank_file
-    files.find { |file| file.filename.to_s.include?('.gb') }
+    files.find { |file| file.filename.to_s.include?(".gb") }
   end
 end

@@ -1,7 +1,7 @@
 admin_user = User.create!(
-  email_address: "admin@biogrammatics.com", 
-  password: "admin123456", 
-  first_name: "Admin", 
+  email_address: "admin@biogrammatics.com",
+  password: "admin123456",
+  first_name: "Admin",
   last_name: "User",
   admin: true
 )

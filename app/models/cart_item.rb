@@ -15,9 +15,9 @@ class CartItem < ApplicationRecord
 
   def item_description
     case item_type
-    when 'Vector'
+    when "Vector"
       "Expression vector - #{item.promoter&.name} promoter"
-    when 'PichiaStrain'
+    when "PichiaStrain"
       "Pichia strain - #{item.genotype}"
     else
       item.description&.truncate(50)

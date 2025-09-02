@@ -12,7 +12,7 @@ class Cart < ApplicationRecord
 
   def add_item(item, quantity = 1)
     existing_item = cart_items.find_by(item_type: item.class.name, item_id: item.id)
-    
+
     if existing_item
       existing_item.update(quantity: existing_item.quantity + quantity)
       existing_item

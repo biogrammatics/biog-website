@@ -1,0 +1,32 @@
+<div class="hero-section">
+  <h1>BioGrammatics</h1>
+  <p class="lead">Premier source for molecular cloning vectors and Pichia pastoris strains</p>
+  
+  <div class="row mt-5">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h3>Expression Vectors</h3>
+          <p>High-quality plasmids for protein expression in various host systems</p>
+          <%= link_to "Browse Vectors", vectors_path, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h3>Pichia Strains</h3>
+          <p>Optimized Pichia pastoris strains for recombinant protein production</p>
+          <%= link_to "Browse Strains", pichia_strains_path, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="mt-4">
+    <%= link_to "Sign In", new_session_path, class: "btn btn-outline-secondary me-2" %>
+    or
+    <%= link_to "Create Account", new_session_path, class: "btn btn-success ms-2" %>
+  </div>
+</div>

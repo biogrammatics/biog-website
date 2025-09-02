@@ -1,0 +1,121 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1><%= @vector.name %></h1>
+  <div>
+    <%= link_to "Edit Vector", edit_admin_vector_path(@vector), class: "btn btn-primary" %>
+    <%= link_to "← Back to Vectors", admin_vectors_path, class: "btn btn-outline-secondary ms-2" %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="card mb-4">
+      <div class="card-header">
+        <h3>Vector Details</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Name:</strong> <%= @vector.name %></p>
+            <p><strong>Category:</strong> <%= @vector.category || "Not specified" %></p>
+            <p><strong>Description:</strong></p>
+            <p class="text-muted"><%= simple_format(@vector.description) if @vector.description.present? %></p>
+          </div>
+          
+          <div class="col-md-6">
+            <p><strong>Vector Size:</strong> <%= @vector.vector_size ? "#{@vector.vector_size} bp" : "Not specified" %></p>
+            <p><strong>File Version:</strong> <%= @vector.file_version || "Not specified" %></p>
+            <p><strong>Has Lox Sites:</strong> 
+              <span class="badge <%= @vector.has_lox_sites? ? 'bg-success' : 'bg-secondary' %>">
+                <%= @vector.has_lox_sites? ? 'Yes' : 'No' %>
+              </span>
+            </p>
+            <p><strong>Has Files:</strong> 
+              <span class="badge <%= @vector.has_files? ? 'bg-success' : 'bg-secondary' %>">
+                <%= @vector.has_files? ? 'Yes' : 'No' %>
+              </span>
+            </p>
+          </div>
+        </div>
+        
+        <% if @vector.features.present? %>
+          <hr>
+          <h5>Features</h5>
+          <p><%= simple_format(@vector.features) %></p>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="card mb-4">
+      <div class="card-header">
+        <h3>Components</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Promoter:</strong> <%= @vector.promoter&.name || "Not specified" %></p>
+            <p><strong>Selection Marker:</strong> <%= @vector.selection_marker&.name || "Not specified" %></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Vector Type:</strong> <%= @vector.vector_type&.name || "Not specified" %></p>
+            <p><strong>Host Organism:</strong> <%= @vector.host_organism&.common_name || "Not specified" %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card mb-4">
+      <div class="card-header">
+        <h3>Status & Pricing</h3>
+      </div>
+      <div class="card-body">
+        <p><strong>Product Status:</strong> 
+          <span class="badge <%= @vector.available? ? 'bg-success' : 'bg-warning' %>">
+            <%= @vector.product_status&.name || "Unknown" %>
+          </span>
+        </p>
+        
+        <hr>
+        
+        <div class="mb-3">
+          <strong>Sale Options:</strong>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" <%= 'checked' if @vector.available_for_sale? %> disabled>
+            <label class="form-check-label">Available for Sale</label>
+            <% if @vector.sale_price %>
+              <div class="text-success"><strong>$<%= @vector.sale_price %></strong></div>
+            <% end %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" <%= 'checked' if @vector.available_for_subscription? %> disabled>
+            <label class="form-check-label">Available for Subscription</label>
+            <% if @vector.subscription_price %>
+              <div class="text-primary"><strong>$<%= @vector.subscription_price %>/year</strong></div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-header">
+        <h4>Admin Actions</h4>
+      </div>
+      <div class="card-body">
+        <div class="d-grid gap-2">
+          <%= link_to "Edit Vector", edit_admin_vector_path(@vector), class: "btn btn-primary" %>
+          <%= link_to "View Public Page", vector_path(@vector), class: "btn btn-outline-info", target: "_blank" %>
+          <%= link_to "Delete Vector", admin_vector_path(@vector), 
+                      method: :delete, 
+                      class: "btn btn-outline-danger",
+                      confirm: "Are you sure you want to delete this vector? This action cannot be undone.",
+                      data: { turbo_method: :delete } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,115 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Add New Vector</h1>
+  <%= link_to "← Back to Vectors", admin_vectors_path, class: "btn btn-outline-secondary" %>
+</div>
+
+<%= form_with model: [:admin, @vector], local: true, class: "row g-3" do |form| %>
+  <% if @vector.errors.any? %>
+    <div class="col-12">
+      <div class="alert alert-danger">
+        <h5><%= pluralize(@vector.errors.count, "error") %> prohibited this vector from being saved:</h5>
+        <ul class="mb-0">
+          <% @vector.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="col-md-6">
+    <%= form.label :name, class: "form-label" %>
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :category, class: "form-label" %>
+    <%= form.text_field :category, class: "form-control" %>
+  </div>
+
+  <div class="col-12">
+    <%= form.label :description, class: "form-label" %>
+    <%= form.text_area :description, rows: 3, class: "form-control" %>
+  </div>
+
+  <div class="col-md-4">
+    <%= form.label :promoter_id, "Promoter", class: "form-label" %>
+    <%= form.collection_select :promoter_id, @promoters, :id, :name, { prompt: "Select promoter..." }, { class: "form-select" } %>
+  </div>
+
+  <div class="col-md-4">
+    <%= form.label :selection_marker_id, "Selection Marker", class: "form-label" %>
+    <%= form.collection_select :selection_marker_id, @selection_markers, :id, :name, { prompt: "Select marker..." }, { class: "form-select" } %>
+  </div>
+
+  <div class="col-md-4">
+    <%= form.label :vector_type_id, "Vector Type", class: "form-label" %>
+    <%= form.collection_select :vector_type_id, @vector_types, :id, :name, { prompt: "Select type..." }, { class: "form-select" } %>
+  </div>
+
+  <div class="col-md-4">
+    <%= form.label :host_organism_id, "Host Organism", class: "form-label" %>
+    <%= form.collection_select :host_organism_id, @host_organisms, :id, :common_name, { prompt: "Select host..." }, { class: "form-select" } %>
+  </div>
+
+  <div class="col-md-4">
+    <%= form.label :vector_size, "Vector Size (bp)", class: "form-label" %>
+    <%= form.number_field :vector_size, class: "form-control" %>
+  </div>
+
+  <div class="col-md-4">
+    <%= form.label :file_version, class: "form-label" %>
+    <%= form.text_field :file_version, class: "form-control" %>
+  </div>
+
+  <div class="col-12">
+    <%= form.label :features, class: "form-label" %>
+    <%= form.text_area :features, rows: 3, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :product_status_id, "Product Status", class: "form-label" %>
+    <%= form.collection_select :product_status_id, @product_statuses, :id, :name, { prompt: "Select status..." }, { class: "form-select" } %>
+  </div>
+
+  <div class="col-md-6">
+    <label class="form-label">Options</label>
+    <div class="form-check">
+      <%= form.check_box :has_lox_sites, class: "form-check-input" %>
+      <%= form.label :has_lox_sites, "Has Lox Sites", class: "form-check-label" %>
+    </div>
+    <div class="form-check">
+      <%= form.check_box :has_files, class: "form-check-input" %>
+      <%= form.label :has_files, "Has Files Available", class: "form-check-label" %>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-check">
+      <%= form.check_box :available_for_sale, class: "form-check-input" %>
+      <%= form.label :available_for_sale, "Available for Sale", class: "form-check-label" %>
+    </div>
+    <div class="form-check">
+      <%= form.check_box :available_for_subscription, class: "form-check-input" %>
+      <%= form.label :available_for_subscription, "Available for Subscription", class: "form-check-label" %>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :sale_price, "Sale Price ($)", class: "form-label" %>
+    <%= form.number_field :sale_price, step: 0.01, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :subscription_price, "Annual Subscription Price ($)", class: "form-label" %>
+    <%= form.number_field :subscription_price, step: 0.01, class: "form-control" %>
+  </div>
+
+  <div class="col-12">
+    <hr>
+    <div class="d-flex gap-2">
+      <%= form.submit "Create Vector", class: "btn btn-success" %>
+      <%= link_to "Cancel", admin_vectors_path, class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
+<% end %>

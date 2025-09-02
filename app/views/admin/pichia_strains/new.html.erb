@@ -1,0 +1,127 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Add New Pichia Strain</h1>
+  <%= link_to "← Back to Strains", admin_pichia_strains_path, class: "btn btn-outline-secondary" %>
+</div>
+
+<%= form_with model: [:admin, @pichia_strain], local: true, class: "row g-3" do |form| %>
+  <% if @pichia_strain.errors.any? %>
+    <div class="col-12">
+      <div class="alert alert-danger">
+        <h5><%= pluralize(@pichia_strain.errors.count, "error") %> prohibited this strain from being saved:</h5>
+        <ul class="mb-0">
+          <% @pichia_strain.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="col-md-6">
+    <%= form.label :name, class: "form-label" %>
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :strain_type_id, "Strain Type", class: "form-label" %>
+    <%= form.collection_select :strain_type_id, @strain_types, :id, :name, { prompt: "Select strain type..." }, { class: "form-select" } %>
+  </div>
+
+  <div class="col-12">
+    <%= form.label :description, class: "form-label" %>
+    <%= form.text_area :description, rows: 3, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :genotype, class: "form-label" %>
+    <%= form.text_field :genotype, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :phenotype, class: "form-label" %>
+    <%= form.text_field :phenotype, class: "form-control" %>
+  </div>
+
+  <div class="col-12">
+    <%= form.label :advantages, class: "form-label" %>
+    <%= form.text_area :advantages, rows: 3, class: "form-control" %>
+  </div>
+
+  <div class="col-12">
+    <%= form.label :applications, class: "form-label" %>
+    <%= form.text_area :applications, rows: 3, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :sale_price, "Sale Price ($)", class: "form-label" %>
+    <%= form.number_field :sale_price, step: 0.01, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :availability, class: "form-label" %>
+    <%= form.select :availability, 
+        options_for_select([
+          ['In Stock', 'In Stock'],
+          ['Out of Stock', 'Out of Stock'],
+          ['Backordered', 'Backordered'],
+          ['Discontinued', 'Discontinued']
+        ], @pichia_strain.availability), 
+        { prompt: "Select availability..." }, 
+        { class: "form-select" } %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :shipping_requirements, class: "form-label" %>
+    <%= form.text_area :shipping_requirements, rows: 2, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :storage_conditions, class: "form-label" %>
+    <%= form.text_area :storage_conditions, rows: 2, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :viability_period, class: "form-label" %>
+    <%= form.text_field :viability_period, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :product_status_id, "Product Status", class: "form-label" %>
+    <%= form.collection_select :product_status_id, @product_statuses, :id, :name, { prompt: "Select status..." }, { class: "form-select" } %>
+  </div>
+
+  <div class="col-12">
+    <%= form.label :culture_media, class: "form-label" %>
+    <%= form.text_area :culture_media, rows: 2, class: "form-control" %>
+  </div>
+
+  <div class="col-12">
+    <%= form.label :growth_conditions, class: "form-label" %>
+    <%= form.text_area :growth_conditions, rows: 2, class: "form-control" %>
+  </div>
+
+  <div class="col-12">
+    <%= form.label :citations, class: "form-label" %>
+    <%= form.text_area :citations, rows: 3, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-check">
+      <%= form.check_box :has_files, class: "form-check-input" %>
+      <%= form.label :has_files, "Has Files Available", class: "form-check-label" %>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :file_notes, class: "form-label" %>
+    <%= form.text_area :file_notes, rows: 2, class: "form-control" %>
+  </div>
+
+  <div class="col-12">
+    <hr>
+    <div class="d-flex gap-2">
+      <%= form.submit "Create Pichia Strain", class: "btn btn-success" %>
+      <%= link_to "Cancel", admin_pichia_strains_path, class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
+<% end %>

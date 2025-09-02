@@ -1,0 +1,206 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1><%= @vector.name %></h1>
+  <%= link_to "← Back to Vectors", vectors_path, class: "btn btn-outline-secondary" %>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="card mb-4">
+      <div class="card-header">
+        <h3>Vector Details</h3>
+      </div>
+      <div class="card-body">
+        <p class="lead"><%= @vector.description %></p>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <h5>Vector Components</h5>
+            <p><strong>Promoter:</strong> <%= @vector.promoter&.name || "Not specified" %>
+              <% if @vector.promoter&.full_name %>
+                <br><small class="text-muted">(<%= @vector.promoter.full_name %>)</small>
+              <% end %>
+            </p>
+            <p><strong>Selection Marker:</strong> <%= @vector.selection_marker&.name || "Not specified" %>
+              <% if @vector.selection_marker&.resistance %>
+                <br><small class="text-muted">Resistance: <%= @vector.selection_marker.resistance %></small>
+              <% end %>
+            </p>
+            <p><strong>Vector Type:</strong> <%= @vector.vector_type&.name || "Not specified" %></p>
+            <p><strong>Host Organism:</strong> <%= @vector.host_organism&.common_name || "Not specified" %>
+              <% if @vector.host_organism&.scientific_name %>
+                <br><small class="text-muted">(<em><%= @vector.host_organism.scientific_name %></em>)</small>
+              <% end %>
+            </p>
+          </div>
+          
+          <div class="col-md-6">
+            <h5>Vector Properties</h5>
+            <p><strong>Size:</strong> <%= @vector.vector_size ? "#{@vector.vector_size} bp" : "Not specified" %></p>
+            <p><strong>Category:</strong> <%= @vector.category || "Not specified" %></p>
+            <p><strong>Lox Sites:</strong> 
+              <span class="badge <%= @vector.has_lox_sites? ? 'bg-success' : 'bg-secondary' %>">
+                <%= @vector.has_lox_sites? ? 'Present' : 'Not Present' %>
+              </span>
+            </p>
+            <p><strong>File Version:</strong> <%= @vector.file_version || "Not specified" %></p>
+          </div>
+        </div>
+        
+        <% if @vector.features.present? %>
+          <div class="mt-3">
+            <h5>Features</h5>
+            <p><%= simple_format(@vector.features) %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="card mb-4">
+      <div class="card-header">
+        <h3>Available Files</h3>
+      </div>
+      <div class="card-body">
+        <% if @vector.has_files? %>
+          <div class="row">
+            <div class="col-md-6">
+              <h6>Vector Maps & Sequences</h6>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  SnapGene File (.dna)
+                  <button class="btn btn-sm btn-outline-primary" disabled>Download</button>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  GenBank File (.gb)
+                  <button class="btn btn-sm btn-outline-primary" disabled>Download</button>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Vector Map (PDF)
+                  <button class="btn btn-sm btn-outline-primary" disabled>Download</button>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="col-md-6">
+              <h6>Documentation</h6>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Product Sheet (PDF)
+                  <button class="btn btn-sm btn-outline-primary" disabled>Download</button>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Protocols (PDF)
+                  <button class="btn btn-sm btn-outline-primary" disabled>Download</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="alert alert-info mt-3" role="alert">
+            <strong>Note:</strong> File downloads are available after purchase or with an active subscription.
+          </div>
+        <% else %>
+          <div class="alert alert-warning" role="alert">
+            No files are currently available for this vector.
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card mb-4">
+      <div class="card-header">
+        <h3>Pricing Options</h3>
+      </div>
+      <div class="card-body">
+        <% if @vector.available_for_sale? && @vector.sale_price %>
+          <div class="mb-3">
+            <h4>One-time Purchase</h4>
+            <div class="text-center">
+              <h2 class="text-success">$<%= @vector.sale_price %></h2>
+              <p class="text-muted">Perpetual license</p>
+            </div>
+            <% if authenticated? %>
+              <%= button_to "Add to Cart", add_item_cart_path, 
+                  params: { item_type: 'Vector', item_id: @vector.id, quantity: 1 }, 
+                  method: :post,
+                  class: "btn btn-success w-100" %>
+            <% else %>
+              <%= link_to "Sign In to Purchase", new_session_path, class: "btn btn-success w-100" %>
+            <% end %>
+          </div>
+          <hr>
+        <% end %>
+        
+        <% if @vector.available_for_subscription? && @vector.subscription_price %>
+          <div class="mb-3">
+            <h4>Annual Subscription</h4>
+            <div class="text-center">
+              <h3 class="text-primary">$<%= @vector.subscription_price %></h3>
+              <p class="text-muted">Per year</p>
+            </div>
+            <button class="btn btn-primary w-100" disabled>
+              Subscribe
+              <small class="d-block">Coming Soon</small>
+            </button>
+          </div>
+        <% end %>
+        
+        <% unless (@vector.available_for_sale? && @vector.sale_price) || (@vector.available_for_subscription? && @vector.subscription_price) %>
+          <div class="alert alert-info" role="alert">
+            Contact us for pricing information.
+          </div>
+        <% end %>
+        
+        <div class="mt-3">
+          <button class="btn btn-outline-secondary w-100" disabled>
+            Request Quote
+            <small class="d-block">Coming Soon</small>
+          </button>
+        </div>
+        
+        <small class="text-muted mt-2 d-block text-center">
+          Authentication required for purchasing
+        </small>
+      </div>
+    </div>
+    
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4>Product Status</h4>
+      </div>
+      <div class="card-body">
+        <p>
+          <strong>Status:</strong> 
+          <span class="badge <%= @vector.available? ? 'bg-success' : 'bg-warning' %>">
+            <%= @vector.product_status&.name || "Unknown" %>
+          </span>
+        </p>
+        <% if @vector.product_status&.description %>
+          <p class="small text-muted"><%= @vector.product_status.description %></p>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-header">
+        <h4>Need Help?</h4>
+      </div>
+      <div class="card-body">
+        <p class="small">Questions about this vector or need technical support?</p>
+        <button class="btn btn-outline-secondary btn-sm w-100" disabled>
+          Contact Support
+        </button>
+        
+        <hr>
+        
+        <h6>Related Products</h6>
+        <p class="small text-muted">
+          Looking for compatible strains or other vectors? Browse our full catalog.
+        </p>
+        <%= link_to "View All Vectors", vectors_path, class: "btn btn-sm btn-outline-primary me-1" %>
+        <%= link_to "View Strains", pichia_strains_path, class: "btn btn-sm btn-outline-info" %>
+      </div>
+    </div>
+  </div>
+</div>

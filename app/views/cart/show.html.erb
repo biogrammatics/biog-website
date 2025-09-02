@@ -1,0 +1,85 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="mb-0">Shopping Cart</h3>
+        </div>
+        
+        <div class="card-body">
+          <% if @cart_items.any? %>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @cart_items.each do |cart_item| %>
+                    <tr>
+                      <td>
+                        <strong><%= cart_item.item_name %></strong>
+                      </td>
+                      <td>
+                        <%= cart_item.item_description %>
+                      </td>
+                      <td>
+                        $<%= cart_item.price %>
+                      </td>
+                      <td>
+                        <%= form_with model: cart_item, url: update_item_cart_path, method: :patch, local: true, class: "d-inline" do |f| %>
+                          <%= f.hidden_field :cart_item_id, value: cart_item.id %>
+                          <%= f.number_field :quantity, value: cart_item.quantity, min: 1, class: "form-control form-control-sm d-inline", style: "width: 80px;" %>
+                          <%= f.submit "Update", class: "btn btn-sm btn-outline-primary ms-2" %>
+                        <% end %>
+                      </td>
+                      <td>
+                        <strong>$<%= cart_item.total_price %></strong>
+                      </td>
+                      <td>
+                        <%= button_to "Remove", remove_item_cart_path, params: { cart_item_id: cart_item.id }, method: :delete, 
+                            class: "btn btn-sm btn-outline-danger",
+                            confirm: "Are you sure you want to remove #{cart_item.item_name} from your cart?" %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+                <tfoot>
+                  <tr class="table-info">
+                    <th colspan="4" class="text-end">Total:</th>
+                    <th>$<%= @cart.total_price %></th>
+                    <th></th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+              <%= link_to "Continue Shopping", root_path, class: "btn btn-outline-secondary" %>
+              <div>
+                <%= button_to "Clear Cart", clear_cart_path, method: :delete, 
+                    class: "btn btn-outline-warning me-2",
+                    confirm: "Are you sure you want to clear your entire cart?" %>
+                <%= button_to "Proceed to Checkout", "#", class: "btn btn-primary", disabled: true %>
+              </div>
+            </div>
+          <% else %>
+            <div class="text-center py-5">
+              <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+              <h4>Your cart is empty</h4>
+              <p class="text-muted">Add some vectors or strains to get started!</p>
+              <%= link_to "Browse Vectors", vectors_path, class: "btn btn-primary me-2" %>
+              <%= link_to "Browse Strains", pichia_strains_path, class: "btn btn-primary" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

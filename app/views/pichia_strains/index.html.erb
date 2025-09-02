@@ -1,0 +1,41 @@
+<h1>Pichia pastoris Strains</h1>
+<p class="lead">Browse our collection of optimized Pichia pastoris strains for recombinant protein production</p>
+
+<div class="row">
+  <% @pichia_strains.each do |strain| %>
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%= strain.name %></h5>
+          <p class="card-text"><%= truncate(strain.description, length: 100) %></p>
+          
+          <div class="mb-2">
+            <small class="text-muted">
+              <strong>Genotype:</strong> <%= strain.genotype || "N/A" %><br>
+              <strong>Phenotype:</strong> <%= strain.phenotype || "N/A" %><br>
+              <strong>Availability:</strong> 
+              <span class="badge <%= strain.availability == 'In Stock' ? 'bg-success' : 'bg-warning' %>">
+                <%= strain.availability || "Unknown" %>
+              </span>
+            </small>
+          </div>
+          
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <% if strain.sale_price %>
+                <strong class="text-success">$<%= strain.sale_price %></strong>
+              <% end %>
+            </div>
+            <%= link_to "View Details", strain, class: "btn btn-sm btn-primary" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<% if @pichia_strains.empty? %>
+  <div class="alert alert-info" role="alert">
+    No Pichia strains are currently available. Please check back later.
+  </div>
+<% end %>

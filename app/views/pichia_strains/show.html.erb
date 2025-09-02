@@ -1,0 +1,126 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1><%= @pichia_strain.name %></h1>
+  <%= link_to "← Back to Strains", pichia_strains_path, class: "btn btn-outline-secondary" %>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="card mb-4">
+      <div class="card-header">
+        <h3>Strain Details</h3>
+      </div>
+      <div class="card-body">
+        <p class="lead"><%= @pichia_strain.description %></p>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <h5>Genetic Information</h5>
+            <p><strong>Genotype:</strong> <%= @pichia_strain.genotype || "Not specified" %></p>
+            <p><strong>Phenotype:</strong> <%= @pichia_strain.phenotype || "Not specified" %></p>
+            <p><strong>Strain Type:</strong> <%= @pichia_strain.strain_type&.name || "Not specified" %></p>
+          </div>
+          
+          <div class="col-md-6">
+            <h5>Applications</h5>
+            <% if @pichia_strain.applications.present? %>
+              <p><%= simple_format(@pichia_strain.applications) %></p>
+            <% else %>
+              <p>No specific applications listed.</p>
+            <% end %>
+            
+            <% if @pichia_strain.advantages.present? %>
+              <h6>Advantages</h6>
+              <p><%= simple_format(@pichia_strain.advantages) %></p>
+            <% end %>
+          </div>
+        </div>
+        
+        <% if @pichia_strain.citations.present? %>
+          <div class="mt-3">
+            <h5>Citations</h5>
+            <p><%= simple_format(@pichia_strain.citations) %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="card mb-4">
+      <div class="card-header">
+        <h3>Culture Conditions</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Culture Media:</strong> <%= @pichia_strain.culture_media || "Not specified" %></p>
+            <p><strong>Growth Conditions:</strong> <%= @pichia_strain.growth_conditions || "Not specified" %></p>
+          </div>
+          
+          <div class="col-md-6">
+            <p><strong>Storage Conditions:</strong> <%= @pichia_strain.storage_conditions || "Not specified" %></p>
+            <p><strong>Viability Period:</strong> <%= @pichia_strain.viability_period || "Not specified" %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card mb-4">
+      <div class="card-header">
+        <h3>Ordering Information</h3>
+      </div>
+      <div class="card-body">
+        <div class="text-center mb-3">
+          <h2 class="text-success">$<%= @pichia_strain.sale_price %></h2>
+        </div>
+        
+        <p>
+          <strong>Availability:</strong> 
+          <span class="badge <%= @pichia_strain.availability == 'In Stock' ? 'bg-success' : 'bg-warning' %>">
+            <%= @pichia_strain.availability || "Unknown" %>
+          </span>
+        </p>
+        
+        <% if @pichia_strain.shipping_requirements.present? %>
+          <p><strong>Shipping:</strong> <%= @pichia_strain.shipping_requirements %></p>
+        <% end %>
+        
+        <% if @pichia_strain.file_notes.present? %>
+          <p><strong>File Notes:</strong> <%= @pichia_strain.file_notes %></p>
+        <% end %>
+        
+        <div class="d-grid gap-2 mt-3">
+          <% if authenticated? %>
+            <%= button_to "Add to Cart", add_item_cart_path, 
+                params: { item_type: 'PichiaStrain', item_id: @pichia_strain.id, quantity: 1 }, 
+                method: :post,
+                class: "btn btn-success btn-lg" %>
+          <% else %>
+            <%= link_to "Sign In to Purchase", new_session_path, class: "btn btn-success btn-lg" %>
+          <% end %>
+          
+          <button class="btn btn-outline-primary" disabled>
+            Request Quote
+            <small class="d-block">Coming Soon</small>
+          </button>
+        </div>
+        
+        <small class="text-muted mt-2 d-block">
+          Authentication required for purchasing
+        </small>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-header">
+        <h4>Need Help?</h4>
+      </div>
+      <div class="card-body">
+        <p class="small">Questions about this strain or need technical support?</p>
+        <button class="btn btn-outline-secondary btn-sm" disabled>
+          Contact Support
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

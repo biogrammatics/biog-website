@@ -1,0 +1,177 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Twist Subscription Details</h1>
+    <%= link_to "← Back to Subscriptions", subscriptions_path, class: "btn btn-outline-secondary" %>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h3>Subscription Overview</h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Status:</strong> 
+                <span class="badge <%= @subscription.active? ? 'bg-success' : 'bg-warning' %>">
+                  <%= @subscription.status.titleize %>
+                </span>
+              </p>
+              <p><strong>Twist Username:</strong> <%= @subscription.twist_username %></p>
+              <p><strong>Onboarding Fee:</strong> $<%= @subscription.onboarding_fee %></p>
+            </div>
+            <div class="col-md-6">
+              <% if @subscription.started_at %>
+                <p><strong>Started:</strong> <%= @subscription.started_at.strftime("%B %d, %Y") %></p>
+                <p><strong>Renewal Date:</strong> <%= @subscription.renewal_date.strftime("%B %d, %Y") %></p>
+                <p><strong>Days Until Renewal:</strong> <%= @subscription.days_until_renewal %> days</p>
+              <% else %>
+                <p><strong>Status:</strong> Pending activation</p>
+              <% end %>
+            </div>
+          </div>
+          
+          <% if @subscription.active? %>
+            <div class="progress mt-3">
+              <% days_completed = @subscription.days_since_started %>
+              <% total_days = 365 %>
+              <% progress_percent = [(days_completed.to_f / total_days * 100), 100].min %>
+              <div class="progress-bar" role="progressbar" style="width: <%= progress_percent %>%" 
+                   aria-valuenow="<%= progress_percent %>" aria-valuemin="0" aria-valuemax="100">
+                <%= days_completed %> of <%= total_days %> days
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Subscribed Vectors</h3>
+        </div>
+        <div class="card-body">
+          <% if @subscription_vectors.any? %>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Vector</th>
+                    <th>Added Date</th>
+                    <th>Prorated Amount</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @subscription_vectors.each do |subscription_vector| %>
+                    <tr>
+                      <td>
+                        <strong><%= link_to subscription_vector.vector.name, subscription_vector.vector %></strong>
+                        <br>
+                        <small class="text-muted">
+                          <%= truncate(subscription_vector.vector.description, length: 60) %>
+                        </small>
+                      </td>
+                      <td>
+                        <%= subscription_vector.added_at.strftime("%b %d, %Y") %>
+                        <br>
+                        <small class="text-muted">
+                          <%= time_ago_in_words(subscription_vector.added_at) %> ago
+                        </small>
+                      </td>
+                      <td>
+                        <strong>$<%= subscription_vector.prorated_amount %></strong>
+                        <br>
+                        <small class="text-muted">
+                          (<%= subscription_vector.days_in_subscription %> days)
+                        </small>
+                      </td>
+                      <td>
+                        <%= link_to "View", subscription_vector.vector, class: "btn btn-sm btn-outline-primary" %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+                <tfoot>
+                  <tr class="table-info">
+                    <th colspan="2">Total Subscription Cost</th>
+                    <th><strong>$<%= @subscription.total_subscription_cost.round(2) %></strong></th>
+                    <th></th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          <% else %>
+            <div class="text-center py-5">
+              <i class="fas fa-dna fa-3x text-muted mb-3"></i>
+              <h4>No vectors in subscription yet</h4>
+              <p class="text-muted">Add vectors to start your Twist integration.</p>
+              <%= link_to "Browse Available Vectors", subscriptions_path, class: "btn btn-primary" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h4>Quick Actions</h4>
+        </div>
+        <div class="card-body">
+          <%= link_to "Add More Vectors", subscriptions_path, class: "btn btn-primary w-100 mb-2" %>
+          <%= link_to "View Account", account_path, class: "btn btn-outline-secondary w-100 mb-2" %>
+          
+          <hr>
+          
+          <h6>Need Help?</h6>
+          <p class="small text-muted">
+            Contact our support team for assistance with your Twist integration or vector questions.
+          </p>
+          <button class="btn btn-outline-info btn-sm w-100" disabled>
+            Contact Support
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h4>Billing Information</h4>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              <h6>Onboarding Fee</h6>
+              <h4 class="text-success">$<%= @subscription.onboarding_fee %></h4>
+            </div>
+            <div class="col-6">
+              <h6>Vector Costs</h6>
+              <h4 class="text-primary">$<%= @subscription.total_subscription_cost.round(2) %></h4>
+            </div>
+          </div>
+          
+          <hr>
+          
+          <div class="d-flex justify-content-between">
+            <strong>Total Cost:</strong>
+            <strong class="text-dark">
+              $<%= (@subscription.onboarding_fee + @subscription.total_subscription_cost).round(2) %>
+            </strong>
+          </div>
+          
+          <div class="mt-3">
+            <h6 class="small">Renewal Information</h6>
+            <p class="small text-muted mb-0">
+              <% if @subscription.renewal_date %>
+                Your subscription renews on <%= @subscription.renewal_date.strftime("%B %d, %Y") %>.
+                New vectors added after today will be prorated based on the remaining days.
+              <% else %>
+                Subscription pending activation.
+              <% end %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

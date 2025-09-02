@@ -4,6 +4,8 @@ class Vector < ApplicationRecord
   belongs_to :vector_type, optional: true
   belongs_to :host_organism, optional: true
   belongs_to :product_status
+  has_many :subscription_vectors, dependent: :destroy
+  has_many :subscriptions, through: :subscription_vectors
 
   has_many_attached :files
 

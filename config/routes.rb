@@ -10,12 +10,22 @@ Rails.application.routes.draw do
   resources :pichia_strains, only: [:index, :show]
   
   # Cart routes
-  resource :cart, only: [:show] do
+  resource :cart, only: [:show], controller: 'cart' do
     post :add_item
     patch :update_item
     delete :remove_item
     delete :clear
   end
+  
+  # Subscription routes
+  resources :subscriptions, only: [:index, :show, :new, :create] do
+    member do
+      post :add_vector
+    end
+  end
+  
+  # Account page
+  get 'account', to: 'account#show'
   
   # Admin routes
   namespace :admin do

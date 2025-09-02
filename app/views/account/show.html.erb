@@ -1,0 +1,244 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-header">
+          <h5>Account Menu</h5>
+        </div>
+        <div class="list-group list-group-flush">
+          <a href="#overview" class="list-group-item list-group-item-action active">
+            Overview
+          </a>
+          <a href="#subscriptions" class="list-group-item list-group-item-action">
+            Subscriptions
+          </a>
+          <a href="#cart" class="list-group-item list-group-item-action">
+            Shopping Cart
+          </a>
+          <a href="#profile" class="list-group-item list-group-item-action">
+            Profile
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-9">
+      <!-- Overview Section -->
+      <div id="overview" class="mb-5">
+        <div class="card">
+          <div class="card-header">
+            <h3>Account Overview</h3>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <h5>Welcome, <%= @user.full_name.presence || @user.email_address %>!</h5>
+                <p class="text-muted">Here's a summary of your BioGrammatics account activity.</p>
+              </div>
+              <div class="col-md-6">
+                <div class="row text-center">
+                  <div class="col-6">
+                    <h4 class="text-primary"><%= @subscriptions.count %></h4>
+                    <p class="small text-muted">Subscriptions</p>
+                  </div>
+                  <div class="col-6">
+                    <h4 class="text-success"><%= @cart_items.count %></h4>
+                    <p class="small text-muted">Cart Items</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <% if @current_subscription %>
+              <div class="alert alert-success" role="alert">
+                <strong>Active Twist Subscription</strong><br>
+                You have an active subscription with <%= @current_subscription.vectors.count %> vectors.
+                Renewal date: <%= @current_subscription.renewal_date.strftime("%B %d, %Y") %>
+              </div>
+            <% else %>
+              <div class="alert alert-info" role="alert">
+                <strong>Start a Twist Subscription</strong><br>
+                Subscribe to our vectors for seamless DNA synthesis through Twist Bioscience.
+                <%= link_to "Learn More", subscriptions_path, class: "alert-link" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subscriptions Section -->
+      <div id="subscriptions" class="mb-5">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h3>Your Subscriptions</h3>
+            <% unless @current_subscription %>
+              <%= link_to "Start Subscription", new_subscription_path, class: "btn btn-primary btn-sm" %>
+            <% end %>
+          </div>
+          <div class="card-body">
+            <% if @subscriptions.any? %>
+              <% @subscriptions.each do |subscription| %>
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <div>
+                        <h5>
+                          Twist Subscription
+                          <span class="badge <%= subscription.active? ? 'bg-success' : 'bg-warning' %>">
+                            <%= subscription.status.titleize %>
+                          </span>
+                        </h5>
+                        <p class="text-muted mb-1">
+                          <strong>Twist Username:</strong> <%= subscription.twist_username %>
+                        </p>
+                        <p class="text-muted mb-1">
+                          <strong>Vectors:</strong> <%= subscription.vectors.count %>
+                        </p>
+                        <% if subscription.renewal_date %>
+                          <p class="text-muted mb-0">
+                            <strong>Renewal:</strong> <%= subscription.renewal_date.strftime("%b %d, %Y") %>
+                          </p>
+                        <% end %>
+                      </div>
+                      <div class="text-end">
+                        <h5 class="text-primary">$<%= (subscription.onboarding_fee + subscription.total_subscription_cost).round(2) %></h5>
+                        <%= link_to "Manage", subscription, class: "btn btn-outline-primary btn-sm" %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <div class="text-center py-5">
+                <i class="fas fa-dna fa-3x text-muted mb-3"></i>
+                <h4>No Subscriptions Yet</h4>
+                <p class="text-muted">Start a Twist subscription to access our vector library.</p>
+                <%= link_to "Browse Vectors", subscriptions_path, class: "btn btn-primary" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shopping Cart Section -->
+      <div id="cart" class="mb-5">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h3>Shopping Cart</h3>
+            <%= link_to "View Full Cart", cart_path, class: "btn btn-outline-primary btn-sm" %>
+          </div>
+          <div class="card-body">
+            <% if @cart_items.any? %>
+              <div class="table-responsive">
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th>Item</th>
+                      <th>Type</th>
+                      <th>Quantity</th>
+                      <th>Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @cart_items.each do |cart_item| %>
+                      <tr>
+                        <td><%= cart_item.item_name %></td>
+                        <td><%= cart_item.item_type %></td>
+                        <td><%= cart_item.quantity %></td>
+                        <td>$<%= cart_item.total_price %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                  <tfoot>
+                    <tr class="table-info">
+                      <th colspan="3">Total</th>
+                      <th>$<%= @user.current_cart.total_price %></th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            <% else %>
+              <div class="text-center py-4">
+                <p class="text-muted">Your cart is empty.</p>
+                <div>
+                  <%= link_to "Browse Vectors", vectors_path, class: "btn btn-primary btn-sm me-2" %>
+                  <%= link_to "Browse Strains", pichia_strains_path, class: "btn btn-primary btn-sm" %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Section -->
+      <div id="profile" class="mb-5">
+        <div class="card">
+          <div class="card-header">
+            <h3>Profile Information</h3>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <p><strong>Email:</strong> <%= @user.email_address %></p>
+                <p><strong>First Name:</strong> <%= @user.first_name || "Not provided" %></p>
+                <p><strong>Last Name:</strong> <%= @user.last_name || "Not provided" %></p>
+                <% if @user.twist_username %>
+                  <p><strong>Twist Username:</strong> <%= @user.twist_username %></p>
+                <% end %>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Account Type:</strong> 
+                  <span class="badge <%= @user.admin? ? 'bg-danger' : 'bg-success' %>">
+                    <%= @user.admin? ? 'Administrator' : 'Customer' %>
+                  </span>
+                </p>
+                <p><strong>Member Since:</strong> <%= @user.created_at.strftime("%B %Y") %></p>
+              </div>
+            </div>
+            
+            <hr>
+            
+            <div class="d-flex justify-content-between">
+              <div>
+                <button class="btn btn-outline-secondary" disabled>
+                  Edit Profile
+                  <small class="d-block">Coming Soon</small>
+                </button>
+              </div>
+              <div>
+                <%= button_to "Sign Out", session_path, method: :delete, class: "btn btn-outline-danger" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Simple anchor navigation for account sections
+  document.addEventListener('DOMContentLoaded', function() {
+    const links = document.querySelectorAll('.list-group-item-action');
+    links.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Remove active class from all links
+        links.forEach(l => l.classList.remove('active'));
+        
+        // Add active class to clicked link
+        this.classList.add('active');
+        
+        // Scroll to section (optional smooth behavior)
+        const targetId = this.getAttribute('href');
+        if (targetId && targetId !== '#') {
+          const target = document.querySelector(targetId);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
+  });
+</script>

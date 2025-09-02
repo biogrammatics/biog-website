@@ -30,6 +30,7 @@
         <div class="navbar-nav ms-auto">
           <%= link_to "Vectors", vectors_path, class: "nav-link" %>
           <%= link_to "Strains", pichia_strains_path, class: "nav-link" %>
+          <%= link_to "Subscriptions", subscriptions_path, class: "nav-link" %>
           
           <% if authenticated? %>
             <%= link_to cart_path, class: "nav-link position-relative" do %>
@@ -60,6 +61,8 @@
                 <%= Current.user.full_name.presence || Current.user.email_address %>
               </a>
               <ul class="dropdown-menu">
+                <li><%= link_to "Account", account_path, class: "dropdown-item" %></li>
+                <li><hr class="dropdown-divider"></li>
                 <li>
                   <%= button_to "Sign Out", session_path, method: :delete, class: "dropdown-item border-0 bg-transparent text-start w-100" %>
                 </li>

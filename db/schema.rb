@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_02_222047) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_02_225312) do
   create_table "account_statuses", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
@@ -148,6 +148,33 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_02_222047) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "subscription_vectors", force: :cascade do |t|
+    t.integer "subscription_id", null: false
+    t.integer "vector_id", null: false
+    t.datetime "added_at", null: false
+    t.decimal "prorated_amount", precision: 8, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["added_at"], name: "index_subscription_vectors_on_added_at"
+    t.index ["subscription_id", "vector_id"], name: "index_subscription_vectors_on_subscription_id_and_vector_id", unique: true
+    t.index ["subscription_id"], name: "index_subscription_vectors_on_subscription_id"
+    t.index ["vector_id"], name: "index_subscription_vectors_on_vector_id"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "twist_username", null: false
+    t.decimal "onboarding_fee", precision: 8, scale: 2, default: "300.0"
+    t.string "status", default: "pending", null: false
+    t.datetime "started_at"
+    t.date "renewal_date"
+    t.decimal "minimum_prorated_fee", precision: 8, scale: 2, default: "50.0"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status"], name: "index_subscriptions_on_status"
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email_address", null: false
     t.string "password_digest", null: false
@@ -156,6 +183,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_02_222047) do
     t.string "first_name"
     t.string "last_name"
     t.boolean "admin", default: false, null: false
+    t.string "twist_username"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
@@ -203,6 +231,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_02_222047) do
   add_foreign_key "pichia_strains", "product_statuses"
   add_foreign_key "pichia_strains", "strain_types"
   add_foreign_key "sessions", "users"
+  add_foreign_key "subscription_vectors", "subscriptions"
+  add_foreign_key "subscription_vectors", "vectors"
+  add_foreign_key "subscriptions", "users"
   add_foreign_key "vectors", "host_organisms"
   add_foreign_key "vectors", "product_statuses"
   add_foreign_key "vectors", "promoters"

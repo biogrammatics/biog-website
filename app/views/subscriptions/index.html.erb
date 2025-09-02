@@ -1,0 +1,111 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Twist Vector Subscriptions</h1>
+    <% unless @current_subscription %>
+      <%= link_to "Start Subscription", new_subscription_path, class: "btn btn-primary" %>
+    <% end %>
+  </div>
+  
+  <% if @current_subscription %>
+    <div class="alert alert-success" role="alert">
+      <h5 class="alert-heading">Active Subscription</h5>
+      <p>Your Twist subscription is active with <strong><%= @current_subscription.vectors.count %></strong> vectors.</p>
+      <p class="mb-0">
+        Renewal Date: <strong><%= @current_subscription.renewal_date.strftime("%B %d, %Y") %></strong>
+        (<%= @current_subscription.days_until_renewal %> days remaining)
+      </p>
+      <hr>
+      <%= link_to "Manage Subscription", @current_subscription, class: "btn btn-outline-success btn-sm" %>
+    </div>
+  <% else %>
+    <div class="alert alert-info" role="alert">
+      <h5 class="alert-heading">Get Started with Twist Subscriptions</h5>
+      <p>Subscribe to our vectors onboarded at Twist Bioscience for seamless DNA synthesis and delivery.</p>
+      <ul>
+        <li>$300 one-time onboarding fee</li>
+        <li>Annual subscription with prorated pricing for vectors added throughout the year</li>
+        <li>Minimum $50 fee for vectors added within 30 days of renewal</li>
+        <li>Direct integration with your Twist account</li>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h3>Available Subscription Vectors</h3>
+        </div>
+        <div class="card-body">
+          <% if @vectors.any? %>
+            <div class="row">
+              <% @vectors.each do |vector| %>
+                <div class="col-md-6 mb-3">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h5 class="card-title"><%= link_to vector.name, vector_path(vector) %></h5>
+                      <p class="card-text">
+                        <%= truncate(vector.description, length: 100) %>
+                      </p>
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <strong>$<%= vector.subscription_price %>/year</strong>
+                        </div>
+                        <div>
+                          <% if @current_subscription %>
+                            <% if @current_subscription.vectors.include?(vector) %>
+                              <span class="badge bg-success">Subscribed</span>
+                            <% else %>
+                              <%= button_to "Add to Subscription", add_vector_subscription_path(@current_subscription), 
+                                  params: { vector_id: vector.id }, 
+                                  method: :post,
+                                  class: "btn btn-sm btn-outline-primary" %>
+                            <% end %>
+                          <% else %>
+                            <%= link_to "Subscribe", new_subscription_path(vector_id: vector.id), class: "btn btn-sm btn-primary" %>
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="text-center py-5">
+              <p class="text-muted">No subscription vectors are currently available.</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h4>Subscription Benefits</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled">
+            <li class="mb-2">✅ Direct Twist integration</li>
+            <li class="mb-2">✅ Automated DNA synthesis</li>
+            <li class="mb-2">✅ Quality guaranteed sequences</li>
+            <li class="mb-2">✅ Fast delivery times</li>
+            <li class="mb-2">✅ Technical support included</li>
+            <li class="mb-2">✅ Annual renewal with prorated additions</li>
+          </ul>
+          
+          <hr>
+          
+          <h6>Pricing Structure</h6>
+          <ul class="list-unstyled small">
+            <li><strong>Onboarding:</strong> $300 (one-time)</li>
+            <li><strong>Vectors:</strong> Individual annual pricing</li>
+            <li><strong>Late additions:</strong> Prorated to renewal date</li>
+            <li><strong>Minimum fee:</strong> $50 (last 30 days)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

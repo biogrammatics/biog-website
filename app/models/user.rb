@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
   has_one :cart, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   
@@ -18,6 +19,14 @@ class User < ApplicationRecord
 
   def current_cart
     cart || create_cart!
+  end
+  
+  def current_subscription
+    subscriptions.active.first
+  end
+  
+  def has_active_subscription?
+    current_subscription&.active?
   end
 
   private

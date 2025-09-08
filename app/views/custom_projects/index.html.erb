@@ -5,8 +5,14 @@
       <p class="lead">Manage your custom Pichia pastoris projects</p>
       
       <div class="mb-4">
-        <%= link_to "Start New Project", new_custom_project_path, class: "btn btn-success" %>
-        <%= link_to "Back to Home", root_path, class: "btn btn-outline-secondary" %>
+        <div class="btn-group">
+          <%= link_to "Start New Project", new_custom_project_path, class: "btn btn-success" %>
+          <%= link_to protein_expression_custom_projects_path, class: "btn btn-primary" do %>
+            <i class="fas fa-dna me-1"></i>
+            Protein Expression Request
+          <% end %>
+        </div>
+        <%= link_to "Back to Home", root_path, class: "btn btn-outline-secondary ms-2" %>
       </div>
       
       <% if @custom_projects.any? %>
@@ -50,6 +56,10 @@
                       <span class="badge bg-warning text-dark"><%= project.display_status %></span>
                     <% when 'in_progress' %>
                       <span class="badge bg-primary"><%= project.display_status %></span>
+                    <% when 'awaiting_approval' %>
+                      <span class="badge bg-info"><%= project.display_status %></span>
+                    <% when 'sequence_approved' %>
+                      <span class="badge bg-success"><%= project.display_status %></span>
                     <% when 'completed' %>
                       <span class="badge bg-success"><%= project.display_status %></span>
                     <% when 'cancelled' %>

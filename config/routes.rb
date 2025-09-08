@@ -10,7 +10,16 @@ Rails.application.routes.draw do
   resources :pichia_strains, only: [ :index, :show ]
 
   # Custom Projects routes
-  resources :custom_projects
+  resources :custom_projects do
+    collection do
+      get :protein_expression
+      post :protein_expression
+    end
+    member do
+      patch :approve_dna_sequence
+      patch :reject_dna_sequence
+    end
+  end
 
   # Cart routes
   resource :cart, only: [ :show ], controller: "cart" do
@@ -25,6 +34,19 @@ Rails.application.routes.draw do
   resources :subscriptions, only: [ :index, :show, :new, :create ] do
     member do
       post :add_vector
+    end
+  end
+
+  # Checkout routes
+  resources :checkout, only: [:new, :create] do
+    collection do
+      get :address_step
+      post :address_step
+      get :payment_step
+      post :payment_step
+      get :review_step
+      post :review_step
+      get :confirmation
     end
   end
 

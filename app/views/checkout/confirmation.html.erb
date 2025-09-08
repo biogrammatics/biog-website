@@ -1,0 +1,122 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="text-center mb-4">
+        <div class="alert alert-success border-0 shadow-sm">
+          <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+          <h2 class="alert-heading text-success">Order Placed Successfully!</h2>
+          <p class="mb-0">Thank you for your order. We've received your order and will begin processing it shortly.</p>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Order Confirmation</h4>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <h6>Order Details</h6>
+              <p class="mb-1"><strong>Order Number:</strong> <%= @order.order_number %></p>
+              <p class="mb-1"><strong>Order Date:</strong> <%= @order.ordered_at.strftime("%B %d, %Y at %I:%M %p") %></p>
+              <p class="mb-1"><strong>Status:</strong> <span class="badge bg-warning"><%= @order.display_status %></span></p>
+            </div>
+            <div class="col-md-6">
+              <h6>Order Total</h6>
+              <div class="d-flex justify-content-between">
+                <span>Subtotal:</span>
+                <span>$<%= sprintf("%.2f", @order.subtotal) %></span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span>Shipping:</span>
+                <span>
+                  <% if @order.shipping_cost == 0 %>
+                    <span class="text-success">FREE</span>
+                  <% else %>
+                    $<%= sprintf("%.2f", @order.shipping_cost) %>
+                  <% end %>
+                </span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span>Tax:</span>
+                <span>$<%= sprintf("%.2f", @order.tax_amount) %></span>
+              </div>
+              <hr>
+              <div class="d-flex justify-content-between">
+                <strong>Total:</strong>
+                <strong class="text-primary">$<%= sprintf("%.2f", @order.total_amount) %></strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Order Items</h5>
+        </div>
+        <div class="card-body">
+          <% @order.order_items.each do |order_item| %>
+            <div class="row align-items-center border-bottom pb-3 mb-3">
+              <div class="col-md-6">
+                <h6 class="mb-1"><%= order_item.item_name %></h6>
+                <p class="text-muted mb-0 small"><%= order_item.item_description %></p>
+              </div>
+              <div class="col-md-2 text-center">
+                <span>Qty: <%= order_item.quantity %></span>
+              </div>
+              <div class="col-md-2 text-center">
+                <span>$<%= order_item.price %> each</span>
+              </div>
+              <div class="col-md-2 text-end">
+                <span class="fw-bold">$<%= order_item.total_price %></span>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h6 class="mb-0">Billing Address</h6>
+            </div>
+            <div class="card-body">
+              <address class="mb-0">
+                <%= simple_format(@order.billing_address) %>
+              </address>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h6 class="mb-0">Shipping Address</h6>
+            </div>
+            <div class="card-body">
+              <address class="mb-0">
+                <%= simple_format(@order.shipping_address) %>
+              </address>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-info mt-4">
+        <h6 class="alert-heading">What happens next?</h6>
+        <ul class="mb-0">
+          <li>You'll receive an email confirmation shortly with your order details</li>
+          <li>We'll process your order and prepare it for shipment</li>
+          <li>You'll receive tracking information once your order ships</li>
+          <li>Estimated delivery: 5-7 business days</li>
+        </ul>
+      </div>
+
+      <div class="text-center mt-4">
+        <%= link_to "Continue Shopping", vectors_path, class: "btn btn-primary me-3" %>
+        <%= link_to "View Account", account_path, class: "btn btn-outline-secondary" %>
+      </div>
+    </div>
+  </div>
+</div>

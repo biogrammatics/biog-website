@@ -10,7 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_08_212207) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_08_231625) do
+  create_table "addresses", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "address_type"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "company"
+    t.string "address_line_1"
+    t.string "address_line_2"
+    t.string "city"
+    t.string "state"
+    t.string "postal_code"
+    t.string "country"
+    t.string "phone"
+    t.boolean "is_default"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
+
   create_table "cart_items", force: :cascade do |t|
     t.integer "cart_id", null: false
     t.string "item_type", null: false
@@ -43,12 +62,39 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_08_212207) do
     t.date "estimated_completion_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "amino_acid_sequence"
+    t.integer "selected_vector_id"
+    t.text "dna_sequence"
+    t.boolean "dna_sequence_approved", default: false
+    t.text "codon_optimization_notes"
+    t.string "protein_name"
+    t.decimal "protein_molecular_weight"
+    t.text "protein_description"
     t.index ["project_type"], name: "index_custom_projects_on_project_type"
+    t.index ["selected_vector_id"], name: "index_custom_projects_on_selected_vector_id"
     t.index ["status"], name: "index_custom_projects_on_status"
     t.index ["user_id"], name: "index_custom_projects_on_user_id"
     t.check_constraint "estimated_cost > 0 OR estimated_cost IS NULL", name: "custom_projects_estimated_cost_positive"
     t.check_constraint "project_type IN ('strain_only', 'strain_and_testing', 'full_service', 'consultation') OR project_type IS NULL", name: "custom_projects_project_type_check"
     t.check_constraint "status IN ('pending', 'in_progress', 'completed', 'cancelled')", name: "custom_projects_status_check"
+  end
+
+  create_table "expression_vectors", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.string "promoter", null: false
+    t.string "drug_selection", null: false
+    t.text "features"
+    t.decimal "price", precision: 10, scale: 2
+    t.boolean "available", default: true
+    t.string "vector_type", default: "protein_expression"
+    t.string "backbone"
+    t.string "cloning_sites"
+    t.text "additional_notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["available"], name: "index_expression_vectors_on_available"
+    t.index ["vector_type"], name: "index_expression_vectors_on_vector_type"
   end
 
   create_table "host_organisms", force: :cascade do |t|
@@ -59,6 +105,35 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_08_212207) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["common_name"], name: "index_host_organisms_on_common_name"
+  end
+
+  create_table "order_items", force: :cascade do |t|
+    t.integer "order_id", null: false
+    t.string "item_type", null: false
+    t.integer "item_id", null: false
+    t.integer "quantity"
+    t.decimal "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_type", "item_id"], name: "index_order_items_on_item"
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "order_number"
+    t.string "status"
+    t.decimal "subtotal"
+    t.decimal "shipping_cost"
+    t.decimal "tax_amount"
+    t.decimal "total_amount"
+    t.text "billing_address"
+    t.text "shipping_address"
+    t.text "notes"
+    t.datetime "ordered_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "pichia_strains", force: :cascade do |t|
@@ -226,9 +301,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_08_212207) do
     t.check_constraint "vector_size > 0 OR vector_size IS NULL", name: "vectors_vector_size_positive"
   end
 
+  add_foreign_key "addresses", "users"
   add_foreign_key "cart_items", "carts"
   add_foreign_key "carts", "users"
+  add_foreign_key "custom_projects", "expression_vectors", column: "selected_vector_id"
   add_foreign_key "custom_projects", "users"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "orders", "users"
   add_foreign_key "pichia_strains", "product_statuses"
   add_foreign_key "pichia_strains", "strain_types"
   add_foreign_key "sessions", "users"

@@ -1,7 +1,14 @@
 <div class="container">
   <div class="row">
     <div class="col-md-8">
-      <h1><%= @custom_project.project_name %></h1>
+      <h1>
+        <% if @custom_project.protein_expression_project? %>
+          <i class="fas fa-dna me-2 text-primary"></i>
+        <% else %>
+          <i class="fas fa-flask me-2 text-success"></i>
+        <% end %>
+        <%= @custom_project.project_name %>
+      </h1>
       
       <div class="mb-3">
         <% case @custom_project.status %>
@@ -9,6 +16,10 @@
           <span class="badge bg-warning text-dark fs-6"><%= @custom_project.display_status %></span>
         <% when 'in_progress' %>
           <span class="badge bg-primary fs-6"><%= @custom_project.display_status %></span>
+        <% when 'awaiting_approval' %>
+          <span class="badge bg-info fs-6"><%= @custom_project.display_status %></span>
+        <% when 'sequence_approved' %>
+          <span class="badge bg-success fs-6"><%= @custom_project.display_status %></span>
         <% when 'completed' %>
           <span class="badge bg-success fs-6"><%= @custom_project.display_status %></span>
         <% when 'cancelled' %>
@@ -22,35 +33,198 @@
         <% end %>
       </div>
       
-      <div class="card mb-4">
-        <div class="card-header">
-          <h5 class="mb-0">Project Details</h5>
+      <% if @custom_project.protein_expression_project? %>
+        <!-- Protein Expression Details -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Protein Information</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <h6>Protein Name:</h6>
+                <p class="ms-3"><%= @custom_project.protein_name %></p>
+              </div>
+              <div class="col-md-6">
+                <h6>Sequence Length:</h6>
+                <p class="ms-3"><%= @custom_project.sequence_length %> amino acids</p>
+              </div>
+            </div>
+            
+            <% if @custom_project.protein_description.present? %>
+              <h6>Description:</h6>
+              <p class="ms-3"><%= simple_format(@custom_project.protein_description) %></p>
+            <% end %>
+            
+            <h6>Amino Acid Sequence:</h6>
+            <div class="card bg-light">
+              <div class="card-body">
+                <code class="d-block" style="font-size: 0.9rem; line-height: 1.5; word-break: break-all;">
+                  <%= @custom_project.clean_amino_acid_sequence %>
+                </code>
+              </div>
+            </div>
+            
+            <div class="row mt-3">
+              <div class="col-md-4">
+                <small>
+                  <strong>Starts with M:</strong> 
+                  <%= @custom_project.starts_with_methionine? ? '<span class="text-success">✓ Yes</span>'.html_safe : '<span class="text-danger">✗ No</span>'.html_safe %>
+                </small>
+              </div>
+              <div class="col-md-4">
+                <small>
+                  <strong>Ends with *:</strong> 
+                  <%= @custom_project.ends_with_stop_codon? ? '<span class="text-success">✓ Yes</span>'.html_safe : '<span class="text-danger">✗ No</span>'.html_safe %>
+                </small>
+              </div>
+              <div class="col-md-4">
+                <small>
+                  <strong>Est. Molecular Weight:</strong> 
+                  ~<%= number_with_delimiter(@custom_project.estimated_molecular_weight) %> Da
+                </small>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="card-body">
-          <% if @custom_project.description.present? %>
-            <h6>Description:</h6>
-            <p class="ms-3"><%= simple_format(@custom_project.description) %></p>
-          <% end %>
-          
-          <h6>Services:</h6>
-          <ul class="ms-3">
-            <% if @custom_project.strain_generation? %>
-              <li>Custom Strain Generation</li>
+
+        <!-- Vector Selection -->
+        <% if @custom_project.selected_vector.present? %>
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Selected Expression Vector</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start">
+                <div class="flex-grow-1">
+                  <h6><%= @custom_project.selected_vector.display_name %></h6>
+                  <p class="text-muted mb-2"><%= @custom_project.selected_vector.description %></p>
+                  
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <small>
+                        <strong>Backbone:</strong> <%= @custom_project.selected_vector.backbone %><br>
+                        <strong>Cloning Sites:</strong> <%= @custom_project.selected_vector.cloning_sites %>
+                      </small>
+                    </div>
+                    <div class="col-sm-6">
+                      <small>
+                        <% if @custom_project.selected_vector.feature_list.any? %>
+                          <strong>Features:</strong> <%= @custom_project.selected_vector.feature_list.join(', ') %>
+                        <% end %>
+                      </small>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-end ms-3">
+                  <h6 class="text-primary mb-0"><%= @custom_project.selected_vector.formatted_price %></h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- DNA Sequence Section -->
+        <% if @custom_project.dna_sequence.present? %>
+          <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">Generated DNA Sequence</h5>
+              <% if @custom_project.status == 'awaiting_approval' %>
+                <span class="badge bg-warning text-dark">Awaiting Your Approval</span>
+              <% elsif @custom_project.dna_sequence_approved? %>
+                <span class="badge bg-success">Approved</span>
+              <% end %>
+            </div>
+            <div class="card-body">
+              <% if @custom_project.codon_optimization_notes.present? %>
+                <div class="alert alert-info">
+                  <strong>Codon Optimization Notes:</strong><br>
+                  <%= @custom_project.codon_optimization_notes %>
+                </div>
+              <% end %>
+              
+              <h6>Codon-Optimized DNA Sequence:</h6>
+              <div class="card bg-light">
+                <div class="card-body">
+                  <code class="d-block" style="font-size: 0.85rem; line-height: 1.4; word-break: break-all;">
+                    <%= @custom_project.dna_sequence.scan(/.{1,60}/).join("<br>").html_safe %>
+                  </code>
+                </div>
+              </div>
+              
+              <div class="mt-3">
+                <small class="text-muted">
+                  <strong>DNA Length:</strong> <%= @custom_project.dna_sequence.length %> nucleotides
+                </small>
+              </div>
+              
+              <!-- Approval Buttons -->
+              <% if @custom_project.status == 'awaiting_approval' %>
+                <div class="mt-3">
+                  <div class="alert alert-warning">
+                    <h6 class="alert-heading">Sequence Approval Required</h6>
+                    <p class="mb-3">Please review the generated DNA sequence above. Do you approve this sequence for synthesis and cloning?</p>
+                    <div class="d-flex gap-2">
+                      <%= link_to "✓ Approve Sequence", approve_dna_sequence_custom_project_path(@custom_project), 
+                          method: :patch, class: "btn btn-success",
+                          data: { turbo_confirm: "Are you sure you want to approve this DNA sequence? Once approved, we'll begin synthesis and cloning." } %>
+                      <%= link_to "✗ Request New Sequence", reject_dna_sequence_custom_project_path(@custom_project), 
+                          method: :patch, class: "btn btn-outline-danger",
+                          data: { turbo_confirm: "This will reject the current sequence and request a new one to be generated." } %>
+                    </div>
+                  </div>
+                </div>
+              <% elsif @custom_project.dna_sequence_approved? %>
+                <div class="mt-3">
+                  <div class="alert alert-success">
+                    <h6 class="alert-heading">✓ Sequence Approved</h6>
+                    <p class="mb-0">You have approved this DNA sequence. We are now proceeding with synthesis and cloning into your selected vector.</p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+      <% else %>
+        <!-- Standard Custom Project Details -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Project Details</h5>
+          </div>
+          <div class="card-body">
+            <% if @custom_project.description.present? %>
+              <h6>Description:</h6>
+              <p class="ms-3"><%= simple_format(@custom_project.description) %></p>
             <% end %>
-            <% if @custom_project.expression_testing? %>
-              <li>Expression Testing & Optimization</li>
-            <% end %>
-            <% if !@custom_project.strain_generation? && !@custom_project.expression_testing? %>
-              <li class="text-muted">No specific services selected</li>
-            <% end %>
-          </ul>
-          
-          <% if @custom_project.notes.present? %>
-            <h6>Additional Notes:</h6>
-            <p class="ms-3"><%= simple_format(@custom_project.notes) %></p>
-          <% end %>
+            
+            <h6>Services:</h6>
+            <ul class="ms-3">
+              <% if @custom_project.strain_generation? %>
+                <li>Custom Strain Generation</li>
+              <% end %>
+              <% if @custom_project.expression_testing? %>
+                <li>Expression Testing & Optimization</li>
+              <% end %>
+              <% if !@custom_project.strain_generation? && !@custom_project.expression_testing? %>
+                <li class="text-muted">No specific services selected</li>
+              <% end %>
+            </ul>
+          </div>
         </div>
-      </div>
+      <% end %>
+      
+      <!-- Additional Notes (shown for all project types) -->
+      <% if @custom_project.notes.present? %>
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Additional Notes</h5>
+          </div>
+          <div class="card-body">
+            <%= simple_format(@custom_project.notes) %>
+          </div>
+        </div>
+      <% end %>
       
       <% if @custom_project.estimated_cost.present? || @custom_project.estimated_completion_date.present? %>
         <div class="card mb-4">

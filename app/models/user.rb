@@ -4,6 +4,8 @@ class User < ApplicationRecord
   has_one :cart, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
   has_many :custom_projects, dependent: :destroy
+  has_many :addresses, dependent: :destroy
+  has_many :orders, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
@@ -28,6 +30,14 @@ class User < ApplicationRecord
 
   def has_active_subscription?
     current_subscription&.active?
+  end
+
+  def default_billing_address
+    addresses.billing.default_addresses.first
+  end
+
+  def default_shipping_address
+    addresses.shipping.default_addresses.first
   end
 
   private

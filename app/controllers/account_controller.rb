@@ -7,6 +7,7 @@ class AccountController < ApplicationController
     @current_subscription = @user.current_subscription
     @cart_items = @user.current_cart.cart_items.includes(:item)
     @custom_projects = @user.custom_projects.order(created_at: :desc)
+    @orders = @user.orders.includes(:order_items).order(created_at: :desc).limit(10)
   end
 
   private

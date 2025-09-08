@@ -1,6 +1,6 @@
 class SubscriptionsController < ApplicationController
-  allow_unauthenticated_access only: [:index]
-  before_action :authenticate_user!, except: [:index]
+  allow_unauthenticated_access only: [ :index ]
+  before_action :authenticate_user!, except: [ :index ]
   before_action :set_subscription, only: [ :show, :add_vector ]
 
   def index

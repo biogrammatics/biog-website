@@ -1,8 +1,8 @@
 require "test_helper"
 
 class PichiaStrainsControllerTest < ActionDispatch::IntegrationTest
-  test "should redirect when not logged in" do
+  test "should allow unauthenticated access to strains" do
     get pichia_strains_url
-    assert_response :redirect
+    assert_response :success
   end
 end

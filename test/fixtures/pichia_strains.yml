@@ -1,0 +1,9 @@
+test_strain:
+  name: "Test Strain 1"
+  description: "A test Pichia strain"
+  product_status_id: 1
+  sale_price: 150.00
+  genotype: "his4"
+  phenotype: "His-"
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

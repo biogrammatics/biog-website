@@ -1,8 +1,8 @@
 require "test_helper"
 
 class VectorsControllerTest < ActionDispatch::IntegrationTest
-  test "should redirect when not logged in" do
+  test "should allow unauthenticated access to vectors" do
     get vectors_url
-    assert_response :redirect
+    assert_response :success
   end
 end

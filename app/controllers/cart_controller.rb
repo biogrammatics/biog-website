@@ -82,8 +82,10 @@ class CartController < ApplicationController
 
   def checkout
     if authenticated?
-      # User is logged in, proceed with checkout
-      redirect_to new_checkout_path
+      # User is logged in, show checkout confirmation
+      # For now, redirect to account page with a message
+      # TODO: Implement proper checkout flow
+      redirect_to account_path, notice: "Checkout functionality coming soon! Please contact us for pricing and ordering."
     else
       # Guest user, redirect to account creation with cart data preserved
       redirect_to new_session_path(checkout: true)

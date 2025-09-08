@@ -165,10 +165,10 @@
                     <h6 class="alert-heading">Sequence Approval Required</h6>
                     <p class="mb-3">Please review the generated DNA sequence above. Do you approve this sequence for synthesis and cloning?</p>
                     <div class="d-flex gap-2">
-                      <%= link_to "✓ Approve Sequence", approve_dna_sequence_custom_project_path(@custom_project), 
+                      <%= button_to "✓ Approve Sequence", approve_dna_sequence_custom_project_path(@custom_project), 
                           method: :patch, class: "btn btn-success",
                           data: { turbo_confirm: "Are you sure you want to approve this DNA sequence? Once approved, we'll begin synthesis and cloning." } %>
-                      <%= link_to "✗ Request New Sequence", reject_dna_sequence_custom_project_path(@custom_project), 
+                      <%= button_to "✗ Request New Sequence", reject_dna_sequence_custom_project_path(@custom_project), 
                           method: :patch, class: "btn btn-outline-danger",
                           data: { turbo_confirm: "This will reject the current sequence and request a new one to be generated." } %>
                     </div>

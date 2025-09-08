@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_08_231625) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_08_234603) do
   create_table "addresses", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "address_type"
@@ -75,8 +75,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_08_231625) do
     t.index ["status"], name: "index_custom_projects_on_status"
     t.index ["user_id"], name: "index_custom_projects_on_user_id"
     t.check_constraint "estimated_cost > 0 OR estimated_cost IS NULL", name: "custom_projects_estimated_cost_positive"
-    t.check_constraint "project_type IN ('strain_only', 'strain_and_testing', 'full_service', 'consultation') OR project_type IS NULL", name: "custom_projects_project_type_check"
-    t.check_constraint "status IN ('pending', 'in_progress', 'completed', 'cancelled')", name: "custom_projects_status_check"
+    t.check_constraint "project_type IN ('strain_only', 'strain_and_testing', 'full_service', 'consultation', 'protein_expression') OR project_type IS NULL", name: "custom_projects_project_type_check"
+    t.check_constraint "status IN ('pending', 'in_progress', 'completed', 'cancelled', 'awaiting_approval', 'sequence_approved')", name: "custom_projects_status_check"
   end
 
   create_table "expression_vectors", force: :cascade do |t|

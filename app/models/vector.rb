@@ -16,6 +16,13 @@ class Vector < ApplicationRecord
   scope :available_for_sale, -> { where(available_for_sale: true) }
   scope :available_for_subscription, -> { where(available_for_subscription: true) }
   scope :active, -> { joins(:product_status).where(product_statuses: { is_available: true }) }
+  scope :heterologous_expression, -> { where(category: "Heterologous Protein Expression") }
+  scope :genome_engineering, -> { where(category: "Genome Engineering") }
+
+  CATEGORIES = [
+    "Heterologous Protein Expression",
+    "Genome Engineering"
+  ].freeze
 
   def available?
     product_status&.is_available?

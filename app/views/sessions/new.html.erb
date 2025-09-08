@@ -1,11 +1,134 @@
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
-<%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <% if @checkout %>
+        <div class="alert alert-info">
+          <h5 class="alert-heading">Account Required for Checkout</h5>
+          <p>To complete your purchase, please sign in to your existing account or create a new one. Your cart items will be preserved.</p>
+        </div>
+      <% end %>
 
-<%= form_with url: session_path do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-  <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 %><br>
-  <%= form.submit "Sign in" %>
-<% end %>
-<br>
+      <% if flash[:alert] %>
+        <div class="alert alert-danger"><%= flash[:alert] %></div>
+      <% end %>
+      <% if flash[:notice] %>
+        <div class="alert alert-success"><%= flash[:notice] %></div>
+      <% end %>
 
-<%= link_to "Forgot password?", new_password_path %>
+      <div class="row">
+        <!-- Sign In Form -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h4>Sign In</h4>
+            </div>
+            <div class="card-body">
+              <%= form_with url: session_path, local: true do |form| %>
+                <% if @checkout %>
+                  <%= form.hidden_field :checkout, value: true %>
+                <% end %>
+                
+                <div class="mb-3">
+                  <%= form.label :email_address, class: "form-label" %>
+                  <%= form.email_field :email_address, 
+                      required: true, 
+                      autofocus: !@checkout,
+                      autocomplete: "username", 
+                      class: "form-control",
+                      value: params[:email_address] %>
+                </div>
+                
+                <div class="mb-3">
+                  <%= form.label :password, class: "form-label" %>
+                  <%= form.password_field :password, 
+                      required: true, 
+                      autocomplete: "current-password", 
+                      class: "form-control",
+                      maxlength: 72 %>
+                </div>
+                
+                <div class="d-grid">
+                  <%= form.submit "Sign In", class: "btn btn-primary" %>
+                </div>
+              <% end %>
+              
+              <div class="text-center mt-3">
+                <%= link_to "Forgot password?", new_password_path, class: "text-decoration-none" %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Create Account Form -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h4>Create Account</h4>
+            </div>
+            <div class="card-body">
+              <%= form_with model: @user, url: session_path, local: true do |form| %>
+                <% if @checkout %>
+                  <%= form.hidden_field :checkout, value: true %>
+                <% end %>
+                
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <%= form.label :first_name, class: "form-label" %>
+                    <%= form.text_field :first_name, class: "form-control" %>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <%= form.label :last_name, class: "form-label" %>
+                    <%= form.text_field :last_name, class: "form-control" %>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <%= form.label :email_address, class: "form-label" %>
+                  <%= form.email_field :email_address, 
+                      required: true,
+                      class: "form-control #{'is-invalid' if @user.errors[:email_address].any?}" %>
+                  <% if @user.errors[:email_address].any? %>
+                    <div class="invalid-feedback">
+                      <%= @user.errors[:email_address].first %>
+                    </div>
+                  <% end %>
+                </div>
+                
+                <div class="mb-3">
+                  <%= form.label :password, class: "form-label" %>
+                  <%= form.password_field :password, 
+                      required: true,
+                      class: "form-control #{'is-invalid' if @user.errors[:password].any?}",
+                      autocomplete: "new-password" %>
+                  <% if @user.errors[:password].any? %>
+                    <div class="invalid-feedback">
+                      <%= @user.errors[:password].first %>
+                    </div>
+                  <% end %>
+                </div>
+                
+                <div class="mb-3">
+                  <%= form.label :password_confirmation, "Confirm Password", class: "form-label" %>
+                  <%= form.password_field :password_confirmation, 
+                      required: true,
+                      class: "form-control",
+                      autocomplete: "new-password" %>
+                </div>
+                
+                <div class="d-grid">
+                  <%= form.submit "Create Account", class: "btn btn-success" %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <% unless @checkout %>
+        <div class="text-center mt-4">
+          <%= link_to "← Back to Home", root_path, class: "btn btn-outline-secondary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

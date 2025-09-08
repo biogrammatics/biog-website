@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     patch :update_item
     delete :remove_item
     delete :clear
+    post :checkout
   end
 
   # Subscription routes

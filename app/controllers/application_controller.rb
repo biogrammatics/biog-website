@@ -15,4 +15,20 @@ class ApplicationController < ActionController::Base
     Current.user&.admin?
   end
   helper_method :admin_signed_in?
+
+  # Cart helper methods for navigation
+  def current_cart_items_count
+    if authenticated?
+      Current.user.current_cart.total_items
+    else
+      session_cart = session[:cart] || {}
+      session_cart.sum { |key, item_data| item_data["quantity"] || 0 }
+    end
+  end
+  helper_method :current_cart_items_count
+
+  def has_cart_items?
+    current_cart_items_count > 0
+  end
+  helper_method :has_cart_items?
 end

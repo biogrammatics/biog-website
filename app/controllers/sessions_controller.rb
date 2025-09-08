@@ -52,7 +52,16 @@ class SessionsController < ApplicationController
     user_cart = user.current_cart
 
     session_cart.each do |key, item_data|
-      item_type, item_id = key.split("_")
+      # Ensure key is in the expected format (e.g., "Vector_1")
+      next unless key.is_a?(String) && key.include?("_")
+      
+      parts = key.split("_", 2)
+      next if parts.length != 2
+      
+      item_type, item_id = parts
+      
+      # Validate item_data structure
+      next unless item_data.is_a?(Hash) && item_data["quantity"].present?
 
       begin
         case item_type
@@ -61,12 +70,17 @@ class SessionsController < ApplicationController
         when "PichiaStrain"
           item = PichiaStrain.find(item_id)
         else
+          # Skip unknown item types instead of failing
           next
         end
 
         user_cart.add_item(item, item_data["quantity"])
       rescue ActiveRecord::RecordNotFound
         # Item no longer exists, skip it
+        next
+      rescue StandardError => e
+        # Log unexpected errors but don't fail the entire transfer
+        Rails.logger.warn "Failed to transfer cart item #{key}: #{e.message}"
         next
       end
     end

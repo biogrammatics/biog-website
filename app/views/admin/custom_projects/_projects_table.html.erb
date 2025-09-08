@@ -1,0 +1,78 @@
+<div class="table-responsive">
+  <table class="table table-hover mb-0">
+    <thead class="table-light">
+      <tr>
+        <th>Project</th>
+        <th>Customer</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Services</th>
+        <th>Cost</th>
+        <th>Submitted</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% projects.each do |project| %>
+        <tr>
+          <td>
+            <%= link_to project.project_name, admin_custom_project_path(project), class: "fw-bold text-decoration-none" %>
+          </td>
+          <td>
+            <%= project.user.full_name.presence || project.user.email_address %>
+            <br>
+            <small class="text-muted"><%= project.user.email_address %></small>
+          </td>
+          <td>
+            <% if project.project_type.present? %>
+              <span class="badge bg-info"><%= project.project_type.humanize %></span>
+            <% else %>
+              <span class="text-muted">Not specified</span>
+            <% end %>
+          </td>
+          <td>
+            <% case project.status %>
+            <% when 'pending' %>
+              <span class="badge bg-warning text-dark"><%= project.display_status %></span>
+            <% when 'in_progress' %>
+              <span class="badge bg-primary"><%= project.display_status %></span>
+            <% when 'completed' %>
+              <span class="badge bg-success"><%= project.display_status %></span>
+            <% when 'cancelled' %>
+              <span class="badge bg-danger"><%= project.display_status %></span>
+            <% else %>
+              <span class="badge bg-secondary"><%= project.display_status %></span>
+            <% end %>
+          </td>
+          <td>
+            <% if project.total_services.any? %>
+              <% project.total_services.each do |service| %>
+                <small class="d-block text-success"><i class="bi bi-check"></i> <%= service %></small>
+              <% end %>
+            <% else %>
+              <span class="text-muted">None specified</span>
+            <% end %>
+          </td>
+          <td>
+            <% if project.estimated_cost.present? %>
+              <strong>$<%= number_with_precision(project.estimated_cost, precision: 2) %></strong>
+            <% else %>
+              <span class="text-muted">TBD</span>
+            <% end %>
+          </td>
+          <td>
+            <%= project.created_at.strftime("%b %d, %Y") %>
+            <br>
+            <small class="text-muted"><%= time_ago_in_words(project.created_at) %> ago</small>
+          </td>
+          <td>
+            <div class="btn-group-vertical" role="group">
+              <%= link_to "View", admin_custom_project_path(project), class: "btn btn-sm btn-outline-primary mb-1" %>
+              <%= link_to "Edit", edit_admin_custom_project_path(project), class: "btn btn-sm btn-outline-secondary" %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   # Main application routes
   resources :vectors, only: [ :index, :show ]
   resources :pichia_strains, only: [ :index, :show ]
+  
+  # Custom Projects routes
+  resources :custom_projects
 
   # Cart routes
   resource :cart, only: [ :show ], controller: "cart" do
@@ -32,6 +35,11 @@ Rails.application.routes.draw do
     root "dashboard#index"
     resources :vectors
     resources :pichia_strains
+    resources :custom_projects do
+      member do
+        patch :update_status
+      end
+    end
   end
 
   # Health check

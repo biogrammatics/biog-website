@@ -1,0 +1,81 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1>My Custom Projects</h1>
+      <p class="lead">Manage your custom Pichia pastoris projects</p>
+      
+      <div class="mb-4">
+        <%= link_to "Start New Project", new_custom_project_path, class: "btn btn-success" %>
+        <%= link_to "Back to Home", root_path, class: "btn btn-outline-secondary" %>
+      </div>
+      
+      <% if @custom_projects.any? %>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Project Name</th>
+                <th>Type</th>
+                <th>Services</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @custom_projects.each do |project| %>
+                <tr>
+                  <td>
+                    <%= link_to project.project_name, custom_project_path(project), class: "text-decoration-none" %>
+                  </td>
+                  <td>
+                    <% if project.project_type.present? %>
+                      <span class="badge bg-info"><%= project.project_type.humanize %></span>
+                    <% else %>
+                      <span class="text-muted">Not specified</span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% if project.total_services.any? %>
+                      <% project.total_services.each do |service| %>
+                        <small class="d-block"><i class="bi bi-check-circle text-success"></i> <%= service %></small>
+                      <% end %>
+                    <% else %>
+                      <span class="text-muted">No services selected</span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% case project.status %>
+                    <% when 'pending' %>
+                      <span class="badge bg-warning text-dark"><%= project.display_status %></span>
+                    <% when 'in_progress' %>
+                      <span class="badge bg-primary"><%= project.display_status %></span>
+                    <% when 'completed' %>
+                      <span class="badge bg-success"><%= project.display_status %></span>
+                    <% when 'cancelled' %>
+                      <span class="badge bg-danger"><%= project.display_status %></span>
+                    <% else %>
+                      <span class="badge bg-secondary"><%= project.display_status %></span>
+                    <% end %>
+                  </td>
+                  <td><%= project.created_at.strftime("%b %d, %Y") %></td>
+                  <td>
+                    <%= link_to "View", custom_project_path(project), class: "btn btn-sm btn-outline-primary" %>
+                    <%= link_to "Edit", edit_custom_project_path(project), class: "btn btn-sm btn-outline-secondary" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="alert alert-info">
+          <h4 class="alert-heading">No projects yet</h4>
+          <p>You haven't started any custom projects. Ready to begin?</p>
+          <hr>
+          <%= link_to "Start Your First Project", new_custom_project_path, class: "btn btn-success" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

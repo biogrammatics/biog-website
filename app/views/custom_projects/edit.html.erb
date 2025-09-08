@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h1>Edit Project</h1>
+      <p class="lead">Update your project details</p>
+      
+      <%= form_with model: @custom_project do |form| %>
+        <% if @custom_project.errors.any? %>
+          <div class="alert alert-danger">
+            <h4><%= pluralize(@custom_project.errors.count, "error") %> prohibited this project from being saved:</h4>
+            <ul>
+              <% @custom_project.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        
+        <div class="mb-3">
+          <%= form.label :project_name, class: "form-label" %>
+          <%= form.text_field :project_name, class: "form-control" %>
+        </div>
+        
+        <div class="mb-3">
+          <%= form.label :project_type, "Project Type", class: "form-label" %>
+          <%= form.select :project_type, 
+              options_for_select([
+                ["Strain Generation Only", "strain_only"],
+                ["Strain Generation + Expression Testing", "strain_and_testing"],
+                ["Full Service (Design to Delivery)", "full_service"],
+                ["Consultation", "consultation"]
+              ], @custom_project.project_type), 
+              { prompt: "Select project type" }, 
+              class: "form-select" %>
+        </div>
+        
+        <div class="mb-3">
+          <%= form.label :description, "Project Description", class: "form-label" %>
+          <%= form.text_area :description, rows: 5, class: "form-control" %>
+        </div>
+        
+        <div class="card mb-3">
+          <div class="card-header">
+            <h5 class="mb-0">Services Required</h5>
+          </div>
+          <div class="card-body">
+            <div class="form-check mb-3">
+              <%= form.check_box :strain_generation, class: "form-check-input", id: "strain_generation" %>
+              <%= form.label :strain_generation, class: "form-check-label" do %>
+                <strong>Custom Strain Generation</strong>
+                <br>
+                <small class="text-muted">We'll create optimized Pichia strains for your protein</small>
+              <% end %>
+            </div>
+            
+            <div class="form-check">
+              <%= form.check_box :expression_testing, class: "form-check-input", id: "expression_testing" %>
+              <%= form.label :expression_testing, class: "form-check-label" do %>
+                <strong>Expression Testing & Optimization</strong>
+                <br>
+                <small class="text-muted">We'll test protein expression and optimize conditions</small>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= form.label :notes, "Additional Notes", class: "form-label" %>
+          <%= form.text_area :notes, rows: 3, class: "form-control" %>
+        </div>
+        
+        <div class="d-grid gap-2 d-md-block">
+          <%= form.submit "Update Project", class: "btn btn-primary btn-lg" %>
+          <%= link_to "Cancel", @custom_project, class: "btn btn-outline-secondary btn-lg" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

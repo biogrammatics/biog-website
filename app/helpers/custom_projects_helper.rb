@@ -1,0 +1,2 @@
+module CustomProjectsHelper
+end

@@ -1,0 +1,113 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h1>Start a Custom Project</h1>
+      <p class="lead">Tell us about your protein expression needs</p>
+      
+      <% unless authenticated? %>
+        <div class="alert alert-info">
+          <h5 class="alert-heading">Account Required</h5>
+          <p>To submit a custom project request, you'll need to create an account or sign in. This helps us manage your project and keep you updated on progress.</p>
+          <hr>
+          <div class="d-flex gap-2">
+            <%= link_to "Sign In", new_session_path, class: "btn btn-primary" %>
+            <%= link_to "Create Account", new_session_path, class: "btn btn-outline-primary" %>
+          </div>
+        </div>
+        <hr>
+        <h5>Preview Project Form</h5>
+        <p class="text-muted">You can review the project details form below, then sign in to submit your request.</p>
+      <% end %>
+      
+      <%= form_with model: @custom_project, url: authenticated? ? custom_projects_path : "#" do |form| %>
+        <% if @custom_project.errors.any? %>
+          <div class="alert alert-danger">
+            <h4><%= pluralize(@custom_project.errors.count, "error") %> prohibited this project from being saved:</h4>
+            <ul>
+              <% @custom_project.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        
+        <div class="mb-3">
+          <%= form.label :project_name, class: "form-label" %>
+          <%= form.text_field :project_name, class: "form-control", placeholder: "e.g., Human insulin expression in Pichia" %>
+          <small class="form-text text-muted">Give your project a descriptive name</small>
+        </div>
+        
+        <div class="mb-3">
+          <%= form.label :project_type, "Project Type", class: "form-label" %>
+          <%= form.select :project_type, 
+              options_for_select([
+                ["Strain Generation Only", "strain_only"],
+                ["Strain Generation + Expression Testing", "strain_and_testing"],
+                ["Full Service (Design to Delivery)", "full_service"],
+                ["Consultation", "consultation"]
+              ]), 
+              { prompt: "Select project type" }, 
+              class: "form-select" %>
+          <small class="form-text text-muted">Choose the level of service you need</small>
+        </div>
+        
+        <div class="mb-3">
+          <%= form.label :description, "Project Description", class: "form-label" %>
+          <%= form.text_area :description, rows: 5, class: "form-control", 
+              placeholder: "Describe your protein, expression goals, and any specific requirements..." %>
+          <small class="form-text text-muted">The more details you provide, the better we can assist you</small>
+        </div>
+        
+        <div class="card mb-3">
+          <div class="card-header">
+            <h5 class="mb-0">Services Required</h5>
+          </div>
+          <div class="card-body">
+            <div class="form-check mb-3">
+              <%= form.check_box :strain_generation, class: "form-check-input", id: "strain_generation" %>
+              <%= form.label :strain_generation, class: "form-check-label" do %>
+                <strong>Custom Strain Generation</strong>
+                <br>
+                <small class="text-muted">We'll create optimized Pichia strains for your protein</small>
+              <% end %>
+            </div>
+            
+            <div class="form-check">
+              <%= form.check_box :expression_testing, class: "form-check-input", id: "expression_testing" %>
+              <%= form.label :expression_testing, class: "form-check-label" do %>
+                <strong>Expression Testing & Optimization</strong>
+                <br>
+                <small class="text-muted">We'll test protein expression and optimize conditions</small>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= form.label :notes, "Additional Notes (Optional)", class: "form-label" %>
+          <%= form.text_area :notes, rows: 3, class: "form-control", 
+              placeholder: "Any special requirements, timeline constraints, or questions?" %>
+        </div>
+        
+        <div class="alert alert-info">
+          <h5 class="alert-heading">What happens next?</h5>
+          <ol class="mb-0">
+            <li>Submit your project details</li>
+            <li>Our team will review and provide a quote within 24-48 hours</li>
+            <li>Once approved, we'll begin work on your custom solution</li>
+          </ol>
+        </div>
+        
+        <div class="d-grid gap-2 d-md-block">
+          <% if authenticated? %>
+            <%= form.submit "Submit Project", class: "btn btn-success btn-lg" %>
+            <%= link_to "Cancel", custom_projects_path, class: "btn btn-outline-secondary btn-lg" %>
+          <% else %>
+            <%= link_to "Sign In to Submit Project", new_session_path, class: "btn btn-success btn-lg" %>
+            <%= link_to "Back to Home", root_path, class: "btn btn-outline-secondary btn-lg" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

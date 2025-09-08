@@ -1,32 +1,99 @@
 <div class="hero-section">
   <h1>BioGrammatics</h1>
-  <p class="lead">Premier source for molecular cloning vectors and Pichia pastoris strains</p>
+  <p class="lead">Premier source for Pichia pastoris molecular biology solutions</p>
   
   <div class="row mt-5">
     <div class="col-md-6">
-      <div class="card">
-        <div class="card-body">
-          <h3>Expression Vectors</h3>
-          <p>High-quality plasmids for protein expression in various host systems</p>
-          <%= link_to "Browse Vectors", vectors_path, class: "btn btn-primary" %>
+      <div class="card h-100 border-primary">
+        <div class="card-body d-flex flex-column">
+          <h2 class="card-title text-primary">
+            <i class="bi bi-dna"></i> Pichia Reagents
+          </h2>
+          <p class="card-text flex-grow-1">
+            <strong>Ready-to-use molecular tools for your research</strong>
+          </p>
+          <ul class="list-unstyled mb-4">
+            <li><i class="bi bi-check-circle text-success"></i> High-quality expression vectors</li>
+            <li><i class="bi bi-check-circle text-success"></i> Optimized Pichia pastoris strains</li>
+            <li><i class="bi bi-check-circle text-success"></i> DNA synthesis subscriptions via Twist Bioscience</li>
+            <li><i class="bi bi-check-circle text-success"></i> Immediate availability</li>
+          </ul>
+          <div class="mt-auto">
+            <p class="text-muted mb-3">Perfect for researchers who need proven, standardized reagents for protein expression</p>
+            <div class="d-grid gap-2">
+              <%= link_to "Browse Vectors", vectors_path, class: "btn btn-primary" %>
+              <%= link_to "Browse Strains", pichia_strains_path, class: "btn btn-outline-primary mt-2" %>
+              <% if authenticated? %>
+                <%= link_to "View Subscriptions", subscriptions_path, class: "btn btn-outline-secondary mt-2" %>
+              <% end %>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     
     <div class="col-md-6">
-      <div class="card">
-        <div class="card-body">
-          <h3>Pichia Strains</h3>
-          <p>Optimized Pichia pastoris strains for recombinant protein production</p>
-          <%= link_to "Browse Strains", pichia_strains_path, class: "btn btn-primary" %>
+      <div class="card h-100 border-success">
+        <div class="card-body d-flex flex-column">
+          <h2 class="card-title text-success">
+            <i class="bi bi-gear-fill"></i> Custom Pichia Projects
+          </h2>
+          <p class="card-text flex-grow-1">
+            <strong>Tailored solutions for your specific protein expression needs</strong>
+          </p>
+          <ul class="list-unstyled mb-4">
+            <li><i class="bi bi-check-circle text-success"></i> Custom strain generation</li>
+            <li><i class="bi bi-check-circle text-success"></i> Protein expression testing & optimization</li>
+            <li><i class="bi bi-check-circle text-success"></i> Full-service project management</li>
+            <li><i class="bi bi-check-circle text-success"></i> Expert consultation</li>
+          </ul>
+          <div class="mt-auto">
+            <p class="text-muted mb-3">Ideal for complex proteins, novel constructs, or when you need proven expression before scaling up</p>
+            <div class="d-grid gap-2">
+              <% if authenticated? %>
+                <%= link_to "Start New Project", new_custom_project_path, class: "btn btn-success" %>
+                <%= link_to "View My Projects", custom_projects_path, class: "btn btn-outline-success mt-2" %>
+              <% else %>
+                <%= link_to "Sign In to Start Project", new_session_path, class: "btn btn-success" %>
+                <small class="text-muted mt-2">Account required for custom projects</small>
+              <% end %>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
   
-  <div class="mt-4">
-    <%= link_to "Sign In", new_session_path, class: "btn btn-outline-secondary me-2" %>
-    or
-    <%= link_to "Create Account", new_session_path, class: "btn btn-success ms-2" %>
+  <div class="row mt-5">
+    <div class="col-12 text-center">
+      <h3>Why Choose BioGrammatics?</h3>
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <i class="bi bi-award fs-1 text-primary"></i>
+          <h5 class="mt-2">Expertise</h5>
+          <p>Specialized in Pichia pastoris expression systems with years of experience</p>
+        </div>
+        <div class="col-md-4">
+          <i class="bi bi-speedometer2 fs-1 text-primary"></i>
+          <h5 class="mt-2">Speed</h5>
+          <p>Fast turnaround times for both standard reagents and custom projects</p>
+        </div>
+        <div class="col-md-4">
+          <i class="bi bi-shield-check fs-1 text-primary"></i>
+          <h5 class="mt-2">Quality</h5>
+          <p>Rigorous quality control and validated protocols for reliable results</p>
+        </div>
+      </div>
+    </div>
   </div>
+  
+  <% unless authenticated? %>
+    <div class="mt-5 text-center bg-light p-4 rounded">
+      <h4>Get Started Today</h4>
+      <p>Create an account to access our full catalog and start your projects</p>
+      <%= link_to "Sign In", new_session_path, class: "btn btn-outline-secondary me-2" %>
+      or
+      <%= link_to "Create Account", new_session_path, class: "btn btn-primary ms-2" %>
+    </div>
+  <% end %>
 </div>

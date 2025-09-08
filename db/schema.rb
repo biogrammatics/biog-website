@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_02_225312) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_08_191501) do
   create_table "account_statuses", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
@@ -37,6 +37,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_02_225312) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_carts_on_user_id"
+  end
+
+  create_table "custom_projects", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "project_name", null: false
+    t.string "project_type"
+    t.text "description"
+    t.boolean "strain_generation", default: false
+    t.boolean "expression_testing", default: false
+    t.string "status", default: "pending"
+    t.text "notes"
+    t.decimal "estimated_cost", precision: 10, scale: 2
+    t.date "estimated_completion_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_type"], name: "index_custom_projects_on_project_type"
+    t.index ["status"], name: "index_custom_projects_on_status"
+    t.index ["user_id"], name: "index_custom_projects_on_user_id"
   end
 
   create_table "host_organisms", force: :cascade do |t|
@@ -228,6 +246,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_02_225312) do
 
   add_foreign_key "cart_items", "carts"
   add_foreign_key "carts", "users"
+  add_foreign_key "custom_projects", "users"
   add_foreign_key "pichia_strains", "product_statuses"
   add_foreign_key "pichia_strains", "strain_types"
   add_foreign_key "sessions", "users"

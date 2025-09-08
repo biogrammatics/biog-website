@@ -41,6 +41,8 @@
                 </span>
               <% end %>
             <% end %>
+          <% else %>
+            <%= link_to "Cart", new_session_path, class: "nav-link", title: "Sign in to use cart" %>
           <% end %>
           
           <% if authenticated? %>
@@ -52,6 +54,7 @@
                 <ul class="dropdown-menu">
                   <li><%= link_to "Manage Vectors", admin_vectors_path, class: "dropdown-item" %></li>
                   <li><%= link_to "Manage Strains", admin_pichia_strains_path, class: "dropdown-item" %></li>
+                  <li><%= link_to "Manage Custom Projects", admin_custom_projects_path, class: "dropdown-item" %></li>
                 </ul>
               </div>
             <% end %>

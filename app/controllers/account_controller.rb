@@ -6,6 +6,7 @@ class AccountController < ApplicationController
     @subscriptions = @user.subscriptions.includes(subscription_vectors: :vector).order(created_at: :desc)
     @current_subscription = @user.current_subscription
     @cart_items = @user.current_cart.cart_items.includes(:item)
+    @custom_projects = @user.custom_projects.order(created_at: :desc)
   end
 
   private

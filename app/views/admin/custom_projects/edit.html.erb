@@ -1,0 +1,138 @@
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Edit Project: <%= @custom_project.project_name %></h1>
+        <div>
+          <%= link_to "← Back", admin_custom_project_path(@custom_project), class: "btn btn-outline-secondary" %>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Project Details & Admin Settings</h5>
+        </div>
+        <div class="card-body">
+          <%= form_with model: [:admin, @custom_project] do |form| %>
+            <% if @custom_project.errors.any? %>
+              <div class="alert alert-danger">
+                <h4><%= pluralize(@custom_project.errors.count, "error") %> prohibited this project from being saved:</h4>
+                <ul>
+                  <% @custom_project.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <%= form.label :project_name, class: "form-label" %>
+                  <%= form.text_field :project_name, class: "form-control" %>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <%= form.label :status, "Project Status", class: "form-label" %>
+                  <%= form.select :status, 
+                      options_for_select(CustomProject::STATUSES.map { |status| [status.humanize, status] }, @custom_project.status),
+                      {}, 
+                      class: "form-select" %>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <%= form.label :project_type, "Project Type", class: "form-label" %>
+                  <%= form.select :project_type, 
+                      options_for_select([
+                        ["Strain Generation Only", "strain_only"],
+                        ["Strain Generation + Expression Testing", "strain_and_testing"],
+                        ["Full Service (Design to Delivery)", "full_service"],
+                        ["Consultation", "consultation"]
+                      ], @custom_project.project_type), 
+                      { prompt: "Select project type" }, 
+                      class: "form-select" %>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <%= form.label :estimated_cost, "Estimated Cost ($)", class: "form-label" %>
+                  <%= form.number_field :estimated_cost, step: 0.01, min: 0, class: "form-control", placeholder: "0.00" %>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <%= form.label :description, "Project Description", class: "form-label" %>
+              <%= form.text_area :description, rows: 4, class: "form-control" %>
+            </div>
+
+            <div class="card mb-3">
+              <div class="card-header">
+                <h6 class="mb-0">Services Required</h6>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-check">
+                      <%= form.check_box :strain_generation, class: "form-check-input", id: "admin_strain_generation" %>
+                      <%= form.label :strain_generation, class: "form-check-label" do %>
+                        <strong>Custom Strain Generation</strong>
+                        <br>
+                        <small class="text-muted">Create optimized Pichia strains for the protein</small>
+                      <% end %>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-check">
+                      <%= form.check_box :expression_testing, class: "form-check-input", id: "admin_expression_testing" %>
+                      <%= form.label :expression_testing, class: "form-check-label" do %>
+                        <strong>Expression Testing & Optimization</strong>
+                        <br>
+                        <small class="text-muted">Test protein expression and optimize conditions</small>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <%= form.label :estimated_completion_date, "Estimated Completion Date", class: "form-label" %>
+              <%= form.date_field :estimated_completion_date, class: "form-control" %>
+              <small class="form-text text-muted">When do you expect this project to be completed?</small>
+            </div>
+
+            <div class="mb-3">
+              <%= form.label :notes, "Admin Notes", class: "form-label" %>
+              <%= form.text_area :notes, rows: 3, class: "form-control", placeholder: "Internal notes, customer communication, progress updates..." %>
+              <small class="form-text text-muted">These notes are visible to the customer</small>
+            </div>
+
+            <hr>
+
+            <div class="d-flex justify-content-between">
+              <div>
+                <p class="text-muted mb-0">
+                  <small>
+                    <strong>Customer:</strong> <%= @custom_project.user.full_name.presence || @custom_project.user.email_address %><br>
+                    <strong>Email:</strong> <%= @custom_project.user.email_address %><br>
+                    <strong>Submitted:</strong> <%= @custom_project.created_at.strftime("%B %d, %Y") %>
+                  </small>
+                </p>
+              </div>
+              <div>
+                <%= form.submit "Save Changes", class: "btn btn-primary btn-lg me-2" %>
+                <%= link_to "Cancel", admin_custom_project_path(@custom_project), class: "btn btn-outline-secondary btn-lg" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

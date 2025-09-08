@@ -1,12 +1,16 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Twist Vector Subscriptions</h1>
-    <% unless @current_subscription %>
-      <%= link_to "Start Subscription", new_subscription_path, class: "btn btn-primary" %>
+    <% if authenticated? %>
+      <% unless @current_subscription %>
+        <%= link_to "Start Subscription", new_subscription_path, class: "btn btn-primary" %>
+      <% end %>
+    <% else %>
+      <%= link_to "Sign In to Subscribe", new_session_path, class: "btn btn-primary" %>
     <% end %>
   </div>
   
-  <% if @current_subscription %>
+  <% if authenticated? && @current_subscription %>
     <div class="alert alert-success" role="alert">
       <h5 class="alert-heading">Active Subscription</h5>
       <p>Your Twist subscription is active with <strong><%= @current_subscription.vectors.count %></strong> vectors.</p>
@@ -27,6 +31,10 @@
         <li>Minimum $50 fee for vectors added within 30 days of renewal</li>
         <li>Direct integration with your Twist account</li>
       </ul>
+      <% unless authenticated? %>
+        <hr>
+        <p class="mb-0"><strong>Account required:</strong> <%= link_to "Sign in", new_session_path, class: "alert-link" %> or <%= link_to "create an account", new_session_path, class: "alert-link" %> to start your subscription.</p>
+      <% end %>
     </div>
   <% end %>
 

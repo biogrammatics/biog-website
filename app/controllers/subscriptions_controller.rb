@@ -1,10 +1,11 @@
 class SubscriptionsController < ApplicationController
-  before_action :authenticate_user!
+  allow_unauthenticated_access only: [:index]
+  before_action :authenticate_user!, except: [:index]
   before_action :set_subscription, only: [ :show, :add_vector ]
 
   def index
     @vectors = Vector.available_for_subscription.active.includes(:promoter, :selection_marker, :vector_type)
-    @current_subscription = Current.user.current_subscription
+    @current_subscription = authenticated? ? Current.user.current_subscription : nil
   end
 
   def show

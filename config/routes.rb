@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   # Main application routes
   resources :vectors, only: [ :index, :show ]
   resources :pichia_strains, only: [ :index, :show ]
-  
+
   # Custom Projects routes
   resources :custom_projects
 

@@ -14,7 +14,7 @@ class CreateCustomProjects < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
-    
+
     add_index :custom_projects, :status
     add_index :custom_projects, :project_type
   end

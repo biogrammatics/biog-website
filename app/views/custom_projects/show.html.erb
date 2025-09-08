@@ -147,7 +147,7 @@
               <div class="card bg-light">
                 <div class="card-body">
                   <code class="d-block" style="font-size: 0.85rem; line-height: 1.4; word-break: break-all;">
-                    <%= @custom_project.dna_sequence.scan(/.{1,60}/).join("<br>").html_safe %>
+                    <%= simple_format(@custom_project.dna_sequence.scan(/.{1,60}/).join("\n"), {}, wrapper_tag: 'span') %>
                   </code>
                 </div>
               </div>

@@ -15,7 +15,7 @@ class CreateExpressionVectors < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
-    
+
     add_index :expression_vectors, :available
     add_index :expression_vectors, :vector_type
   end

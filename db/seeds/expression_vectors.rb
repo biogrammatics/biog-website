@@ -16,7 +16,7 @@ ExpressionVector.create!([
   {
     name: "pPIC3.5K",
     description: "Single-copy integration vector with AOX1 promoter, easier screening",
-    promoter: "AOX1", 
+    promoter: "AOX1",
     drug_selection: "Kanamycin",
     features: "Single copy, Methanol inducible, Easy screening",
     price: 750.00,
@@ -40,14 +40,14 @@ ExpressionVector.create!([
     additional_notes: "Constitutive expression eliminates need for methanol induction. Good for secreted proteins."
   },
   {
-    name: "pGAP-HisA", 
+    name: "pGAP-HisA",
     description: "Constitutive expression with GAP promoter and His6 tag for easy purification",
     promoter: "GAP",
-    drug_selection: "Zeocin", 
+    drug_selection: "Zeocin",
     features: "Constitutive, His6 tag, Easy purification",
     price: 925.00,
     available: true,
-    vector_type: "protein_expression", 
+    vector_type: "protein_expression",
     backbone: "pGAP",
     cloning_sites: "EcoRI, BstXI, NotI, XbaI",
     additional_notes: "Built-in His6 tag simplifies protein purification. Ideal for proteins requiring purification."
@@ -57,12 +57,12 @@ ExpressionVector.create!([
     description: "AOX1 promoter with α-factor signal for secreted protein expression",
     promoter: "AOX1",
     drug_selection: "Zeocin",
-    features: "Methanol inducible, Secretion signal, Extracellular expression", 
+    features: "Methanol inducible, Secretion signal, Extracellular expression",
     price: 875.00,
     available: true,
     vector_type: "protein_expression",
     backbone: "pPICZ",
-    cloning_sites: "EcoRI, BstXI, NotI, XbaI", 
+    cloning_sites: "EcoRI, BstXI, NotI, XbaI",
     additional_notes: "α-factor signal sequence directs proteins to culture medium. Best for secreted proteins."
   },
   {

@@ -17,7 +17,7 @@ class Address < ApplicationRecord
   end
 
   def full_address
-    lines = [address_line_1]
+    lines = [ address_line_1 ]
     lines << address_line_2 if address_line_2.present?
     lines << "#{city}, #{state} #{postal_code}"
     lines << country if country != "United States"

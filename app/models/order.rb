@@ -34,7 +34,7 @@ class Order < ApplicationRecord
 
   def generate_order_number
     return if order_number.present?
-    
+
     loop do
       self.order_number = "BO#{Date.current.strftime('%Y%m%d')}#{SecureRandom.hex(4).upcase}"
       break unless Order.exists?(order_number: order_number)

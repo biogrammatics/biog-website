@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   end
 
   # Checkout routes
-  resources :checkout, only: [:new, :create] do
+  resources :checkout, only: [ :new, :create ] do
     collection do
       get :address_step
       post :address_step

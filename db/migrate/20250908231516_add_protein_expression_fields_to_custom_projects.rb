@@ -8,7 +8,7 @@ class AddProteinExpressionFieldsToCustomProjects < ActiveRecord::Migration[8.0]
     add_column :custom_projects, :protein_name, :string
     add_column :custom_projects, :protein_molecular_weight, :decimal
     add_column :custom_projects, :protein_description, :text
-    
+
     add_index :custom_projects, :selected_vector_id
   end
 end

@@ -20,7 +20,7 @@ class CheckoutController < ApplicationController
   def payment_step
     @billing_address = get_session_address(:billing) || Current.user.default_billing_address
     @shipping_address = get_session_address(:shipping) || Current.user.default_shipping_address
-    
+
     unless @billing_address && @shipping_address
       redirect_to address_step_checkout_index_path, alert: "Please complete address information first."
       return
@@ -87,7 +87,7 @@ class CheckoutController < ApplicationController
     else
       shipping_address = Address.new(shipping_params.merge(user: Current.user, address_type: "shipping"))
     end
-    
+
     unless shipping_address.valid?
       errors << "Shipping address: #{shipping_address.errors.full_messages.join(', ')}"
     end
@@ -107,7 +107,7 @@ class CheckoutController < ApplicationController
 
   def get_session_address(type)
     return nil unless session["checkout_#{type}_address".to_sym]
-    
+
     Address.new(session["checkout_#{type}_address".to_sym].merge(
       user: Current.user,
       address_type: type.to_s
@@ -116,14 +116,14 @@ class CheckoutController < ApplicationController
 
   def calculate_order_totals(billing_address, shipping_address)
     subtotal = @cart.total_price
-    
+
     # Calculate tax based on shipping address
     tax_rate = calculate_tax_rate(shipping_address.state)
     tax_amount = subtotal * tax_rate
-    
+
     # Calculate shipping
     shipping_cost = calculate_shipping_cost(shipping_address, @cart)
-    
+
     total = subtotal + tax_amount + shipping_cost
 
     {
@@ -139,7 +139,7 @@ class CheckoutController < ApplicationController
     # Simple tax calculation - in reality you'd use a tax service like Avalara or TaxJar
     state_tax_rates = {
       "CA" => 0.0725,   # California
-      "NY" => 0.08,     # New York  
+      "NY" => 0.08,     # New York
       "TX" => 0.0625,   # Texas
       "FL" => 0.06,     # Florida
       "WA" => 0.065,    # Washington
@@ -149,28 +149,28 @@ class CheckoutController < ApplicationController
       "MT" => 0.0,      # Montana (no sales tax)
       "AK" => 0.0       # Alaska (no state sales tax)
     }
-    
+
     state_tax_rates[state] || 0.065  # Default 6.5% for other states
   end
 
   def calculate_shipping_cost(shipping_address, cart)
     # Simple shipping calculation - in reality you'd integrate with shipping carriers
     base_shipping = 15.00
-    
+
     # Free shipping for orders over $150
     return 0 if cart.total_price >= 150
-    
+
     # Add extra for Alaska and Hawaii
     if %w[AK HI].include?(shipping_address.state)
       base_shipping += 10.00
     end
-    
+
     # Add $5 for each additional item over 3
     item_count = cart.total_items
     if item_count > 3
       base_shipping += (item_count - 3) * 5.00
     end
-    
+
     base_shipping
   end
 
@@ -180,16 +180,16 @@ class CheckoutController < ApplicationController
     order_summary = calculate_order_totals(billing_address, shipping_address)
 
     order = nil
-    
+
     Order.transaction do
       # Save addresses to user account
       saved_billing = Current.user.addresses.create!(billing_address.attributes.except("id", "created_at", "updated_at"))
       saved_shipping = Current.user.addresses.create!(shipping_address.attributes.except("id", "created_at", "updated_at"))
-      
+
       # Set as default if user doesn't have defaults
       saved_billing.set_as_default! unless Current.user.default_billing_address
       saved_shipping.set_as_default! unless Current.user.default_shipping_address
-      
+
       # Create order
       order = Current.user.orders.create!(
         status: "pending",
@@ -200,7 +200,7 @@ class CheckoutController < ApplicationController
         billing_address: saved_billing.full_address,
         shipping_address: saved_shipping.full_address
       )
-      
+
       # Create order items from cart
       @cart.cart_items.each do |cart_item|
         order.order_items.create!(
@@ -209,7 +209,7 @@ class CheckoutController < ApplicationController
           price: cart_item.price
         )
       end
-      
+
       # Clear the cart
       @cart.cart_items.destroy_all
     end

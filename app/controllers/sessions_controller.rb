@@ -54,12 +54,12 @@ class SessionsController < ApplicationController
     session_cart.each do |key, item_data|
       # Ensure key is in the expected format (e.g., "Vector_1")
       next unless key.is_a?(String) && key.include?("_")
-      
+
       parts = key.split("_", 2)
       next if parts.length != 2
-      
+
       item_type, item_id = parts
-      
+
       # Validate item_data structure
       next unless item_data.is_a?(Hash) && item_data["quantity"].present?
 

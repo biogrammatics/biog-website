@@ -88,5 +88,20 @@
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Rails UJS for form handling with method: :patch, :delete, etc. -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Handle forms with data-turbo-confirm attribute
+        document.addEventListener('submit', function(e) {
+          const form = e.target;
+          const confirmMessage = form.dataset.turboConfirm;
+          if (confirmMessage && !confirm(confirmMessage)) {
+            e.preventDefault();
+            return false;
+          }
+        });
+      });
+    </script>
   </body>
 </html>

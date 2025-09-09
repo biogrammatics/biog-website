@@ -165,12 +165,14 @@
                     <h6 class="alert-heading">Sequence Approval Required</h6>
                     <p class="mb-3">Please review the generated DNA sequence above. Do you approve this sequence for synthesis and cloning?</p>
                     <div class="d-flex gap-2">
-                      <%= button_to "✓ Approve Sequence", approve_dna_sequence_custom_project_path(@custom_project), 
-                          method: :patch, class: "btn btn-success",
-                          data: { turbo_confirm: "Are you sure you want to approve this DNA sequence? Once approved, we'll begin synthesis and cloning." } %>
-                      <%= button_to "✗ Request New Sequence", reject_dna_sequence_custom_project_path(@custom_project), 
-                          method: :patch, class: "btn btn-outline-danger",
-                          data: { turbo_confirm: "This will reject the current sequence and request a new one to be generated." } %>
+                      <%= form_with url: approve_dna_sequence_custom_project_path(@custom_project), method: :patch, local: true, 
+                          class: "d-inline", data: { turbo_confirm: "Are you sure you want to approve this DNA sequence? Once approved, we'll begin synthesis and cloning." } do |form| %>
+                        <%= form.submit "✓ Approve Sequence", class: "btn btn-success" %>
+                      <% end %>
+                      <%= form_with url: reject_dna_sequence_custom_project_path(@custom_project), method: :patch, local: true, 
+                          class: "d-inline", data: { turbo_confirm: "This will reject the current sequence and request a new one to be generated." } do |form| %>
+                        <%= form.submit "✗ Request New Sequence", class: "btn btn-outline-danger" %>
+                      <% end %>
                     </div>
                   </div>
                 </div>

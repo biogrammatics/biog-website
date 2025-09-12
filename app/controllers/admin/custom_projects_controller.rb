@@ -1,6 +1,6 @@
 class Admin::CustomProjectsController < ApplicationController
   before_action :require_admin!
-  before_action :set_custom_project, only: [ :show, :edit, :update, :update_status ]
+  before_action :set_custom_project, only: [ :show, :edit, :update, :update_status, :destroy ]
 
   def index
     @custom_projects = CustomProject.includes(:user).order(created_at: :desc)
@@ -29,6 +29,11 @@ class Admin::CustomProjectsController < ApplicationController
     else
       redirect_to admin_custom_projects_path, alert: "Failed to update project status."
     end
+  end
+
+  def destroy
+    @custom_project.destroy
+    redirect_to admin_custom_projects_url, notice: "Custom project was successfully deleted."
   end
 
   private

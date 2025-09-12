@@ -40,11 +40,17 @@
                 
                 <div class="mb-3">
                   <%= form.label :password, class: "form-label" %>
-                  <%= form.password_field :password, 
-                      required: true, 
-                      autocomplete: "current-password", 
-                      class: "form-control",
-                      maxlength: 72 %>
+                  <div class="input-group">
+                    <%= form.password_field :password, 
+                        required: true, 
+                        autocomplete: "current-password", 
+                        class: "form-control",
+                        maxlength: 72,
+                        id: "signin-password" %>
+                    <button class="btn btn-outline-secondary" type="button" id="toggle-signin-password">
+                      <i class="bi bi-eye" id="signin-password-icon"></i>
+                    </button>
+                  </div>
                 </div>
                 
                 <div class="d-grid">
@@ -96,23 +102,35 @@
                 
                 <div class="mb-3">
                   <%= form.label :password, class: "form-label" %>
-                  <%= form.password_field :password, 
-                      required: true,
-                      class: "form-control #{'is-invalid' if @user.errors[:password].any?}",
-                      autocomplete: "new-password" %>
-                  <% if @user.errors[:password].any? %>
-                    <div class="invalid-feedback">
-                      <%= @user.errors[:password].first %>
-                    </div>
-                  <% end %>
+                  <div class="input-group">
+                    <%= form.password_field :password, 
+                        required: true,
+                        class: "form-control #{'is-invalid' if @user.errors[:password].any?}",
+                        autocomplete: "new-password",
+                        id: "signup-password" %>
+                    <button class="btn btn-outline-secondary" type="button" id="toggle-signup-password">
+                      <i class="bi bi-eye" id="signup-password-icon"></i>
+                    </button>
+                    <% if @user.errors[:password].any? %>
+                      <div class="invalid-feedback">
+                        <%= @user.errors[:password].first %>
+                      </div>
+                    <% end %>
+                  </div>
                 </div>
                 
                 <div class="mb-3">
                   <%= form.label :password_confirmation, "Confirm Password", class: "form-label" %>
-                  <%= form.password_field :password_confirmation, 
-                      required: true,
-                      class: "form-control",
-                      autocomplete: "new-password" %>
+                  <div class="input-group">
+                    <%= form.password_field :password_confirmation, 
+                        required: true,
+                        class: "form-control",
+                        autocomplete: "new-password",
+                        id: "signup-password-confirm" %>
+                    <button class="btn btn-outline-secondary" type="button" id="toggle-signup-password-confirm">
+                      <i class="bi bi-eye" id="signup-password-confirm-icon"></i>
+                    </button>
+                  </div>
                 </div>
                 
                 <div class="d-grid">
@@ -132,3 +150,64 @@
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Toggle sign-in password visibility
+  const toggleSigninPassword = document.getElementById('toggle-signin-password');
+  if (toggleSigninPassword) {
+    toggleSigninPassword.addEventListener('click', function() {
+      const passwordField = document.getElementById('signin-password');
+      const icon = document.getElementById('signin-password-icon');
+      
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+      } else {
+        passwordField.type = 'password';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+      }
+    });
+  }
+  
+  // Toggle sign-up password visibility
+  const toggleSignupPassword = document.getElementById('toggle-signup-password');
+  if (toggleSignupPassword) {
+    toggleSignupPassword.addEventListener('click', function() {
+      const passwordField = document.getElementById('signup-password');
+      const icon = document.getElementById('signup-password-icon');
+      
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+      } else {
+        passwordField.type = 'password';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+      }
+    });
+  }
+  
+  // Toggle sign-up password confirmation visibility
+  const toggleSignupPasswordConfirm = document.getElementById('toggle-signup-password-confirm');
+  if (toggleSignupPasswordConfirm) {
+    toggleSignupPasswordConfirm.addEventListener('click', function() {
+      const passwordField = document.getElementById('signup-password-confirm');
+      const icon = document.getElementById('signup-password-confirm-icon');
+      
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+      } else {
+        passwordField.type = 'password';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+      }
+    });
+  }
+});
+</script>

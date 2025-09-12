@@ -63,8 +63,15 @@ class CustomProjectsController < ApplicationController
   end
 
   def destroy
-    @custom_project.destroy
-    redirect_to custom_projects_url, notice: "Custom project was successfully deleted."
+    Rails.logger.info "Attempting to destroy custom project #{@custom_project.id}"
+
+    if @custom_project.destroy
+      Rails.logger.info "Successfully destroyed custom project #{@custom_project.id}"
+      redirect_to custom_projects_url, notice: "Custom project was successfully deleted."
+    else
+      Rails.logger.error "Failed to destroy custom project #{@custom_project.id}: #{@custom_project.errors.full_messages.join(', ')}"
+      redirect_to @custom_project, alert: "Could not delete project: #{@custom_project.errors.full_messages.join(', ')}"
+    end
   end
 
   def approve_dna_sequence

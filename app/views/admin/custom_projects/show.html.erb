@@ -140,6 +140,11 @@
               <div class="d-grid gap-2">
                 <%= link_to "Edit Project Details", edit_admin_custom_project_path(@custom_project), class: "btn btn-outline-primary" %>
                 <a href="mailto:<%= @custom_project.user.email_address %>?subject=RE: <%= @custom_project.project_name %>" class="btn btn-outline-secondary">Email Customer</a>
+                <% if @custom_project.status == 'pending' || @custom_project.status == 'cancelled' %>
+                  <%= link_to "Delete Project", admin_custom_project_path(@custom_project), 
+                      data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this project?" },
+                      class: "btn btn-danger" %>
+                <% end %>
               </div>
             </div>
           </div>

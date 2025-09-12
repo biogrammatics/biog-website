@@ -82,29 +82,33 @@
                     <div class="invalid-feedback"><%= @billing_address.errors[:city].first %></div>
                   <% end %>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <%= form.label "billing_address[state]", "State", class: "form-label" %>
-                  <%= form.select "billing_address[state]", 
-                      options_for_select([
-                        ["Alabama", "AL"], ["Alaska", "AK"], ["Arizona", "AZ"], ["Arkansas", "AR"], ["California", "CA"],
-                        ["Colorado", "CO"], ["Connecticut", "CT"], ["Delaware", "DE"], ["Florida", "FL"], ["Georgia", "GA"],
-                        ["Hawaii", "HI"], ["Idaho", "ID"], ["Illinois", "IL"], ["Indiana", "IN"], ["Iowa", "IA"],
-                        ["Kansas", "KS"], ["Kentucky", "KY"], ["Louisiana", "LA"], ["Maine", "ME"], ["Maryland", "MD"],
-                        ["Massachusetts", "MA"], ["Michigan", "MI"], ["Minnesota", "MN"], ["Mississippi", "MS"], ["Missouri", "MO"],
-                        ["Montana", "MT"], ["Nebraska", "NE"], ["Nevada", "NV"], ["New Hampshire", "NH"], ["New Jersey", "NJ"],
-                        ["New Mexico", "NM"], ["New York", "NY"], ["North Carolina", "NC"], ["North Dakota", "ND"], ["Ohio", "OH"],
-                        ["Oklahoma", "OK"], ["Oregon", "OR"], ["Pennsylvania", "PA"], ["Rhode Island", "RI"], ["South Carolina", "SC"],
-                        ["South Dakota", "SD"], ["Tennessee", "TN"], ["Texas", "TX"], ["Utah", "UT"], ["Vermont", "VT"],
-                        ["Virginia", "VA"], ["Washington", "WA"], ["West Virginia", "WV"], ["Wisconsin", "WI"], ["Wyoming", "WY"]
-                      ], @billing_address.state), 
-                      { prompt: "Select State" }, 
-                      { class: "form-control #{'is-invalid' if @billing_address.errors[:state].any?}", required: true } %>
+                <div class="col-md-4 mb-3" id="billing-state-container">
+                  <%= form.label "billing_address[state]", "State/Province/Region", class: "form-label", id: "billing-state-label" %>
+                  <div id="billing-state-select-container">
+                    <% if @billing_address.country == "Canada" %>
+                      <%= form.select "billing_address[state]", 
+                          options_for_select(canadian_provinces_for_select, @billing_address.state),
+                          { prompt: "Select Province" }, 
+                          { class: "form-control #{'is-invalid' if @billing_address.errors[:state].any?}", id: "billing_state" } %>
+                    <% elsif @billing_address.country == "United States" || @billing_address.country.blank? %>
+                      <%= form.select "billing_address[state]", 
+                          options_for_select(us_states_for_select, @billing_address.state),
+                          { prompt: "Select State" }, 
+                          { class: "form-control #{'is-invalid' if @billing_address.errors[:state].any?}", id: "billing_state" } %>
+                    <% else %>
+                      <%= form.text_field "billing_address[state]", 
+                          value: @billing_address.state,
+                          placeholder: "State/Province/Region",
+                          class: "form-control #{'is-invalid' if @billing_address.errors[:state].any?}",
+                          id: "billing_state" %>
+                    <% end %>
+                  </div>
                   <% if @billing_address.errors[:state].any? %>
-                    <div class="invalid-feedback"><%= @billing_address.errors[:state].first %></div>
+                    <div class="invalid-feedback d-block"><%= @billing_address.errors[:state].first %></div>
                   <% end %>
                 </div>
                 <div class="col-md-4 mb-3">
-                  <%= form.label "billing_address[postal_code]", "ZIP Code", class: "form-label" %>
+                  <%= form.label "billing_address[postal_code]", "ZIP/Postal Code", class: "form-label", id: "billing-postal-label" %>
                   <%= form.text_field "billing_address[postal_code]", 
                       value: @billing_address.postal_code, 
                       class: "form-control #{'is-invalid' if @billing_address.errors[:postal_code].any?}",
@@ -119,19 +123,21 @@
                 <div class="col-md-6 mb-3">
                   <%= form.label "billing_address[country]", "Country", class: "form-label" %>
                   <%= form.select "billing_address[country]", 
-                      options_for_select([["United States", "United States"]], @billing_address.country || "United States"), 
+                      grouped_options_for_select(countries_for_select, @billing_address.country || "United States"), 
                       {}, 
-                      { class: "form-control", required: true } %>
+                      { class: "form-control", required: true, id: "billing_country" } %>
                 </div>
                 <div class="col-md-6 mb-3">
                   <%= form.label "billing_address[phone]", "Phone Number", class: "form-label" %>
                   <%= form.telephone_field "billing_address[phone]", 
                       value: @billing_address.phone, 
                       class: "form-control #{'is-invalid' if @billing_address.errors[:phone].any?}",
+                      placeholder: "+1 (555) 123-4567",
                       required: true %>
                   <% if @billing_address.errors[:phone].any? %>
                     <div class="invalid-feedback"><%= @billing_address.errors[:phone].first %></div>
                   <% end %>
+                  <small class="form-text text-muted">Include country code for international numbers</small>
                 </div>
               </div>
             </div>
@@ -205,29 +211,33 @@
                     <div class="invalid-feedback"><%= @shipping_address.errors[:city].first %></div>
                   <% end %>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <%= form.label "shipping_address[state]", "State", class: "form-label" %>
-                  <%= form.select "shipping_address[state]", 
-                      options_for_select([
-                        ["Alabama", "AL"], ["Alaska", "AK"], ["Arizona", "AZ"], ["Arkansas", "AR"], ["California", "CA"],
-                        ["Colorado", "CO"], ["Connecticut", "CT"], ["Delaware", "DE"], ["Florida", "FL"], ["Georgia", "GA"],
-                        ["Hawaii", "HI"], ["Idaho", "ID"], ["Illinois", "IL"], ["Indiana", "IN"], ["Iowa", "IA"],
-                        ["Kansas", "KS"], ["Kentucky", "KY"], ["Louisiana", "LA"], ["Maine", "ME"], ["Maryland", "MD"],
-                        ["Massachusetts", "MA"], ["Michigan", "MI"], ["Minnesota", "MN"], ["Mississippi", "MS"], ["Missouri", "MO"],
-                        ["Montana", "MT"], ["Nebraska", "NE"], ["Nevada", "NV"], ["New Hampshire", "NH"], ["New Jersey", "NJ"],
-                        ["New Mexico", "NM"], ["New York", "NY"], ["North Carolina", "NC"], ["North Dakota", "ND"], ["Ohio", "OH"],
-                        ["Oklahoma", "OK"], ["Oregon", "OR"], ["Pennsylvania", "PA"], ["Rhode Island", "RI"], ["South Carolina", "SC"],
-                        ["South Dakota", "SD"], ["Tennessee", "TN"], ["Texas", "TX"], ["Utah", "UT"], ["Vermont", "VT"],
-                        ["Virginia", "VA"], ["Washington", "WA"], ["West Virginia", "WV"], ["Wisconsin", "WI"], ["Wyoming", "WY"]
-                      ], @shipping_address.state), 
-                      { prompt: "Select State" }, 
-                      { class: "form-control #{'is-invalid' if @shipping_address.errors[:state].any?}" } %>
+                <div class="col-md-4 mb-3" id="shipping-state-container">
+                  <%= form.label "shipping_address[state]", "State/Province/Region", class: "form-label", id: "shipping-state-label" %>
+                  <div id="shipping-state-select-container">
+                    <% if @shipping_address.country == "Canada" %>
+                      <%= form.select "shipping_address[state]", 
+                          options_for_select(canadian_provinces_for_select, @shipping_address.state),
+                          { prompt: "Select Province" }, 
+                          { class: "form-control #{'is-invalid' if @shipping_address.errors[:state].any?}", id: "shipping_state" } %>
+                    <% elsif @shipping_address.country == "United States" || @shipping_address.country.blank? %>
+                      <%= form.select "shipping_address[state]", 
+                          options_for_select(us_states_for_select, @shipping_address.state),
+                          { prompt: "Select State" }, 
+                          { class: "form-control #{'is-invalid' if @shipping_address.errors[:state].any?}", id: "shipping_state" } %>
+                    <% else %>
+                      <%= form.text_field "shipping_address[state]", 
+                          value: @shipping_address.state,
+                          placeholder: "State/Province/Region",
+                          class: "form-control #{'is-invalid' if @shipping_address.errors[:state].any?}",
+                          id: "shipping_state" %>
+                    <% end %>
+                  </div>
                   <% if @shipping_address.errors[:state].any? %>
-                    <div class="invalid-feedback"><%= @shipping_address.errors[:state].first %></div>
+                    <div class="invalid-feedback d-block"><%= @shipping_address.errors[:state].first %></div>
                   <% end %>
                 </div>
                 <div class="col-md-4 mb-3">
-                  <%= form.label "shipping_address[postal_code]", "ZIP Code", class: "form-label" %>
+                  <%= form.label "shipping_address[postal_code]", "ZIP/Postal Code", class: "form-label", id: "shipping-postal-label" %>
                   <%= form.text_field "shipping_address[postal_code]", 
                       value: @shipping_address.postal_code, 
                       class: "form-control #{'is-invalid' if @shipping_address.errors[:postal_code].any?}" %>
@@ -241,18 +251,20 @@
                 <div class="col-md-6 mb-3">
                   <%= form.label "shipping_address[country]", "Country", class: "form-label" %>
                   <%= form.select "shipping_address[country]", 
-                      options_for_select([["United States", "United States"]], @shipping_address.country || "United States"), 
+                      grouped_options_for_select(countries_for_select, @shipping_address.country || "United States"), 
                       {}, 
-                      { class: "form-control" } %>
+                      { class: "form-control", id: "shipping_country" } %>
                 </div>
                 <div class="col-md-6 mb-3">
                   <%= form.label "shipping_address[phone]", "Phone Number", class: "form-label" %>
                   <%= form.telephone_field "shipping_address[phone]", 
                       value: @shipping_address.phone, 
-                      class: "form-control #{'is-invalid' if @shipping_address.errors[:phone].any?}" %>
+                      class: "form-control #{'is-invalid' if @shipping_address.errors[:phone].any?}",
+                      placeholder: "+1 (555) 123-4567" %>
                   <% if @shipping_address.errors[:phone].any? %>
                     <div class="invalid-feedback"><%= @shipping_address.errors[:phone].first %></div>
                   <% end %>
+                  <small class="form-text text-muted">Include country code for international numbers</small>
                 </div>
               </div>
             </div>
@@ -301,6 +313,66 @@
 document.addEventListener('DOMContentLoaded', function() {
   const checkbox = document.getElementById('use_billing_for_shipping');
   const shippingSection = document.getElementById('shipping-address-section');
+  
+  // State/Province data
+  const usStates = <%= us_states_for_select.to_json.html_safe %>;
+  const canadianProvinces = <%= canadian_provinces_for_select.to_json.html_safe %>;
+  
+  // Function to update state/province field based on country
+  function updateStateField(countrySelectId, stateContainerId, stateLabelId, stateSelectContainerId, addressPrefix) {
+    const countrySelect = document.getElementById(countrySelectId);
+    const stateContainer = document.getElementById(stateContainerId);
+    const stateLabel = document.getElementById(stateLabelId);
+    const stateSelectContainer = document.getElementById(stateSelectContainerId);
+    
+    if (!countrySelect || !stateContainer) return;
+    
+    countrySelect.addEventListener('change', function() {
+      const country = this.value;
+      let newField = '';
+      let labelText = 'State/Province/Region';
+      
+      if (country === 'United States') {
+        labelText = 'State';
+        newField = '<select name="' + addressPrefix + '[state]" id="' + addressPrefix.replace('_address', '_state') + '" class="form-control">';
+        newField += '<option value="">Select State</option>';
+        usStates.forEach(function(state) {
+          newField += '<option value="' + state[1] + '">' + state[0] + '</option>';
+        });
+        newField += '</select>';
+      } else if (country === 'Canada') {
+        labelText = 'Province';
+        newField = '<select name="' + addressPrefix + '[state]" id="' + addressPrefix.replace('_address', '_state') + '" class="form-control">';
+        newField += '<option value="">Select Province</option>';
+        canadianProvinces.forEach(function(province) {
+          newField += '<option value="' + province[1] + '">' + province[0] + '</option>';
+        });
+        newField += '</select>';
+      } else {
+        labelText = 'State/Province/Region';
+        newField = '<input type="text" name="' + addressPrefix + '[state]" id="' + addressPrefix.replace('_address', '_state') + '" class="form-control" placeholder="State/Province/Region">';
+      }
+      
+      stateLabel.textContent = labelText;
+      stateSelectContainer.innerHTML = newField;
+      
+      // Update postal code label
+      const postalLabel = document.getElementById(addressPrefix.replace('_address', '-postal-label'));
+      if (postalLabel) {
+        if (country === 'United States') {
+          postalLabel.textContent = 'ZIP Code';
+        } else if (country === 'Canada') {
+          postalLabel.textContent = 'Postal Code';
+        } else {
+          postalLabel.textContent = 'ZIP/Postal Code';
+        }
+      }
+    });
+  }
+  
+  // Initialize for billing and shipping addresses
+  updateStateField('billing_country', 'billing-state-container', 'billing-state-label', 'billing-state-select-container', 'billing_address');
+  updateStateField('shipping_country', 'shipping-state-container', 'shipping-state-label', 'shipping-state-select-container', 'shipping_address');
   
   checkbox.addEventListener('change', function() {
     if (this.checked) {

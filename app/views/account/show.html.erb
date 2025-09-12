@@ -391,6 +391,67 @@
           </div>
         </div>
       </div>
+      
+      <!-- Saved Addresses -->
+      <div class="card mt-4">
+        <div class="card-header">
+          <h3>Saved Addresses</h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <h5>Default Billing Address</h5>
+              <% if @billing_address %>
+                <div class="p-3 bg-light rounded mb-3">
+                  <strong><%= @billing_address.full_name %></strong><br>
+                  <% if @billing_address.company.present? %>
+                    <%= @billing_address.company %><br>
+                  <% end %>
+                  <%= @billing_address.address_line_1 %><br>
+                  <% if @billing_address.address_line_2.present? %>
+                    <%= @billing_address.address_line_2 %><br>
+                  <% end %>
+                  <%= @billing_address.city %>, <%= @billing_address.state %> <%= @billing_address.postal_code %><br>
+                  <%= @billing_address.country %><br>
+                  <small class="text-muted">Phone: <%= @billing_address.phone %></small>
+                </div>
+              <% else %>
+                <p class="text-muted">No default billing address saved. It will be added during your next checkout.</p>
+              <% end %>
+            </div>
+            
+            <div class="col-md-6">
+              <h5>Default Shipping Address</h5>
+              <% if @shipping_address %>
+                <div class="p-3 bg-light rounded mb-3">
+                  <strong><%= @shipping_address.full_name %></strong><br>
+                  <% if @shipping_address.company.present? %>
+                    <%= @shipping_address.company %><br>
+                  <% end %>
+                  <%= @shipping_address.address_line_1 %><br>
+                  <% if @shipping_address.address_line_2.present? %>
+                    <%= @shipping_address.address_line_2 %><br>
+                  <% end %>
+                  <%= @shipping_address.city %>, <%= @shipping_address.state %> <%= @shipping_address.postal_code %><br>
+                  <%= @shipping_address.country %><br>
+                  <small class="text-muted">Phone: <%= @shipping_address.phone %></small>
+                </div>
+              <% else %>
+                <p class="text-muted">No default shipping address saved. It will be added during your next checkout.</p>
+              <% end %>
+            </div>
+          </div>
+          
+          <% if @saved_addresses.any? %>
+            <hr>
+            <h5>All Saved Addresses (<%= @saved_addresses.count %>)</h5>
+            <div class="text-muted">
+              <small>Your addresses are automatically saved during checkout and used to prefill forms for faster ordering.</small>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <!-- End Saved Addresses -->
     </div>
   </div>
 </div>

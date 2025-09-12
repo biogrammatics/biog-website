@@ -1,4 +1,6 @@
 class CheckoutController < ApplicationController
+  include CountriesHelper
+
   before_action :require_authentication
   before_action :ensure_cart_has_items
   before_action :set_cart
@@ -8,8 +10,9 @@ class CheckoutController < ApplicationController
   end
 
   def address_step
-    @billing_address = Current.user.default_billing_address || Address.new(address_type: "billing")
-    @shipping_address = Current.user.default_shipping_address || Address.new(address_type: "shipping")
+    # Try to get saved addresses first, otherwise create new ones with prefilled data
+    @billing_address = Current.user.default_billing_address || build_prefilled_address("billing")
+    @shipping_address = Current.user.default_shipping_address || build_prefilled_address("shipping")
     @use_billing_for_shipping = @billing_address.persisted? && @shipping_address.blank?
 
     if request.post?
@@ -223,5 +226,25 @@ class CheckoutController < ApplicationController
   rescue => e
     Rails.logger.error "Order creation failed: #{e.message}"
     redirect_to review_step_checkout_index_path, alert: "There was an error processing your order. Please try again."
+  end
+
+  def build_prefilled_address(address_type)
+    # Get the most recent address of this type for the user
+    recent_address = Current.user.addresses.where(address_type: address_type).order(created_at: :desc).first
+
+    if recent_address
+      # Clone the recent address (without id) for editing
+      Address.new(recent_address.attributes.except("id", "created_at", "updated_at", "is_default"))
+    else
+      # Create new address with user's basic info prefilled
+      Address.new(
+        address_type: address_type,
+        first_name: Current.user.first_name,
+        last_name: Current.user.last_name,
+        country: "United States", # Default to US
+        # Try to get phone from any existing address
+        phone: Current.user.addresses.where.not(phone: nil).first&.phone
+      )
+    end
   end
 end

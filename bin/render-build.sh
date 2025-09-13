@@ -27,22 +27,23 @@ bundle exec rails assets:clean
 
 # Run database migrations
 echo "=== Running database migrations ==="
-bundle exec rails db:migrate
+bundle exec rails db:create RAILS_ENV=production || true
+bundle exec rails db:migrate RAILS_ENV=production
 
 # Seed the database with initial data (only run once on first deploy)
 # Comment this out after first deployment to avoid re-seeding
 if [[ "$RENDER_FIRST_DEPLOY" == "true" ]]; then
   echo "First deployment detected, seeding database..."
-  bundle exec rails db:seed
+  RAILS_ENV=production bundle exec rails db:seed || true
   
   # Create admin user
-  bundle exec rails runner create_admin_user.rb || true
+  RAILS_ENV=production bundle exec rails runner create_admin_user.rb || true
   
   # Create test data
-  bundle exec rails db:populate_test_data || true
+  RAILS_ENV=production bundle exec rails db:populate_test_data || true
   
   # Seed expression vectors
   if [ -f db/seeds/expression_vectors.rb ]; then
-    bundle exec rails runner db/seeds/expression_vectors.rb || true
+    RAILS_ENV=production bundle exec rails runner db/seeds/expression_vectors.rb || true
   fi
 fi

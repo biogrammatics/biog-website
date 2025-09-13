@@ -16,8 +16,10 @@ services:
         fromDatabase:
           name: biog-website-db
           property: connectionString
-      - key: RAILS_MASTER_KEY
+      - key: SECRET_KEY_BASE
         sync: false
+      - key: RAILS_ENV
+        value: production
       - key: WEB_CONCURRENCY
         value: 2
       - key: RAILS_MAX_THREADS

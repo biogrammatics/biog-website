@@ -40,18 +40,26 @@ class Vector < ApplicationRecord
 
   # Check if this vector has been purchased by any customer
   def has_been_purchased?
+    return false unless defined?(OrderItem) && OrderItem.table_exists?
+
     OrderItem.where(item_type: "Vector", item_id: id)
              .joins(:order)
              .where(orders: { status: "completed" })
              .exists?
+  rescue ActiveRecord::StatementInvalid
+    false
   end
 
   # Get count of customers who purchased this vector
   def purchase_count
+    return 0 unless defined?(OrderItem) && OrderItem.table_exists?
+
     OrderItem.where(item_type: "Vector", item_id: id)
              .joins(:order)
              .where(orders: { status: "completed" })
              .count
+  rescue ActiveRecord::StatementInvalid
+    0
   end
 
   # Check if vector is included in any subscriptions

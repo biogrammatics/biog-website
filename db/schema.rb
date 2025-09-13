@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_08_234603) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_13_223829) do
   create_table "addresses", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "address_type"
@@ -285,6 +285,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_08_234603) do
     t.integer "product_status_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "snapgene_file_name"
+    t.integer "snapgene_file_size"
+    t.datetime "snapgene_uploaded_at"
     t.index ["available_for_sale"], name: "index_vectors_on_available_for_sale"
     t.index ["available_for_subscription"], name: "index_vectors_on_available_for_subscription"
     t.index ["category", "product_status_id"], name: "index_vectors_on_category_and_product_status_id"

@@ -101,6 +101,33 @@
       </div>
     </div>
     
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>Attached Files</h4>
+      </div>
+      <div class="card-body">
+        <% if @vector.files.attached? %>
+          <ul class="list-group">
+            <% @vector.files.each do |file| %>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  <i class="bi bi-file-earmark-binary"></i>
+                  <%= file.filename %>
+                  <small class="text-muted">(<%= number_to_human_size(file.byte_size) %>)</small>
+                  <small class="text-muted ms-2">Uploaded <%= file.created_at.strftime("%B %d, %Y") %></small>
+                </div>
+                <%= link_to "Download", 
+                            rails_blob_path(file, disposition: "attachment"), 
+                            class: "btn btn-sm btn-primary" %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-muted">No files attached. <%= link_to "Edit vector", edit_admin_vector_path(@vector) %> to upload files.</p>
+        <% end %>
+      </div>
+    </div>
+    
     <div class="card">
       <div class="card-header">
         <h4>Admin Actions</h4>

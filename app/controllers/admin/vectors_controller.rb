@@ -1,6 +1,6 @@
 class Admin::VectorsController < ApplicationController
   before_action :require_admin!
-  before_action :set_vector, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_vector, only: [ :show, :edit, :update, :destroy, :remove_file ]
   before_action :load_form_data, only: [ :new, :edit, :create, :update ]
 
   def index
@@ -41,6 +41,12 @@ class Admin::VectorsController < ApplicationController
     redirect_to admin_vectors_path, notice: "Vector was successfully deleted."
   end
 
+  def remove_file
+    file = @vector.files.find(params[:file_id])
+    file.purge
+    redirect_to edit_admin_vector_path(@vector), notice: "File was successfully removed."
+  end
+
   private
 
   def set_vector
@@ -60,6 +66,7 @@ class Admin::VectorsController < ApplicationController
                                    :available_for_subscription, :sale_price, :subscription_price,
                                    :promoter_id, :selection_marker_id, :vector_type_id,
                                    :host_organism_id, :has_lox_sites, :vector_size,
-                                   :file_version, :features, :product_status_id, :has_files)
+                                   :file_version, :features, :product_status_id, :has_files,
+                                   files: [])
   end
 end

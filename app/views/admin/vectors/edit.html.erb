@@ -111,9 +111,9 @@
                 <%= file.filename %>
                 <small class="text-muted">(<%= number_to_human_size(file.byte_size) %>)</small>
               </div>
-              <%= link_to "Remove", admin_vector_remove_file_path(@vector, file), 
+              <%= link_to "Remove", remove_file_admin_vector_path(@vector, file_id: file.id), 
                           method: :delete, 
-                          data: { confirm: "Remove this file?" },
+                          data: { turbo_method: :delete, turbo_confirm: "Remove this file?" },
                           class: "btn btn-sm btn-outline-danger" %>
             </li>
           <% end %>

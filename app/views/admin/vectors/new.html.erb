@@ -67,6 +67,17 @@
     <%= form.text_area :features, rows: 3, class: "form-control" %>
   </div>
 
+  <div class="col-12">
+    <hr>
+    <h5>File Attachments</h5>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :files, "Upload SnapGene/GenBank Files", class: "form-label" %>
+    <%= form.file_field :files, multiple: true, class: "form-control", accept: ".dna,.gb,.gbk" %>
+    <div class="form-text">Accepted formats: .dna (SnapGene), .gb, .gbk (GenBank)</div>
+  </div>
+
   <div class="col-md-6">
     <%= form.label :product_status_id, "Product Status", class: "form-label" %>
     <%= form.collection_select :product_status_id, @product_statuses, :id, :name, { prompt: "Select status..." }, { class: "form-select" } %>

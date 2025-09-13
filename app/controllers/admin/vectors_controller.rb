@@ -37,8 +37,12 @@ class Admin::VectorsController < ApplicationController
   end
 
   def destroy
-    @vector.destroy
-    redirect_to admin_vectors_path, notice: "Vector was successfully deleted."
+    if @vector.can_be_deleted?
+      @vector.destroy
+      redirect_to admin_vectors_path, notice: "Vector was successfully deleted."
+    else
+      redirect_to admin_vector_path(@vector), alert: "Cannot delete this vector: #{@vector.errors.full_messages.join(', ')}"
+    end
   end
 
   def remove_file

@@ -13,6 +13,8 @@ class Vector < ApplicationRecord
   validates :sale_price, presence: true, if: :available_for_sale?
   validates :subscription_price, presence: true, if: :available_for_subscription?
 
+  before_destroy :check_if_can_be_deleted
+
   scope :available_for_sale, -> { where(available_for_sale: true) }
   scope :available_for_subscription, -> { where(available_for_subscription: true) }
   scope :active, -> { joins(:product_status).where(product_statuses: { is_available: true }) }
@@ -34,5 +36,44 @@ class Vector < ApplicationRecord
 
   def genbank_file
     files.find { |file| file.filename.to_s.include?(".gb") }
+  end
+
+  # Check if this vector has been purchased by any customer
+  def has_been_purchased?
+    OrderItem.where(item_type: "Vector", item_id: id)
+             .joins(:order)
+             .where(orders: { status: "completed" })
+             .exists?
+  end
+
+  # Get count of customers who purchased this vector
+  def purchase_count
+    OrderItem.where(item_type: "Vector", item_id: id)
+             .joins(:order)
+             .where(orders: { status: "completed" })
+             .count
+  end
+
+  # Check if vector is included in any subscriptions
+  def in_subscriptions?
+    subscription_vectors.exists?
+  end
+
+  # Prevent deletion if purchased
+  def can_be_deleted?
+    !has_been_purchased? && !in_subscriptions?
+  end
+
+  private
+
+  def check_if_can_be_deleted
+    if has_been_purchased?
+      errors.add(:base, "Cannot delete vector that has been purchased by customers")
+      throw(:abort)
+    end
+    if in_subscriptions?
+      errors.add(:base, "Cannot delete vector that is included in subscriptions")
+      throw(:abort)
+    end
   end
 end

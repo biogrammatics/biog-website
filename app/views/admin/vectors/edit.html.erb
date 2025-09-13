@@ -6,6 +6,19 @@
   </div>
 </div>
 
+<% if @vector.has_been_purchased? %>
+  <div class="alert alert-warning">
+    <i class="bi bi-exclamation-triangle"></i>
+    <strong>Important:</strong> This vector has been purchased by <%= @vector.purchase_count %> customer(s). 
+    <ul class="mb-0 mt-2">
+      <li>You cannot delete this vector to preserve customer purchase history</li>
+      <li>When making significant changes, consider incrementing the version number</li>
+      <li>To discontinue, change the Product Status instead of deleting</li>
+      <li>Customers retain access to the version they purchased</li>
+    </ul>
+  </div>
+<% end %>
+
 <%= form_with model: [:admin, @vector], local: true, class: "row g-3" do |form| %>
   <% if @vector.errors.any? %>
     <div class="col-12">
@@ -61,8 +74,15 @@
   </div>
 
   <div class="col-md-4">
-    <%= form.label :file_version, class: "form-label" %>
-    <%= form.text_field :file_version, class: "form-control" %>
+    <%= form.label :file_version, "Version", class: "form-label" %>
+    <%= form.text_field :file_version, class: "form-control", placeholder: "e.g., 1.0, 2.0, 2.1" %>
+    <div class="form-text">
+      <% if @vector.has_been_purchased? %>
+        <i class="bi bi-info-circle text-warning"></i> Consider incrementing when making significant changes
+      <% else %>
+        Version number for tracking updates
+      <% end %>
+    </div>
   </div>
 
   <div class="col-12">

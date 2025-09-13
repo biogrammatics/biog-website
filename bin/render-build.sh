@@ -4,14 +4,15 @@ set -o errexit
 
 echo "=== Starting Render build ==="
 
-# Check if SECRET_KEY_BASE is set
-if [ -z "$SECRET_KEY_BASE" ]; then
-  echo "ERROR: SECRET_KEY_BASE environment variable is not set!"
-  echo "Please set this in your Render service environment variables."
-  exit 1
+# Check if SECRET_KEY_BASE is set (only required at runtime, not during asset precompilation)
+if [ -z "$SECRET_KEY_BASE" ] && [ "$RAILS_ENV" = "production" ]; then
+  echo "WARNING: SECRET_KEY_BASE environment variable is not set!"
+  echo "This is required for production runtime. Please set this in your Render service environment variables."
 fi
 
-echo "✓ SECRET_KEY_BASE is set"
+if [ -n "$SECRET_KEY_BASE" ]; then
+  echo "✓ SECRET_KEY_BASE is set"
+fi
 
 # Install dependencies
 echo "=== Installing dependencies ==="

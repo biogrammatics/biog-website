@@ -5,6 +5,25 @@
 
 <div class="row">
   <div class="col-md-8">
+    <% if @vector.map_image.attached? %>
+      <div class="card mb-4">
+        <div class="card-header">
+          <h3>Vector Map</h3>
+        </div>
+        <div class="card-body text-center">
+          <a href="#" data-bs-toggle="modal" data-bs-target="#vectorMapModal">
+            <%= image_tag @vector.map_thumbnail, 
+                          class: "img-fluid",
+                          style: "max-width: 100%; cursor: zoom-in;",
+                          alt: "#{@vector.name} vector map" %>
+          </a>
+          <p class="text-muted mt-2">
+            <i class="bi bi-zoom-in"></i> Click to enlarge
+          </p>
+        </div>
+      </div>
+    <% end %>
+    
     <div class="card mb-4">
       <div class="card-header">
         <h3>Vector Details</h3>
@@ -201,3 +220,31 @@
     </div>
   </div>
 </div>
+
+<% if @vector.map_image.attached? %>
+  <!-- Vector Map Modal -->
+  <div class="modal fade" id="vectorMapModal" tabindex="-1" aria-labelledby="vectorMapModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="vectorMapModalLabel"><%= @vector.name %> - Vector Map</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <%= image_tag @vector.map_large, 
+                        class: "img-fluid",
+                        style: "max-width: 100%;",
+                        alt: "#{@vector.name} vector map (full size)" %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <% if authenticated? && (Current.user.admin? || user_has_access_to_vector?(@vector)) %>
+            <%= link_to "Download Full Resolution", 
+                        rails_blob_path(@vector.map_image, disposition: "attachment"),
+                        class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

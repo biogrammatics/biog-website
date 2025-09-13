@@ -59,6 +59,7 @@ Rails.application.routes.draw do
     resources :vectors do
       member do
         delete "remove_file/:file_id", action: :remove_file, as: :remove_file
+        delete "remove_map", action: :remove_map, as: :remove_map
       end
     end
     resources :pichia_strains

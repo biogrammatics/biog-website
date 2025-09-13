@@ -8,6 +8,7 @@ class Vector < ApplicationRecord
   has_many :subscriptions, through: :subscription_vectors
 
   has_many_attached :files
+  has_one_attached :map_image
 
   validates :name, presence: true, uniqueness: true
   validates :sale_price, presence: true, if: :available_for_sale?
@@ -36,6 +37,28 @@ class Vector < ApplicationRecord
 
   def genbank_file
     files.find { |file| file.filename.to_s.include?(".gb") }
+  end
+
+  # Generate thumbnail variant for vector map
+  def map_thumbnail
+    return nil unless map_image.attached?
+
+    map_image.variant(
+      resize_to_fill: [ 612, 452 ],
+      format: :webp,
+      saver: { quality: 85 }
+    ).processed
+  end
+
+  # Generate large variant for vector map modal
+  def map_large
+    return nil unless map_image.attached?
+
+    map_image.variant(
+      resize_to_limit: [ 3087, 1620 ],
+      format: :webp,
+      saver: { quality: 90 }
+    ).processed
   end
 
   # Check if this vector has been purchased by any customer

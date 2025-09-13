@@ -1,6 +1,6 @@
 class Admin::VectorsController < ApplicationController
   before_action :require_admin!
-  before_action :set_vector, only: [ :show, :edit, :update, :destroy, :remove_file ]
+  before_action :set_vector, only: [ :show, :edit, :update, :destroy, :remove_file, :remove_map ]
   before_action :load_form_data, only: [ :new, :edit, :create, :update ]
 
   def index
@@ -51,6 +51,11 @@ class Admin::VectorsController < ApplicationController
     redirect_to edit_admin_vector_path(@vector), notice: "File was successfully removed."
   end
 
+  def remove_map
+    @vector.map_image.purge if @vector.map_image.attached?
+    redirect_to edit_admin_vector_path(@vector), notice: "Vector map was successfully removed."
+  end
+
   private
 
   def set_vector
@@ -71,6 +76,6 @@ class Admin::VectorsController < ApplicationController
                                    :promoter_id, :selection_marker_id, :vector_type_id,
                                    :host_organism_id, :has_lox_sites, :vector_size,
                                    :file_version, :features, :product_status_id, :has_files,
-                                   files: [])
+                                   :map_image, files: [])
   end
 end

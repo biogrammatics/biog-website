@@ -92,6 +92,36 @@
 
   <div class="col-12">
     <hr>
+    <h5>Vector Map Image</h5>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :map_image, "Vector Map Image", class: "form-label" %>
+    <%= form.file_field :map_image, class: "form-control", accept: "image/jpeg,image/png,image/webp,image/avif" %>
+    <div class="form-text">Upload a high-resolution vector map (JPG, PNG, WebP, or AVIF)</div>
+    
+    <% if @vector.map_image.attached? %>
+      <div class="mt-3">
+        <h6>Current Map:</h6>
+        <div class="card" style="max-width: 300px;">
+          <%= image_tag @vector.map_image, class: "card-img-top", style: "max-height: 200px; object-fit: contain;" %>
+          <div class="card-body">
+            <small class="text-muted">
+              <%= @vector.map_image.filename %>
+              (<%= number_to_human_size(@vector.map_image.byte_size) %>)
+            </small>
+            <%= link_to "Remove", remove_map_admin_vector_path(@vector), 
+                        method: :delete,
+                        data: { turbo_method: :delete, turbo_confirm: "Remove vector map?" },
+                        class: "btn btn-sm btn-outline-danger mt-2" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-12">
+    <hr>
     <h5>File Attachments</h5>
   </div>
 

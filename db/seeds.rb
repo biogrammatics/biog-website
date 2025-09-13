@@ -42,7 +42,7 @@ pichia_host = HostOrganism.find_by(common_name: "Pichia pastoris")
 
 Vector.find_or_create_by!(name: "pPICZ-A") do |v|
   v.description = "Inducible expression vector for Pichia pastoris"
-  v.category = "Expression"
+  v.category = "Heterologous Protein Expression"
   v.sale_price = 125.00
   v.subscription_price = 75.00
   v.promoter = aox1_promoter
@@ -56,7 +56,7 @@ end
 
 Vector.find_or_create_by!(name: "pGAP-Z-A") do |v|
   v.description = "Constitutive expression vector for Pichia pastoris"
-  v.category = "Expression"
+  v.category = "Heterologous Protein Expression"
   v.sale_price = 135.00
   v.subscription_price = 85.00
   v.promoter = Promoter.find_by(name: "GAP")

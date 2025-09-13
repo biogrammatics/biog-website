@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Script to run linting and optionally auto-fix issues
+
+if [ "$1" = "--fix" ] || [ "$1" = "-f" ]; then
+  echo "Running RuboCop with auto-fix..."
+  bundle exec rubocop -A
+else
+  echo "Running RuboCop..."
+  bundle exec rubocop
+  if [ $? -ne 0 ]; then
+    echo ""
+    echo "To auto-fix issues, run: bin/lint --fix"
+  fi
+fi

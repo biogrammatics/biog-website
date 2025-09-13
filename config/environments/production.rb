@@ -2,9 +2,9 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  
+
   # Use environment variable for secret key base, with fallback for asset precompilation
-  config.secret_key_base = ENV['SECRET_KEY_BASE'] || ENV['SECRET_KEY_BASE_DUMMY'] || 'dummy_key_for_assets'
+  config.secret_key_base = ENV["SECRET_KEY_BASE"] || ENV["SECRET_KEY_BASE_DUMMY"] || "dummy_key_for_assets"
 
   # Code is not reloaded between requests.
   config.enable_reloading = false

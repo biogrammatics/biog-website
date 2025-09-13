@@ -4,14 +4,14 @@ set -o errexit
 
 echo "=== Starting Render build ==="
 
-# Check if RAILS_MASTER_KEY is set
-if [ -z "$RAILS_MASTER_KEY" ]; then
-  echo "ERROR: RAILS_MASTER_KEY environment variable is not set!"
+# Check if SECRET_KEY_BASE is set
+if [ -z "$SECRET_KEY_BASE" ]; then
+  echo "ERROR: SECRET_KEY_BASE environment variable is not set!"
   echo "Please set this in your Render service environment variables."
   exit 1
 fi
 
-echo "✓ RAILS_MASTER_KEY is set"
+echo "✓ SECRET_KEY_BASE is set"
 
 # Install dependencies
 echo "=== Installing dependencies ==="

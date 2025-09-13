@@ -11,9 +11,9 @@ After creating your web service in Render, you need to set these environment var
 
 ### Required Variables:
 
-1. **RAILS_MASTER_KEY**
-   - Get this from `config/master.key` file (DO NOT commit this file)
-   - This is required for Rails to decrypt credentials
+1. **SECRET_KEY_BASE**
+   - Generate with: `rails secret`
+   - This is required for Rails session security
    
 2. **RAILS_ENV**
    - Set to: `production`
@@ -50,7 +50,8 @@ After creating your web service in Render, you need to set these environment var
 3. **Set Environment Variables**
    - Go to your service's Environment tab
    - Add the required variables listed above
-   - Make sure to add your RAILS_MASTER_KEY
+   - Generate SECRET_KEY_BASE with: `rails secret`
+   - Make sure to add your SECRET_KEY_BASE
 
 4. **Deploy**
    - Render will automatically deploy when you push to GitHub
@@ -110,7 +111,7 @@ bundle exec rails db:drop db:create db:migrate db:seed
 
 1. **Assets not loading**
    - Ensure `bundle exec rails assets:precompile` runs in build script
-   - Check that RAILS_MASTER_KEY is set correctly
+   - Check that SECRET_KEY_BASE is set correctly
 
 2. **Database connection errors**
    - Verify DATABASE_URL is set (should be automatic)
@@ -119,7 +120,7 @@ bundle exec rails db:drop db:create db:migrate db:seed
 3. **Application crashes on startup**
    - Check logs for specific error messages
    - Verify all environment variables are set
-   - Ensure master.key is correct
+   - Ensure SECRET_KEY_BASE is set and valid
 
 4. **Migrations fail**
    - Check for PostgreSQL-specific syntax if migrating from SQLite

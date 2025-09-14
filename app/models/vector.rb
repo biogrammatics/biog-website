@@ -43,22 +43,34 @@ class Vector < ApplicationRecord
   def map_thumbnail
     return nil unless map_image.attached?
 
+    # Return original if it's already small enough or if variants aren't supported
+    return map_image unless map_image.variable?
+
     map_image.variant(
       resize_to_fill: [ 612, 452 ],
       format: :webp,
       saver: { quality: 85 }
     ).processed
+  rescue => e
+    Rails.logger.error "Error generating thumbnail for vector #{id}: #{e.message}"
+    map_image # Return original on error
   end
 
   # Generate large variant for vector map modal
   def map_large
     return nil unless map_image.attached?
 
+    # Return original if variants aren't supported
+    return map_image unless map_image.variable?
+
     map_image.variant(
       resize_to_limit: [ 3087, 1620 ],
       format: :webp,
       saver: { quality: 90 }
     ).processed
+  rescue => e
+    Rails.logger.error "Error generating large variant for vector #{id}: #{e.message}"
+    map_image # Return original on error
   end
 
   # Check if this vector has been purchased by any customer

@@ -31,12 +31,13 @@
           <% vectors.each do |vector| %>
             <div class="col-md-6 col-lg-4 mb-4">
               <div class="card h-100">
-                <% if vector.map_image.attached? %>
+                <% if vector.map_image.attached? && vector.map_thumbnail %>
                   <%= link_to vector_path(vector) do %>
                     <%= image_tag vector.map_thumbnail, 
                                   class: "card-img-top",
                                   style: "height: 200px; object-fit: cover;",
-                                  alt: "#{vector.name} vector map" %>
+                                  alt: "#{vector.name} vector map",
+                                  loading: "lazy" %>
                   <% end %>
                 <% end %>
                 <div class="card-body d-flex flex-column">

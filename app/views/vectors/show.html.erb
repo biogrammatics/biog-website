@@ -5,7 +5,7 @@
 
 <div class="row">
   <div class="col-md-8">
-    <% if @vector.map_image.attached? %>
+    <% if @vector.map_image.attached? && @vector.map_thumbnail %>
       <div class="card mb-4">
         <div class="card-header">
           <h3>Vector Map</h3>
@@ -231,10 +231,17 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body text-center">
-          <%= image_tag @vector.map_large, 
-                        class: "img-fluid",
-                        style: "max-width: 100%;",
-                        alt: "#{@vector.name} vector map (full size)" %>
+          <% if @vector.map_large %>
+            <%= image_tag @vector.map_large, 
+                          class: "img-fluid",
+                          style: "max-width: 100%;",
+                          alt: "#{@vector.name} vector map (full size)" %>
+          <% else %>
+            <%= image_tag @vector.map_image, 
+                          class: "img-fluid",
+                          style: "max-width: 100%;",
+                          alt: "#{@vector.name} vector map" %>
+          <% end %>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

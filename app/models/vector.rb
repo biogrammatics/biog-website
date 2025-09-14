@@ -53,6 +53,11 @@ class Vector < ApplicationRecord
   def map_thumbnail
     return nil unless map_image.attached?
 
+    # Skip variants in production to save memory - just use original
+    if Rails.env.production?
+      return map_image
+    end
+
     # Return original if it's already small enough or if variants aren't supported
     return map_image unless map_image.variable?
 
@@ -69,6 +74,11 @@ class Vector < ApplicationRecord
   # Generate large variant for vector map modal
   def map_large
     return nil unless map_image.attached?
+
+    # Skip variants in production to save memory - just use original
+    if Rails.env.production?
+      return map_image
+    end
 
     # Return original if variants aren't supported
     return map_image unless map_image.variable?

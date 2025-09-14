@@ -6,6 +6,9 @@ Rails.application.configure do
   # Use environment variable for secret key base, with fallback for asset precompilation
   config.secret_key_base = ENV["SECRET_KEY_BASE"] || ENV["SECRET_KEY_BASE_DUMMY"] || "dummy_key_for_assets"
 
+  # Active Storage variant processing disabled in production to save memory (512MB limit)
+  # Original images are served directly with CSS constraints for sizing
+
   # Code is not reloaded between requests.
   config.enable_reloading = false
 

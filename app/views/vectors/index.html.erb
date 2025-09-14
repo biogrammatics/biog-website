@@ -36,7 +36,7 @@
                     <% begin %>
                       <%= image_tag vector.map_thumbnail, 
                                     class: "card-img-top",
-                                    style: "height: 200px; object-fit: cover;",
+                                    style: "height: 200px; object-fit: cover; max-width: 100%;",
                                     alt: "#{vector.name} vector map",
                                     loading: "lazy" %>
                     <% rescue => e %>

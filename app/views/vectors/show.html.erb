@@ -228,7 +228,7 @@
   </div>
 </div>
 
-<% if @vector.map_image.attached? %>
+<% if @vector.map_image_exists? %>
   <!-- Vector Map Modal -->
   <div class="modal fade" id="vectorMapModal" tabindex="-1" aria-labelledby="vectorMapModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -238,24 +238,35 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body text-center">
-          <% if @vector.map_large %>
-            <%= image_tag @vector.map_large, 
-                          class: "img-fluid",
-                          style: "max-width: 100%;",
-                          alt: "#{@vector.name} vector map (full size)" %>
-          <% else %>
-            <%= image_tag @vector.map_image, 
-                          class: "img-fluid",
-                          style: "max-width: 100%;",
-                          alt: "#{@vector.name} vector map" %>
+          <% begin %>
+            <% if @vector.map_large %>
+              <%= image_tag @vector.map_large, 
+                            class: "img-fluid",
+                            style: "max-width: 100%;",
+                            alt: "#{@vector.name} vector map (full size)" %>
+            <% else %>
+              <%= image_tag @vector.map_image, 
+                            class: "img-fluid",
+                            style: "max-width: 100%;",
+                            alt: "#{@vector.name} vector map" %>
+            <% end %>
+          <% rescue => e %>
+            <div class="text-center text-muted py-4">
+              <i class="bi bi-exclamation-triangle fs-1"></i>
+              <p>Vector map temporarily unavailable</p>
+            </div>
           <% end %>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <% if authenticated? && (Current.user.admin? || user_has_access_to_vector?(@vector)) %>
-            <%= link_to "Download Full Resolution", 
-                        rails_blob_path(@vector.map_image, disposition: "attachment"),
-                        class: "btn btn-primary" %>
+            <% begin %>
+              <%= link_to "Download Full Resolution", 
+                          rails_blob_path(@vector.map_image, disposition: "attachment"),
+                          class: "btn btn-primary" %>
+            <% rescue => e %>
+              <button class="btn btn-primary" disabled>Download Unavailable</button>
+            <% end %>
           <% end %>
         </div>
       </div>

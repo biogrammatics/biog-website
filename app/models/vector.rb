@@ -55,7 +55,8 @@ class Vector < ApplicationRecord
 
     # Skip variants in production to save memory - just use original
     if Rails.env.production?
-      return map_image
+      # Check if the file actually exists before returning it
+      return map_image_exists? ? map_image : nil
     end
 
     # Return original if it's already small enough or if variants aren't supported
@@ -68,7 +69,8 @@ class Vector < ApplicationRecord
     ).processed
   rescue => e
     Rails.logger.error "Error generating thumbnail for vector #{id}: #{e.message}"
-    map_image # Return original on error
+    # In production, check if original exists before returning it
+    Rails.env.production? && !map_image_exists? ? nil : map_image
   end
 
   # Generate large variant for vector map modal
@@ -77,7 +79,8 @@ class Vector < ApplicationRecord
 
     # Skip variants in production to save memory - just use original
     if Rails.env.production?
-      return map_image
+      # Check if the file actually exists before returning it
+      return map_image_exists? ? map_image : nil
     end
 
     # Return original if variants aren't supported
@@ -90,7 +93,8 @@ class Vector < ApplicationRecord
     ).processed
   rescue => e
     Rails.logger.error "Error generating large variant for vector #{id}: #{e.message}"
-    map_image # Return original on error
+    # In production, check if original exists before returning it
+    Rails.env.production? && !map_image_exists? ? nil : map_image
   end
 
   # Check if this vector has been purchased by any customer

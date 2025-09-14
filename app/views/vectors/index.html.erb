@@ -31,13 +31,22 @@
           <% vectors.each do |vector| %>
             <div class="col-md-6 col-lg-4 mb-4">
               <div class="card h-100">
-                <% if vector.map_image.attached? && vector.map_thumbnail %>
+                <% if vector.map_image_exists? && vector.map_thumbnail %>
                   <%= link_to vector_path(vector) do %>
-                    <%= image_tag vector.map_thumbnail, 
-                                  class: "card-img-top",
-                                  style: "height: 200px; object-fit: cover;",
-                                  alt: "#{vector.name} vector map",
-                                  loading: "lazy" %>
+                    <% begin %>
+                      <%= image_tag vector.map_thumbnail, 
+                                    class: "card-img-top",
+                                    style: "height: 200px; object-fit: cover;",
+                                    alt: "#{vector.name} vector map",
+                                    loading: "lazy" %>
+                    <% rescue => e %>
+                      <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
+                        <div class="text-center text-muted">
+                          <i class="bi bi-image fs-1"></i>
+                          <p class="small mb-0">Image unavailable</p>
+                        </div>
+                      </div>
+                    <% end %>
                   <% end %>
                 <% end %>
                 <div class="card-body d-flex flex-column">

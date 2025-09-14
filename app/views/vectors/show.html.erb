@@ -5,21 +5,28 @@
 
 <div class="row">
   <div class="col-md-8">
-    <% if @vector.map_image.attached? && @vector.map_thumbnail %>
+    <% if @vector.map_image_exists? && @vector.map_thumbnail %>
       <div class="card mb-4">
         <div class="card-header">
           <h3>Vector Map</h3>
         </div>
         <div class="card-body text-center">
-          <a href="#" data-bs-toggle="modal" data-bs-target="#vectorMapModal">
-            <%= image_tag @vector.map_thumbnail, 
-                          class: "img-fluid",
-                          style: "max-width: 100%; cursor: zoom-in;",
-                          alt: "#{@vector.name} vector map" %>
-          </a>
-          <p class="text-muted mt-2">
-            <i class="bi bi-zoom-in"></i> Click to enlarge
-          </p>
+          <% begin %>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#vectorMapModal">
+              <%= image_tag @vector.map_thumbnail, 
+                            class: "img-fluid",
+                            style: "max-width: 100%; cursor: zoom-in;",
+                            alt: "#{@vector.name} vector map" %>
+            </a>
+            <p class="text-muted mt-2">
+              <i class="bi bi-zoom-in"></i> Click to enlarge
+            </p>
+          <% rescue => e %>
+            <div class="text-center text-muted py-4">
+              <i class="bi bi-exclamation-triangle fs-1"></i>
+              <p>Vector map temporarily unavailable</p>
+            </div>
+          <% end %>
         </div>
       </div>
     <% end %>

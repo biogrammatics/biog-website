@@ -104,7 +104,14 @@
       <div class="mt-3">
         <h6>Current Map:</h6>
         <div class="card" style="max-width: 300px;">
-          <%= image_tag @vector.map_image, class: "card-img-top", style: "max-height: 200px; object-fit: contain;" %>
+          <% begin %>
+            <%= image_tag @vector.map_image, class: "card-img-top", style: "max-height: 200px; object-fit: contain;" %>
+          <% rescue => e %>
+            <div class="card-img-top text-center py-3 bg-light">
+              <i class="bi bi-exclamation-triangle text-warning"></i>
+              <p class="small mb-0">Image file not found</p>
+            </div>
+          <% end %>
           <div class="card-body">
             <small class="text-muted">
               <%= @vector.map_image.filename %>

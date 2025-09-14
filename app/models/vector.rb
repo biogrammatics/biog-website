@@ -39,6 +39,16 @@ class Vector < ApplicationRecord
     files.find { |file| file.filename.to_s.include?(".gb") }
   end
 
+  # Check if map image blob actually exists
+  def map_image_exists?
+    return false unless map_image.attached?
+
+    map_image.blob.service.exist?(map_image.blob.key)
+  rescue => e
+    Rails.logger.error "Error checking map image existence for vector #{id}: #{e.message}"
+    false
+  end
+
   # Generate thumbnail variant for vector map
   def map_thumbnail
     return nil unless map_image.attached?

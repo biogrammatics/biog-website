@@ -29,7 +29,16 @@ class Admin::VectorsController < ApplicationController
   end
 
   def update
-    if @vector.update(vector_params)
+    # Extract files from params to handle them separately
+    files_to_attach = params.dig(:vector, :files)
+    vector_params_without_files = vector_params.except(:files)
+
+    if @vector.update(vector_params_without_files)
+      # Attach new files if any were uploaded
+      if files_to_attach&.any? && files_to_attach.first.present?
+        @vector.files.attach(files_to_attach)
+      end
+
       redirect_to admin_vector_path(@vector), notice: "Vector was successfully updated."
     else
       render :edit, status: :unprocessable_entity

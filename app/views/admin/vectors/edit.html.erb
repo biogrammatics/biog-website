@@ -133,9 +133,12 @@
   </div>
 
   <div class="col-md-6">
-    <%= form.label :files, "Upload SnapGene/GenBank Files", class: "form-label" %>
+    <%= form.label :files, "Add SnapGene/GenBank Files", class: "form-label" %>
     <%= form.file_field :files, multiple: true, class: "form-control", accept: ".dna,.gb,.gbk" %>
-    <div class="form-text">Accepted formats: .dna (SnapGene), .gb, .gbk (GenBank)</div>
+    <div class="form-text">
+      <strong>Add new files:</strong> Accepted formats: .dna (SnapGene), .gb, .gbk (GenBank)<br>
+      <small class="text-muted"><i class="bi bi-info-circle"></i> New files will be added to existing ones. Use "Remove" buttons below to delete individual files.</small>
+    </div>
     
     <% if @vector.files.attached? %>
       <div class="mt-3">

@@ -1,0 +1,365 @@
+<%= form_with model: [:admin, @vector], local: true, html: { multipart: true, class: "row g-3" } do |form| %>
+  <% if @vector.errors.any? %>
+    <div class="col-12">
+      <div class="alert alert-danger">
+        <h5><i class="bi bi-exclamation-triangle-fill me-2"></i><%= pluralize(@vector.errors.count, "error") %> prohibited this vector from being saved:</h5>
+        <ul class="mb-0">
+          <% @vector.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Basic Information -->
+  <div class="col-12">
+    <h5 class="border-bottom pb-2 mb-3">Basic Information</h5>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :name, class: "form-label" %>
+    <span class="text-danger">*</span>
+    <%= form.text_field :name, class: "form-control #{'is-invalid' if @vector.errors[:name].any?}", required: true %>
+    <% if @vector.errors[:name].any? %>
+      <div class="invalid-feedback">
+        <%= @vector.errors[:name].first %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :category, class: "form-label" %>
+    <%= form.select :category,
+        options_for_select([
+          ['', ''],
+          ['Heterologous Protein Expression', 'Heterologous Protein Expression'],
+          ['Genome Engineering', 'Genome Engineering']
+        ], @vector.category),
+        { prompt: "Select category..." },
+        { class: "form-select #{'is-invalid' if @vector.errors[:category].any?}" } %>
+    <div class="form-text">Optional - leave blank if not applicable</div>
+    <% if @vector.errors[:category].any? %>
+      <div class="invalid-feedback">
+        <%= @vector.errors[:category].first %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-12">
+    <%= form.label :description, class: "form-label" %>
+    <%= form.text_area :description, rows: 3, class: "form-control #{'is-invalid' if @vector.errors[:description].any?}" %>
+    <% if @vector.errors[:description].any? %>
+      <div class="invalid-feedback">
+        <%= @vector.errors[:description].first %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Technical Details -->
+  <div class="col-12">
+    <h5 class="border-bottom pb-2 mb-3 mt-4">Technical Details</h5>
+  </div>
+
+  <div class="col-md-4">
+    <%= form.label :promoter_id, "Promoter", class: "form-label" %>
+    <%= form.collection_select :promoter_id, @promoters, :id, :name,
+        { prompt: "Select promoter..." },
+        { class: "form-select #{'is-invalid' if @vector.errors[:promoter_id].any?}" } %>
+    <% if @vector.errors[:promoter_id].any? %>
+      <div class="invalid-feedback">
+        <%= @vector.errors[:promoter_id].first %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-4">
+    <%= form.label :selection_marker_id, "Selection Marker", class: "form-label" %>
+    <%= form.collection_select :selection_marker_id, @selection_markers, :id, :name,
+        { prompt: "Select marker..." },
+        { class: "form-select #{'is-invalid' if @vector.errors[:selection_marker_id].any?}" } %>
+    <% if @vector.errors[:selection_marker_id].any? %>
+      <div class="invalid-feedback">
+        <%= @vector.errors[:selection_marker_id].first %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-4">
+    <%= form.label :vector_type_id, "Vector Type", class: "form-label" %>
+    <%= form.collection_select :vector_type_id, @vector_types, :id, :name,
+        { prompt: "Select type..." },
+        { class: "form-select #{'is-invalid' if @vector.errors[:vector_type_id].any?}" } %>
+    <% if @vector.errors[:vector_type_id].any? %>
+      <div class="invalid-feedback">
+        <%= @vector.errors[:vector_type_id].first %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-4">
+    <%= form.label :host_organism_id, "Host Organism", class: "form-label" %>
+    <%= form.collection_select :host_organism_id, @host_organisms, :id, :common_name,
+        { prompt: "Select host..." },
+        { class: "form-select #{'is-invalid' if @vector.errors[:host_organism_id].any?}" } %>
+    <% if @vector.errors[:host_organism_id].any? %>
+      <div class="invalid-feedback">
+        <%= @vector.errors[:host_organism_id].first %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-4">
+    <%= form.label :vector_size, "Vector Size (bp)", class: "form-label" %>
+    <%= form.number_field :vector_size, class: "form-control #{'is-invalid' if @vector.errors[:vector_size].any?}" %>
+    <% if @vector.errors[:vector_size].any? %>
+      <div class="invalid-feedback">
+        <%= @vector.errors[:vector_size].first %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-4">
+    <%= form.label :file_version, "Version", class: "form-label" %>
+    <%= form.text_field :file_version, class: "form-control #{'is-invalid' if @vector.errors[:file_version].any?}", placeholder: "e.g., 1.0, 2.0, 2.1" %>
+    <div class="form-text">
+      <% if @vector.persisted? && @vector.has_been_purchased? %>
+        <i class="bi bi-info-circle text-warning"></i> Consider incrementing when making significant changes
+      <% else %>
+        Version number for tracking updates
+      <% end %>
+    </div>
+    <% if @vector.errors[:file_version].any? %>
+      <div class="invalid-feedback">
+        <%= @vector.errors[:file_version].first %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-12">
+    <%= form.label :features, class: "form-label" %>
+    <%= form.text_area :features, rows: 3, class: "form-control #{'is-invalid' if @vector.errors[:features].any?}", placeholder: "Comma-separated list of features (e.g., AOX1 promoter, Zeocin resistance, multiple cloning site)" %>
+    <div class="form-text">Describe key features, separated by commas</div>
+    <% if @vector.errors[:features].any? %>
+      <div class="invalid-feedback">
+        <%= @vector.errors[:features].first %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Product Status -->
+  <div class="col-12">
+    <h5 class="border-bottom pb-2 mb-3 mt-4">Product Status</h5>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :product_status_id, "Product Status", class: "form-label" %>
+    <span class="text-danger">*</span>
+    <%= form.collection_select :product_status_id, @product_statuses, :id, :name,
+        { prompt: "Select status..." },
+        { class: "form-select #{'is-invalid' if @vector.errors[:product_status_id].any?}", required: true } %>
+    <% if @vector.errors[:product_status_id].any? %>
+      <div class="invalid-feedback">
+        <%= @vector.errors[:product_status_id].first %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-6">
+    <label class="form-label">Options</label>
+    <div class="form-check">
+      <%= form.check_box :has_lox_sites, class: "form-check-input" %>
+      <%= form.label :has_lox_sites, "Has Lox Sites", class: "form-check-label" %>
+    </div>
+    <div class="form-check">
+      <%= form.check_box :has_files, class: "form-check-input" %>
+      <%= form.label :has_files, "Has Files Available", class: "form-check-label" %>
+    </div>
+  </div>
+
+  <!-- Availability & Pricing -->
+  <div class="col-12">
+    <h5 class="border-bottom pb-2 mb-3 mt-4">Availability & Pricing</h5>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-check">
+      <%= form.check_box :available_for_sale, class: "form-check-input", id: "available_for_sale_check" %>
+      <%= form.label :available_for_sale, "Available for Sale", class: "form-check-label" %>
+    </div>
+    <div class="form-check">
+      <%= form.check_box :available_for_subscription, class: "form-check-input", id: "available_for_subscription_check" %>
+      <%= form.label :available_for_subscription, "Available for Subscription", class: "form-check-label" %>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <!-- Empty column for spacing -->
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :sale_price, "Sale Price ($)", class: "form-label" %>
+    <span class="text-danger" id="sale_price_required" style="<%= 'display: none;' unless @vector.available_for_sale? %>">*</span>
+    <%= form.number_field :sale_price, step: 0.01, class: "form-control #{'is-invalid' if @vector.errors[:sale_price].any?}", id: "sale_price_field" %>
+    <div class="form-text">Required when "Available for Sale" is checked</div>
+    <% if @vector.errors[:sale_price].any? %>
+      <div class="invalid-feedback">
+        <%= @vector.errors[:sale_price].first %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :subscription_price, "Annual Subscription Price ($)", class: "form-label" %>
+    <span class="text-danger" id="subscription_price_required" style="<%= 'display: none;' unless @vector.available_for_subscription? %>">*</span>
+    <%= form.number_field :subscription_price, step: 0.01, class: "form-control #{'is-invalid' if @vector.errors[:subscription_price].any?}", id: "subscription_price_field" %>
+    <div class="form-text">Required when "Available for Subscription" is checked</div>
+    <% if @vector.errors[:subscription_price].any? %>
+      <div class="invalid-feedback">
+        <%= @vector.errors[:subscription_price].first %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Vector Map Image -->
+  <div class="col-12">
+    <h5 class="border-bottom pb-2 mb-3 mt-4">Vector Map Image</h5>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :map_image, "Vector Map Image", class: "form-label" %>
+    <%= form.file_field :map_image, class: "form-control #{'is-invalid' if @vector.errors[:map_image].any?}", accept: "image/jpeg,image/png,image/webp,image/avif" %>
+    <div class="form-text">Upload a high-resolution vector map (JPG, PNG, WebP, or AVIF)</div>
+    <% if @vector.errors[:map_image].any? %>
+      <div class="invalid-feedback">
+        <%= @vector.errors[:map_image].first %>
+      </div>
+    <% end %>
+
+    <% if @vector.persisted? && @vector.map_image.attached? %>
+      <div class="mt-3">
+        <h6>Current Map:</h6>
+        <div class="card" style="max-width: 300px;">
+          <% begin %>
+            <%= image_tag @vector.map_image, class: "card-img-top", style: "max-height: 200px; object-fit: contain;" %>
+          <% rescue => e %>
+            <div class="card-img-top text-center py-3 bg-light">
+              <i class="bi bi-exclamation-triangle text-warning"></i>
+              <p class="small mb-0">Image file not found</p>
+            </div>
+          <% end %>
+          <div class="card-body">
+            <small class="text-muted">
+              <%= @vector.map_image.filename %>
+              (<%= number_to_human_size(@vector.map_image.byte_size) %>)
+            </small>
+            <%= link_to "Remove", remove_map_admin_vector_path(@vector),
+                        method: :delete,
+                        data: { turbo_method: :delete, turbo_confirm: "Remove vector map?" },
+                        class: "btn btn-sm btn-outline-danger mt-2" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- File Attachments -->
+  <div class="col-12">
+    <h5 class="border-bottom pb-2 mb-3 mt-4">File Attachments</h5>
+  </div>
+
+  <div class="col-md-12">
+    <%= form.label :files, "Upload SnapGene/GenBank Files", class: "form-label" %>
+    <%= form.file_field :files, multiple: true, class: "form-control #{'is-invalid' if @vector.errors[:files].any?}", accept: ".dna,.gb,.gbk" %>
+    <div class="form-text">
+      <% if @vector.persisted? %>
+        <strong>Add new files:</strong> Accepted formats: .dna (SnapGene), .gb, .gbk (GenBank)<br>
+        <small class="text-muted"><i class="bi bi-info-circle"></i> New files will be added to existing ones. Use "Remove" buttons below to delete individual files.</small>
+      <% else %>
+        Accepted formats: .dna (SnapGene), .gb, .gbk (GenBank)
+      <% end %>
+    </div>
+    <% if @vector.errors[:files].any? %>
+      <div class="invalid-feedback">
+        <%= @vector.errors[:files].first %>
+      </div>
+    <% end %>
+
+    <% if @vector.persisted? && @vector.files.attached? %>
+      <div class="mt-3">
+        <h6>Current Files:</h6>
+        <ul class="list-group">
+          <% @vector.files.each do |file| %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <i class="bi bi-file-earmark-binary"></i>
+                <%= file.filename %>
+                <small class="text-muted">(<%= number_to_human_size(file.byte_size) %>)</small>
+              </div>
+              <%= link_to "Remove", remove_file_admin_vector_path(@vector, file_id: file.id),
+                          method: :delete,
+                          data: { turbo_method: :delete, turbo_confirm: "Remove this file?" },
+                          class: "btn btn-sm btn-outline-danger" %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Form Actions -->
+  <div class="col-12">
+    <hr>
+    <div class="d-flex gap-2">
+      <%= form.submit @vector.persisted? ? "Update Vector" : "Create Vector", class: "btn btn-success" %>
+      <%= link_to "Cancel", @vector.persisted? ? admin_vector_path(@vector) : admin_vectors_path, class: "btn btn-outline-secondary" %>
+    </div>
+    <div class="mt-2">
+      <small class="text-muted">
+        <span class="text-danger">*</span> Required fields
+      </small>
+    </div>
+  </div>
+<% end %>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const saleCheckbox = document.getElementById('available_for_sale_check');
+  const subscriptionCheckbox = document.getElementById('available_for_subscription_check');
+  const salePriceField = document.getElementById('sale_price_field');
+  const subscriptionPriceField = document.getElementById('subscription_price_field');
+  const salePriceRequired = document.getElementById('sale_price_required');
+  const subscriptionPriceRequired = document.getElementById('subscription_price_required');
+
+  function updatePriceFields() {
+    // Handle sale price
+    if (saleCheckbox && saleCheckbox.checked) {
+      salePriceField.required = true;
+      salePriceRequired.style.display = 'inline';
+    } else {
+      salePriceField.required = false;
+      salePriceRequired.style.display = 'none';
+    }
+
+    // Handle subscription price
+    if (subscriptionCheckbox && subscriptionCheckbox.checked) {
+      subscriptionPriceField.required = true;
+      subscriptionPriceRequired.style.display = 'inline';
+    } else {
+      subscriptionPriceField.required = false;
+      subscriptionPriceRequired.style.display = 'none';
+    }
+  }
+
+  // Initial setup
+  updatePriceFields();
+
+  // Add event listeners
+  if (saleCheckbox) {
+    saleCheckbox.addEventListener('change', updatePriceFields);
+  }
+  if (subscriptionCheckbox) {
+    subscriptionCheckbox.addEventListener('change', updatePriceFields);
+  }
+});
+</script>

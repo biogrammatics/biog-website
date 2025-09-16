@@ -1,97 +1,133 @@
-<div class="hero-section">
-  <h1>BioGrammatics</h1>
-  <p class="lead">Premier source for Pichia pastoris molecular biology solutions</p>
-  
-  <div class="row mt-5">
-    <div class="col-md-6">
-      <div class="card h-100 border-primary">
-        <div class="card-body d-flex flex-column">
-          <h2 class="card-title text-primary">
-            <i class="bi bi-dna"></i> Pichia Reagents
-          </h2>
-          <p class="card-text flex-grow-1">
-            <strong>Ready-to-use molecular tools for your research</strong>
-          </p>
-          <ul class="list-unstyled mb-4">
-            <li><i class="bi bi-check-circle text-success"></i> High-quality expression vectors</li>
-            <li><i class="bi bi-check-circle text-success"></i> Optimized Pichia pastoris strains</li>
-            <li><i class="bi bi-check-circle text-success"></i> DNA synthesis subscriptions via Twist Bioscience</li>
-            <li><i class="bi bi-check-circle text-success"></i> Immediate availability</li>
-          </ul>
-          <div class="mt-auto">
-            <p class="text-muted mb-3">Perfect for researchers who need proven, standardized reagents for protein expression</p>
-            <div class="d-grid gap-2">
-              <%= link_to "Browse Vectors", vectors_path, class: "btn btn-primary" %>
-              <%= link_to "Browse Strains", pichia_strains_path, class: "btn btn-outline-primary mt-2" %>
-              <%= link_to "Twist Subscriptions", subscriptions_path, class: "btn btn-outline-secondary mt-2" %>
-            </div>
-          </div>
-        </div>
+<!-- Modern Hero Section -->
+<section class="modern-hero">
+  <div class="modern-container">
+    <div class="modern-hero-content">
+      <h1 class="modern-hero-title">
+        BioGrammatics
+      </h1>
+      <p class="modern-hero-subtitle">
+        Premier molecular biology solutions for Pichia pastoris expression systems
+      </p>
+      <div class="modern-hero-cta">
+        <%= link_to "Browse Vectors", vectors_path, class: "modern-btn modern-btn-primary" %>
+        <%= link_to "Custom Projects", new_custom_project_path, class: "modern-btn modern-btn-secondary" %>
       </div>
     </div>
-    
-    <div class="col-md-6">
-      <div class="card h-100 border-success">
-        <div class="card-body d-flex flex-column">
-          <h2 class="card-title text-success">
-            <i class="bi bi-gear-fill"></i> Custom Pichia Projects
-          </h2>
-          <p class="card-text flex-grow-1">
-            <strong>Tailored solutions for your specific protein expression needs</strong>
-          </p>
-          <ul class="list-unstyled mb-4">
-            <li><i class="bi bi-check-circle text-success"></i> Custom strain generation</li>
-            <li><i class="bi bi-check-circle text-success"></i> Protein expression testing & optimization</li>
-            <li><i class="bi bi-check-circle text-success"></i> Full-service project management</li>
-            <li><i class="bi bi-check-circle text-success"></i> Expert consultation</li>
-          </ul>
-          <div class="mt-auto">
-            <p class="text-muted mb-3">Ideal for complex proteins, novel constructs, or when you need proven expression before scaling up</p>
-            <div class="d-grid gap-2">
-              <% if authenticated? %>
-                <%= link_to "Start New Project", new_custom_project_path, class: "btn btn-success" %>
-                <%= link_to "View My Projects", custom_projects_path, class: "btn btn-outline-success mt-2" %>
-              <% else %>
-                <%= link_to "Sign In to Start Project", new_session_path, class: "btn btn-success" %>
-                <small class="text-muted mt-2">Account required for custom projects</small>
-              <% end %>
-            </div>
-          </div>
+  </div>
+</section>
+
+<!-- Main Services Section -->
+<section class="modern-section">
+  <div class="modern-container">
+    <div class="modern-grid modern-grid-2">
+      <!-- Pichia Reagents Card -->
+      <div class="modern-card">
+        <div class="modern-card-icon">
+          <i class="bi bi-diagram-3"></i>
+        </div>
+        <h3 class="modern-card-title">Pichia Reagents</h3>
+        <p class="modern-card-description">
+          Ready-to-use molecular tools for your research. High-quality vectors and strains optimized for reliable protein expression.
+        </p>
+        <ul class="modern-card-features">
+          <li>High-quality expression vectors</li>
+          <li>Optimized Pichia pastoris strains</li>
+          <li>DNA synthesis subscriptions</li>
+          <li>Immediate availability</li>
+        </ul>
+        <div class="mt-auto">
+          <%= link_to "Browse Vectors", vectors_path, class: "modern-btn modern-btn-accent mb-2 w-100" %>
+          <%= link_to "Browse Strains", pichia_strains_path, class: "modern-btn modern-btn-secondary w-100" %>
+        </div>
+      </div>
+
+      <!-- Custom Projects Card -->
+      <div class="modern-card">
+        <div class="modern-card-icon">
+          <i class="bi bi-gear-wide-connected"></i>
+        </div>
+        <h3 class="modern-card-title">Custom Projects</h3>
+        <p class="modern-card-description">
+          Tailored solutions for your specific protein expression needs. From strain generation to full-service project management.
+        </p>
+        <ul class="modern-card-features">
+          <li>Custom strain generation</li>
+          <li>Expression testing & optimization</li>
+          <li>Full-service project management</li>
+          <li>Expert consultation</li>
+        </ul>
+        <div class="mt-auto">
+          <% if authenticated? %>
+            <%= link_to "Start New Project", new_custom_project_path, class: "modern-btn modern-btn-accent mb-2 w-100" %>
+            <%= link_to "View My Projects", custom_projects_path, class: "modern-btn modern-btn-secondary w-100" %>
+          <% else %>
+            <%= link_to "Sign In to Start", new_session_path, class: "modern-btn modern-btn-accent mb-2 w-100" %>
+            <p class="modern-caption text-center">Account required for custom projects</p>
+          <% end %>
         </div>
       </div>
     </div>
   </div>
-  
-  <div class="row mt-5">
-    <div class="col-12 text-center">
-      <h3>Why Choose BioGrammatics?</h3>
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <i class="bi bi-award fs-1 text-primary"></i>
-          <h5 class="mt-2">Expertise</h5>
-          <p>Specialized in Pichia pastoris expression systems with years of experience</p>
+</section>
+
+<!-- Why Choose BioGrammatics Section -->
+<section class="modern-section" style="background: var(--modern-gray-50);">
+  <div class="modern-container">
+    <div class="modern-section-header">
+      <h2 class="modern-section-title">Why Choose BioGrammatics?</h2>
+      <p class="modern-section-subtitle">
+        Specialized expertise in Pichia pastoris expression systems with proven results
+      </p>
+    </div>
+
+    <div class="modern-grid modern-grid-3">
+      <div class="modern-feature">
+        <div class="modern-feature-icon">
+          <i class="bi bi-award"></i>
         </div>
-        <div class="col-md-4">
-          <i class="bi bi-speedometer2 fs-1 text-primary"></i>
-          <h5 class="mt-2">Speed</h5>
-          <p>Fast turnaround times for both standard reagents and custom projects</p>
+        <h4 class="modern-feature-title">Expertise</h4>
+        <p class="modern-feature-description">
+          Years of specialized experience in Pichia pastoris expression systems and molecular biology
+        </p>
+      </div>
+
+      <div class="modern-feature">
+        <div class="modern-feature-icon">
+          <i class="bi bi-lightning"></i>
         </div>
-        <div class="col-md-4">
-          <i class="bi bi-shield-check fs-1 text-primary"></i>
-          <h5 class="mt-2">Quality</h5>
-          <p>Rigorous quality control and validated protocols for reliable results</p>
+        <h4 class="modern-feature-title">Speed</h4>
+        <p class="modern-feature-description">
+          Fast turnaround times for both standard reagents and custom project development
+        </p>
+      </div>
+
+      <div class="modern-feature">
+        <div class="modern-feature-icon">
+          <i class="bi bi-shield-check"></i>
         </div>
+        <h4 class="modern-feature-title">Quality</h4>
+        <p class="modern-feature-description">
+          Rigorous quality control and validated protocols ensure reliable, reproducible results
+        </p>
       </div>
     </div>
   </div>
-  
-  <% unless authenticated? %>
-    <div class="mt-5 text-center bg-light p-4 rounded">
-      <h4>Get Started Today</h4>
-      <p>Create an account to access our full catalog and start your projects</p>
-      <%= link_to "Sign In", new_session_path, class: "btn btn-outline-secondary me-2" %>
-      or
-      <%= link_to "Create Account", new_session_path, class: "btn btn-primary ms-2" %>
+</section>
+
+<!-- Get Started Section -->
+<% unless authenticated? %>
+<section class="modern-section-sm">
+  <div class="modern-container">
+    <div class="modern-text-center">
+      <h3 class="modern-h3 modern-mb-md">Get Started Today</h3>
+      <p class="modern-body-lg modern-mb-xl">
+        Create an account to access our full catalog and start your projects
+      </p>
+      <div class="modern-hero-cta">
+        <%= link_to "Sign In", new_session_path, class: "modern-btn modern-btn-secondary" %>
+        <%= link_to "Create Account", new_session_path, class: "modern-btn modern-btn-primary" %>
+      </div>
     </div>
-  <% end %>
-</div>
+  </div>
+</section>
+<% end %>

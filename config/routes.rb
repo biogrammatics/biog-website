@@ -73,6 +73,11 @@ Rails.application.routes.draw do
     end
   end
 
+  # Cookie consent and policies
+  post "cookies/consent", to: "cookies#update_consent"
+  get "cookies/policy", to: "cookies#policy"
+  get "privacy", to: "cookies#privacy"
+
   # Health check
   get "up" => "rails/health#show", as: :rails_health_check
 

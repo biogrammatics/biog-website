@@ -1,0 +1,87 @@
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h2>User Details</h2>
+        <div>
+          <%= link_to "Edit", edit_admin_user_path(@user), class: "btn btn-primary btn-sm" %>
+          <%= link_to "Back to Users", admin_users_path, class: "btn btn-secondary btn-sm" %>
+        </div>
+      </div>
+      <div class="card-body">
+        <dl class="row">
+          <dt class="col-sm-3">ID</dt>
+          <dd class="col-sm-9"><%= @user.id %></dd>
+
+          <dt class="col-sm-3">Email</dt>
+          <dd class="col-sm-9"><%= @user.email_address %></dd>
+
+          <dt class="col-sm-3">First Name</dt>
+          <dd class="col-sm-9"><%= @user.first_name.presence || "-" %></dd>
+
+          <dt class="col-sm-3">Last Name</dt>
+          <dd class="col-sm-9"><%= @user.last_name.presence || "-" %></dd>
+
+          <dt class="col-sm-3">Full Name</dt>
+          <dd class="col-sm-9"><%= @user.full_name.presence || "-" %></dd>
+
+          <dt class="col-sm-3">Role</dt>
+          <dd class="col-sm-9">
+            <% if @user.admin? %>
+              <span class="badge bg-danger">Administrator</span>
+            <% else %>
+              <span class="badge bg-success">Customer</span>
+            <% end %>
+          </dd>
+
+          <dt class="col-sm-3">Twist Username</dt>
+          <dd class="col-sm-9"><%= @user.twist_username.presence || "-" %></dd>
+
+          <dt class="col-sm-3">Created At</dt>
+          <dd class="col-sm-9"><%= @user.created_at.strftime("%B %d, %Y at %I:%M %p") %></dd>
+
+          <dt class="col-sm-3">Updated At</dt>
+          <dd class="col-sm-9"><%= @user.updated_at.strftime("%B %d, %Y at %I:%M %p") %></dd>
+        </dl>
+
+        <hr class="my-4">
+
+        <h5>Associated Data</h5>
+        <ul class="list-unstyled">
+          <li>
+            <strong>Cart Items:</strong> 
+            <%= @user.cart&.cart_items&.count || 0 %>
+          </li>
+          <li>
+            <strong>Subscriptions:</strong> 
+            <%= @user.subscriptions.count %>
+            <% if @user.has_active_subscription? %>
+              <span class="badge bg-success ms-2">Active Subscription</span>
+            <% end %>
+          </li>
+          <li>
+            <strong>Custom Projects:</strong> 
+            <%= @user.custom_projects.count %>
+          </li>
+          <li>
+            <strong>Addresses:</strong> 
+            <%= @user.addresses.count %>
+          </li>
+          <li>
+            <strong>Orders:</strong> 
+            <%= @user.orders.count %>
+          </li>
+        </ul>
+
+        <% if @user != Current.user %>
+          <hr class="my-4">
+          <div class="d-flex justify-content-end">
+            <%= button_to "Delete User", admin_user_path(@user), method: :delete, 
+                data: { turbo_confirm: "Are you sure you want to delete this user? This will also delete all associated data (cart, subscriptions, projects, etc.)." }, 
+                class: "btn btn-danger" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

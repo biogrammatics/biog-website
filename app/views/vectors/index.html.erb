@@ -6,22 +6,37 @@
     No vectors are currently available. Please check back later.
   </div>
 <% else %>
-  <% @vectors_by_category.each do |category, vectors| %>
+  <% @vectors_by_promoter.each do |promoter, vectors| %>
     <% if vectors.any? %>
       <section class="mb-5">
         <div class="d-flex align-items-center mb-4">
-          <% if category == 'Heterologous Protein Expression' %>
-            <i class="bi bi-diagram-3 fs-2 text-primary me-3"></i>
+          <% if promoter.nil? %>
+            <i class="bi bi-dash-circle fs-2 text-muted me-3"></i>
+          <% elsif promoter.name.downcase == "none" %>
+            <i class="bi bi-dash-circle fs-2 text-muted me-3"></i>
+          <% elsif promoter.inducible? %>
+            <i class="bi bi-lightning fs-2 text-warning me-3"></i>
           <% else %>
-            <i class="bi bi-gear-wide-connected fs-2 text-success me-3"></i>
+            <i class="bi bi-play-fill fs-2 text-primary me-3"></i>
           <% end %>
           <div>
-            <h2 class="mb-1"><%= category %></h2>
+            <h2 class="mb-1">
+              <%= promoter.nil? ? "No Promoter" : "#{promoter.full_name} (#{promoter.name})" %>
+            </h2>
             <p class="text-muted mb-0">
-              <% if category == 'Heterologous Protein Expression' %>
-                Vectors for expressing recombinant proteins in Pichia pastoris
+              <% if promoter.nil? %>
+                Vectors without a specific promoter
+              <% elsif promoter.name.downcase == "none" %>
+                Vectors without a promoter sequence
+              <% elsif promoter.inducible? %>
+                Inducible promoter - <%= promoter.strength.downcase %> expression when induced
               <% else %>
-                Tools for genome modification and cellular engineering
+                Constitutive promoter - <%= promoter.strength.downcase %> expression
+              <% end %>
+              <% if vectors.count == 1 %>
+                · 1 vector
+              <% else %>
+                · <%= vectors.count %> vectors
               <% end %>
             </p>
           </div>
@@ -52,17 +67,21 @@
                 <div class="card-body d-flex flex-column">
                   <div class="d-flex align-items-start justify-content-between mb-2">
                     <h5 class="card-title mb-0"><%= vector.name %></h5>
-                    <% if category == 'Genome Engineering' %>
-                      <span class="badge bg-success">Engineering</span>
+                    <% if vector.category.present? %>
+                      <% if vector.category == 'Genome Engineering' %>
+                        <span class="badge bg-success">Engineering</span>
+                      <% elsif vector.category == 'Heterologous Protein Expression' %>
+                        <span class="badge bg-primary">Expression</span>
+                      <% end %>
                     <% end %>
                   </div>
-                  
+
                   <p class="card-text flex-grow-1"><%= truncate(vector.description, length: 120) %></p>
-                  
+
                   <div class="mb-3">
                     <small class="text-muted">
-                      <strong>Promoter:</strong> <%= vector.promoter&.name || "N/A" %><br>
                       <strong>Selection:</strong> <%= vector.selection_marker&.name || "N/A" %><br>
+                      <strong>Type:</strong> <%= vector.vector_type&.name || "N/A" %><br>
                       <strong>Size:</strong> <%= vector.vector_size ? "#{vector.vector_size} bp" : "N/A" %>
                       <% if vector.has_lox_sites? %>
                         <br><strong>Features:</strong> <span class="badge bg-warning text-dark">Lox sites</span>

@@ -6,14 +6,28 @@ class VectorsController < ApplicationController
       .joins(:product_status).where(product_statuses: { is_available: true })
       .order(:name)
 
-    # Group vectors by category with specific ordering - Heterologous Protein Expression first
-    @vectors_by_category = {}
-    @vectors_by_category["Heterologous Protein Expression"] = @vectors.select { |v| v.category == "Heterologous Protein Expression" }
-    @vectors_by_category["Genome Engineering"] = @vectors.select { |v| v.category == "Genome Engineering" }
+    # Group vectors by promoter with specific ordering - "None" promoter last
+    @vectors_by_promoter = {}
+
+    # Get all promoters from the vectors, ordered with "None" last
+    promoters = @vectors.map(&:promoter).compact.uniq.sort_by { |p| p.name.downcase == "none" ? "zzz" : p.name.downcase }
+
+    # Group vectors by promoter
+    promoters.each do |promoter|
+      vectors_for_promoter = @vectors.select { |v| v.promoter == promoter }
+      @vectors_by_promoter[promoter] = vectors_for_promoter if vectors_for_promoter.any?
+    end
+
+    # Add vectors with no promoter (nil) at the end
+    vectors_without_promoter = @vectors.select { |v| v.promoter.nil? }
+    if vectors_without_promoter.any?
+      @vectors_by_promoter[nil] = vectors_without_promoter
+    end
+
   rescue ActiveRecord::StatementInvalid, NoMethodError
     # Handle case where models/tables might not exist in test
     @vectors = []
-    @vectors_by_category = {}
+    @vectors_by_promoter = {}
   end
 
   def show

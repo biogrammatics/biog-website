@@ -14,12 +14,12 @@
 
   <!-- Basic Information -->
   <div class="col-12">
-    <h5 class="border-bottom pb-2 mb-3">Basic Information</h5>
+    <h5 class="form-section-header">Basic Information</h5>
   </div>
 
   <div class="col-md-6">
     <%= form.label :name, class: "form-label" %>
-    <span class="text-danger">*</span>
+    <span class="required-indicator">*</span>
     <%= form.text_field :name, class: "form-control #{'is-invalid' if @vector.errors[:name].any?}", required: true %>
     <% if @vector.errors[:name].any? %>
       <div class="invalid-feedback">
@@ -58,7 +58,7 @@
 
   <!-- Technical Details -->
   <div class="col-12">
-    <h5 class="border-bottom pb-2 mb-3 mt-4">Technical Details</h5>
+    <h5 class="form-section-header">Technical Details</h5>
   </div>
 
   <div class="col-md-4">
@@ -149,12 +149,12 @@
 
   <!-- Product Status -->
   <div class="col-12">
-    <h5 class="border-bottom pb-2 mb-3 mt-4">Product Status</h5>
+    <h5 class="form-section-header">Product Status</h5>
   </div>
 
   <div class="col-md-6">
     <%= form.label :product_status_id, "Product Status", class: "form-label" %>
-    <span class="text-danger">*</span>
+    <span class="required-indicator">*</span>
     <%= form.collection_select :product_status_id, @product_statuses, :id, :name,
         { prompt: "Select status..." },
         { class: "form-select #{'is-invalid' if @vector.errors[:product_status_id].any?}", required: true } %>
@@ -179,7 +179,7 @@
 
   <!-- Availability & Pricing -->
   <div class="col-12">
-    <h5 class="border-bottom pb-2 mb-3 mt-4">Availability & Pricing</h5>
+    <h5 class="form-section-header">Availability & Pricing</h5>
   </div>
 
   <div class="col-md-6">
@@ -223,7 +223,7 @@
 
   <!-- Vector Map Image -->
   <div class="col-12">
-    <h5 class="border-bottom pb-2 mb-3 mt-4">Vector Map Image</h5>
+    <h5 class="form-section-header">Vector Map Image</h5>
   </div>
 
   <div class="col-md-6">
@@ -265,7 +265,7 @@
 
   <!-- File Attachments -->
   <div class="col-12">
-    <h5 class="border-bottom pb-2 mb-3 mt-4">File Attachments</h5>
+    <h5 class="form-section-header">File Attachments</h5>
   </div>
 
   <div class="col-md-12">
@@ -316,7 +316,7 @@
     </div>
     <div class="mt-2">
       <small class="text-muted">
-        <span class="text-danger">*</span> Required fields
+        <span class="required-indicator">*</span> Required fields
       </small>
     </div>
   </div>

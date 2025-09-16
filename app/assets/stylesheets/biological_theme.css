@@ -1,0 +1,562 @@
+/*
+ * BioGrammatics - Biological/Scientific Design System
+ * A professional design system for biotech applications
+ */
+
+/* ===== COLOR PALETTE ===== */
+:root {
+  /* Primary Colors - Nature/Biology Inspired */
+  --bio-primary: #2c5530;           /* Forest green - primary brand */
+  --bio-primary-light: #4a7c59;     /* Lighter forest green */
+  --bio-primary-dark: #1a3d1f;      /* Darker forest green */
+
+  /* Secondary Colors - Scientific/Research */
+  --bio-secondary: #1e6091;         /* Research blue */
+  --bio-secondary-light: #2e7db8;   /* Lighter blue */
+  --bio-secondary-dark: #0f4971;    /* Darker blue */
+
+  /* Accent Colors */
+  --bio-accent-teal: #0d7377;       /* Microscopy teal */
+  --bio-accent-orange: #d97706;     /* Amber/protein orange */
+  --bio-accent-purple: #7c3aed;     /* DNA purple */
+
+  /* Neutral Palette */
+  --bio-gray-50: #f8fafc;           /* Lightest gray */
+  --bio-gray-100: #f1f5f9;          /* Very light gray */
+  --bio-gray-200: #e2e8f0;          /* Light gray */
+  --bio-gray-300: #cbd5e1;          /* Medium light gray */
+  --bio-gray-400: #94a3b8;          /* Medium gray */
+  --bio-gray-500: #64748b;          /* Medium dark gray */
+  --bio-gray-600: #475569;          /* Dark gray */
+  --bio-gray-700: #334155;          /* Very dark gray */
+  --bio-gray-800: #1e293b;          /* Almost black */
+  --bio-gray-900: #0f172a;          /* Black */
+
+  /* Semantic Colors */
+  --bio-success: #16a34a;           /* Success green */
+  --bio-success-light: #22c55e;     /* Light success */
+  --bio-warning: #d97706;           /* Warning amber */
+  --bio-warning-light: #f59e0b;     /* Light warning */
+  --bio-danger: #dc2626;            /* Danger red */
+  --bio-danger-light: #ef4444;      /* Light danger */
+  --bio-info: #0ea5e9;             /* Info blue */
+  --bio-info-light: #38bdf8;        /* Light info */
+
+  /* Background Colors */
+  --bio-bg-primary: #ffffff;        /* Main background */
+  --bio-bg-secondary: #f8fafc;      /* Secondary background */
+  --bio-bg-tertiary: #f1f5f9;       /* Tertiary background */
+
+  /* Bootstrap Override Variables */
+  --bs-primary: var(--bio-primary);
+  --bs-secondary: var(--bio-gray-500);
+  --bs-success: var(--bio-success);
+  --bs-info: var(--bio-info);
+  --bs-warning: var(--bio-warning);
+  --bs-danger: var(--bio-danger);
+  --bs-body-bg: var(--bio-bg-primary);
+  --bs-body-color: var(--bio-gray-700);
+
+  /* Typography */
+  --bio-font-family-primary: 'Inter', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --bio-font-family-heading: 'Inter', 'Source Sans Pro', sans-serif;
+  --bio-font-family-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+
+  /* Spacing */
+  --bio-spacing-xs: 0.25rem;        /* 4px */
+  --bio-spacing-sm: 0.5rem;         /* 8px */
+  --bio-spacing-md: 1rem;           /* 16px */
+  --bio-spacing-lg: 1.5rem;         /* 24px */
+  --bio-spacing-xl: 2rem;           /* 32px */
+  --bio-spacing-2xl: 3rem;          /* 48px */
+
+  /* Border Radius */
+  --bio-radius-sm: 6px;
+  --bio-radius-md: 8px;
+  --bio-radius-lg: 12px;
+  --bio-radius-xl: 16px;
+
+  /* Shadows */
+  --bio-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --bio-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --bio-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --bio-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Transitions */
+  --bio-transition-fast: all 0.15s ease-in-out;
+  --bio-transition-normal: all 0.2s ease-in-out;
+  --bio-transition-slow: all 0.3s ease-in-out;
+}
+
+/* ===== TYPOGRAPHY SYSTEM ===== */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: var(--bio-font-family-primary);
+  color: var(--bio-gray-700);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: var(--bio-font-family-heading);
+  font-weight: 600;
+  color: var(--bio-gray-800);
+  line-height: 1.3;
+  margin-bottom: 0.75rem;
+}
+
+h1, .h1 { font-size: 2.25rem; font-weight: 700; }
+h2, .h2 { font-size: 1.875rem; font-weight: 600; }
+h3, .h3 { font-size: 1.5rem; font-weight: 600; }
+h4, .h4 { font-size: 1.25rem; font-weight: 600; }
+h5, .h5 { font-size: 1.125rem; font-weight: 600; }
+h6, .h6 { font-size: 1rem; font-weight: 600; }
+
+/* Lead text */
+.lead {
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--bio-gray-600);
+  line-height: 1.7;
+}
+
+/* Small text */
+small, .small {
+  font-size: 0.875rem;
+  color: var(--bio-gray-500);
+}
+
+/* Code and monospace */
+code, pre, .font-mono {
+  font-family: var(--bio-font-family-mono);
+  font-size: 0.875rem;
+}
+
+/* Scientific notation helper */
+.scientific-notation {
+  font-family: var(--bio-font-family-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== COMPONENT STYLES ===== */
+
+/* Enhanced Cards */
+.card {
+  border: 1px solid var(--bio-gray-200);
+  border-radius: var(--bio-radius-lg);
+  box-shadow: var(--bio-shadow-sm);
+  transition: var(--bio-transition-normal);
+  background: var(--bio-bg-primary);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--bio-shadow-lg);
+  border-color: var(--bio-gray-300);
+}
+
+.card-header {
+  background: var(--bio-bg-secondary);
+  border-bottom: 1px solid var(--bio-gray-200);
+  border-radius: var(--bio-radius-lg) var(--bio-radius-lg) 0 0;
+  padding: 1.25rem;
+  font-weight: 600;
+  color: var(--bio-gray-800);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-footer {
+  background: var(--bio-bg-secondary);
+  border-top: 1px solid var(--bio-gray-200);
+  border-radius: 0 0 var(--bio-radius-lg) var(--bio-radius-lg);
+  padding: 1rem 1.5rem;
+}
+
+/* Scientific Cards - Special styling for vectors, strains, etc. */
+.bio-card {
+  background: linear-gradient(135deg, var(--bio-bg-primary) 0%, var(--bio-bg-secondary) 100%);
+  border-left: 4px solid var(--bio-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.bio-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(45deg, transparent 30%, var(--bio-primary) 30%, var(--bio-primary) 70%, transparent 70%);
+  opacity: 0.05;
+}
+
+.bio-card:hover {
+  border-left-color: var(--bio-secondary);
+  transform: translateY(-3px);
+  box-shadow: var(--bio-shadow-xl);
+}
+
+/* Enhanced Buttons */
+.btn {
+  border-radius: var(--bio-radius-md);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: var(--bio-transition-fast);
+  border: 2px solid transparent;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--bio-primary) 0%, var(--bio-primary-light) 100%);
+  border-color: var(--bio-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--bio-primary-dark) 0%, var(--bio-primary) 100%);
+  border-color: var(--bio-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--bio-shadow-md);
+  color: white;
+}
+
+.btn-secondary {
+  background: var(--bio-gray-100);
+  border-color: var(--bio-gray-300);
+  color: var(--bio-gray-700);
+}
+
+.btn-secondary:hover {
+  background: var(--bio-gray-200);
+  border-color: var(--bio-gray-400);
+  color: var(--bio-gray-800);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, var(--bio-success) 0%, var(--bio-success-light) 100%);
+  border-color: var(--bio-success);
+}
+
+.btn-outline-primary {
+  color: var(--bio-primary);
+  border-color: var(--bio-primary);
+  background: transparent;
+}
+
+.btn-outline-primary:hover {
+  background: var(--bio-primary);
+  border-color: var(--bio-primary);
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* Enhanced Forms */
+.form-control, .form-select {
+  border: 2px solid var(--bio-gray-200);
+  border-radius: var(--bio-radius-md);
+  padding: 0.75rem 1rem;
+  transition: var(--bio-transition-fast);
+  background: var(--bio-bg-primary);
+  color: var(--bio-gray-700);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--bio-primary);
+  box-shadow: 0 0 0 3px rgba(44, 85, 48, 0.1);
+  outline: none;
+}
+
+.form-control.is-invalid, .form-select.is-invalid {
+  border-color: var(--bio-danger);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.form-control.is-valid, .form-select.is-valid {
+  border-color: var(--bio-success);
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
+.form-label {
+  font-weight: 500;
+  color: var(--bio-gray-700);
+  margin-bottom: 0.5rem;
+}
+
+.form-text {
+  color: var(--bio-gray-500);
+  font-size: 0.875rem;
+}
+
+/* Enhanced Navigation */
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: white !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 500;
+  transition: var(--bio-transition-fast);
+  border-radius: var(--bio-radius-sm);
+  margin: 0 0.25rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Enhanced Badges */
+.badge {
+  font-weight: 500;
+  border-radius: var(--bio-radius-sm);
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+.badge.bg-primary {
+  background: var(--bio-primary) !important;
+}
+
+.badge.bg-success {
+  background: var(--bio-success) !important;
+}
+
+.badge.bg-warning {
+  background: var(--bio-warning) !important;
+  color: white;
+}
+
+/* Enhanced Alerts */
+.alert {
+  border: none;
+  border-radius: var(--bio-radius-md);
+  padding: 1rem 1.25rem;
+  border-left: 4px solid;
+}
+
+.alert-success {
+  background: rgba(22, 163, 74, 0.1);
+  border-left-color: var(--bio-success);
+  color: var(--bio-success);
+}
+
+.alert-danger {
+  background: rgba(220, 38, 38, 0.1);
+  border-left-color: var(--bio-danger);
+  color: var(--bio-danger);
+}
+
+.alert-warning {
+  background: rgba(217, 119, 6, 0.1);
+  border-left-color: var(--bio-warning);
+  color: var(--bio-warning);
+}
+
+.alert-info {
+  background: rgba(14, 165, 233, 0.1);
+  border-left-color: var(--bio-info);
+  color: var(--bio-info);
+}
+
+/* ===== LAYOUT ENHANCEMENTS ===== */
+
+/* Container improvements */
+.container {
+  max-width: 1200px;
+}
+
+/* Section spacing */
+section {
+  margin-bottom: var(--bio-spacing-2xl);
+}
+
+/* Enhanced footer */
+footer {
+  background: var(--bio-bg-secondary);
+  border-top: 1px solid var(--bio-gray-200);
+  margin-top: var(--bio-spacing-2xl);
+}
+
+/* ===== SCIENTIFIC ELEMENTS ===== */
+
+/* Molecule-inspired decorative elements */
+.bio-decoration {
+  position: relative;
+}
+
+.bio-decoration::before {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--bio-primary);
+  border-radius: 50%;
+  opacity: 0.3;
+}
+
+/* Data tables */
+.table {
+  border-radius: var(--bio-radius-md);
+  overflow: hidden;
+  box-shadow: var(--bio-shadow-sm);
+}
+
+.table thead th {
+  background: var(--bio-primary);
+  color: white;
+  font-weight: 600;
+  border: none;
+  padding: 1rem;
+}
+
+.table tbody td {
+  padding: 0.75rem 1rem;
+  border-color: var(--bio-gray-200);
+  vertical-align: middle;
+}
+
+.table tbody tr:hover {
+  background: var(--bio-bg-secondary);
+}
+
+/* Scientific notation and measurements */
+.measurement {
+  font-family: var(--bio-font-family-mono);
+  font-weight: 500;
+  color: var(--bio-gray-700);
+}
+
+.unit {
+  font-size: 0.875em;
+  color: var(--bio-gray-500);
+  margin-left: 0.25rem;
+}
+
+/* Status indicators */
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--bio-radius-lg);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status-indicator.available {
+  background: rgba(22, 163, 74, 0.1);
+  color: var(--bio-success);
+}
+
+.status-indicator.unavailable {
+  background: rgba(220, 38, 38, 0.1);
+  color: var(--bio-danger);
+}
+
+.status-indicator.pending {
+  background: rgba(217, 119, 6, 0.1);
+  color: var(--bio-warning);
+}
+
+/* ===== UTILITY CLASSES ===== */
+
+/* Text colors */
+.text-bio-primary { color: var(--bio-primary) !important; }
+.text-bio-secondary { color: var(--bio-secondary) !important; }
+.text-bio-success { color: var(--bio-success) !important; }
+.text-bio-warning { color: var(--bio-warning) !important; }
+.text-bio-danger { color: var(--bio-danger) !important; }
+
+/* Background colors */
+.bg-bio-primary { background-color: var(--bio-primary) !important; }
+.bg-bio-secondary { background-color: var(--bio-bg-secondary) !important; }
+.bg-bio-tertiary { background-color: var(--bio-bg-tertiary) !important; }
+
+/* Spacing utilities */
+.p-bio-sm { padding: var(--bio-spacing-sm) !important; }
+.p-bio-md { padding: var(--bio-spacing-md) !important; }
+.p-bio-lg { padding: var(--bio-spacing-lg) !important; }
+
+.m-bio-sm { margin: var(--bio-spacing-sm) !important; }
+.m-bio-md { margin: var(--bio-spacing-md) !important; }
+.m-bio-lg { margin: var(--bio-spacing-lg) !important; }
+
+/* Shadow utilities */
+.shadow-bio-sm { box-shadow: var(--bio-shadow-sm) !important; }
+.shadow-bio-md { box-shadow: var(--bio-shadow-md) !important; }
+.shadow-bio-lg { box-shadow: var(--bio-shadow-lg) !important; }
+
+/* Border radius utilities */
+.rounded-bio-sm { border-radius: var(--bio-radius-sm) !important; }
+.rounded-bio-md { border-radius: var(--bio-radius-md) !important; }
+.rounded-bio-lg { border-radius: var(--bio-radius-lg) !important; }
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1rem;
+  }
+
+  .btn {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  h1, .h1 { font-size: 1.875rem; }
+  h2, .h2 { font-size: 1.5rem; }
+  h3, .h3 { font-size: 1.25rem; }
+}
+
+/* Print styles */
+@media print {
+  .card {
+    box-shadow: none;
+    border: 1px solid var(--bio-gray-300);
+  }
+
+  .btn {
+    background: white !important;
+    color: var(--bio-gray-700) !important;
+    border: 1px solid var(--bio-gray-400) !important;
+  }
+}
+
+/* ===== ACCESSIBILITY ===== */
+
+/* Focus styles */
+*:focus {
+  outline: 2px solid var(--bio-primary);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  :root {
+    --bio-primary: #1a3d1f;
+    --bio-gray-700: #000000;
+    --bio-gray-500: #333333;
+  }
+}

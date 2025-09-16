@@ -19,7 +19,7 @@
   </div>
 <% end %>
 
-<%= form_with model: [:admin, @vector], local: true, class: "row g-3" do |form| %>
+<%= form_with model: [:admin, @vector], local: true, html: { multipart: true, class: "row g-3" } do |form| %>
   <% if @vector.errors.any? %>
     <div class="col-12">
       <div class="alert alert-danger">

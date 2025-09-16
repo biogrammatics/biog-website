@@ -31,12 +31,20 @@ class Admin::VectorsController < ApplicationController
   def update
     # Extract files from params to handle them separately
     files_to_attach = params.dig(:vector, :files)
-    vector_params_without_files = vector_params.except(:files)
 
-    if @vector.update(vector_params_without_files)
+    # Create a copy of vector_params and remove files from it
+    update_params = vector_params
+    update_params.delete(:files) if update_params[:files]
+
+    if @vector.update(update_params)
       # Attach new files if any were uploaded
-      if files_to_attach&.any? && files_to_attach.first.present?
-        @vector.files.attach(files_to_attach)
+      if files_to_attach.present? && files_to_attach.reject(&:blank?).any?
+        begin
+          @vector.files.attach(files_to_attach.reject(&:blank?))
+          Rails.logger.info "Attached #{files_to_attach.reject(&:blank?).count} files to vector #{@vector.id}"
+        rescue => e
+          Rails.logger.error "Failed to attach files to vector #{@vector.id}: #{e.message}"
+        end
       end
 
       redirect_to admin_vector_path(@vector), notice: "Vector was successfully updated."

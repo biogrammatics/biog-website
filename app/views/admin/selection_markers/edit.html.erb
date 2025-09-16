@@ -1,0 +1,60 @@
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h2>Edit Selection Marker</h2>
+      </div>
+      <div class="card-body">
+        <%= form_with model: [:admin, @selection_marker], local: true do |form| %>
+          <% if @selection_marker.errors.any? %>
+            <div class="alert alert-danger">
+              <h6 class="mb-2">Please fix the following errors:</h6>
+              <ul class="mb-0">
+                <% @selection_marker.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="mb-3">
+            <%= form.label :name, "Marker Name", class: "form-label" %>
+            <%= form.text_field :name, class: "form-control", required: true %>
+            <div class="form-text">Short identifier for the selection marker</div>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :resistance, "Resistance", class: "form-label" %>
+            <%= form.text_field :resistance, class: "form-control" %>
+            <div class="form-text">Full name of the antibiotic resistance (optional)</div>
+          </div>
+
+          <div class="mb-4">
+            <%= form.label :concentration, "Working Concentration", class: "form-label" %>
+            <%= form.text_field :concentration, class: "form-control" %>
+            <div class="form-text">Typical working concentration for selection (optional)</div>
+          </div>
+
+          <% if @selection_marker.vectors.any? %>
+            <div class="alert alert-info">
+              <h6>This marker is used by <%= @selection_marker.vectors.count %> vector(s):</h6>
+              <ul class="mb-0">
+                <% @selection_marker.vectors.limit(5).each do |vector| %>
+                  <li><%= vector.name %></li>
+                <% end %>
+                <% if @selection_marker.vectors.count > 5 %>
+                  <li>...and <%= @selection_marker.vectors.count - 5 %> more</li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="d-flex justify-content-between">
+            <%= link_to "Cancel", admin_selection_markers_path, class: "btn btn-secondary" %>
+            <%= form.submit "Update Selection Marker", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

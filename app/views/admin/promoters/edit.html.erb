@@ -1,0 +1,76 @@
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h2>Edit Promoter</h2>
+      </div>
+      <div class="card-body">
+        <%= form_with model: [:admin, @promoter], local: true do |form| %>
+          <% if @promoter.errors.any? %>
+            <div class="alert alert-danger">
+              <h6 class="mb-2">Please fix the following errors:</h6>
+              <ul class="mb-0">
+                <% @promoter.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="mb-3">
+            <%= form.label :name, "Promoter Name", class: "form-label" %>
+            <%= form.text_field :name, class: "form-control", required: true %>
+            <div class="form-text">Short identifier for the promoter</div>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :full_name, "Full Name", class: "form-label" %>
+            <%= form.text_field :full_name, class: "form-control" %>
+            <div class="form-text">Complete scientific name (optional)</div>
+          </div>
+
+          <div class="mb-3">
+            <div class="form-check">
+              <%= form.check_box :inducible, class: "form-check-input" %>
+              <%= form.label :inducible, "Inducible promoter", class: "form-check-label" %>
+              <div class="form-text">Check if this promoter is inducible (requires activation)</div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <%= form.label :strength, "Promoter Strength", class: "form-label" %>
+            <%= form.select :strength, 
+                options_for_select([
+                  ["", ""],
+                  ["Weak", "Weak"],
+                  ["Medium", "Medium"], 
+                  ["Strong", "Strong"],
+                  ["Very Strong", "Very Strong"]
+                ], @promoter.strength),
+                { prompt: "Select strength..." }, 
+                { class: "form-select" } %>
+          </div>
+
+          <% if @promoter.vectors.any? %>
+            <div class="alert alert-info">
+              <h6>This promoter is used by <%= @promoter.vectors.count %> vector(s):</h6>
+              <ul class="mb-0">
+                <% @promoter.vectors.limit(5).each do |vector| %>
+                  <li><%= vector.name %></li>
+                <% end %>
+                <% if @promoter.vectors.count > 5 %>
+                  <li>...and <%= @promoter.vectors.count - 5 %> more</li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="d-flex justify-content-between">
+            <%= link_to "Cancel", admin_promoters_path, class: "btn btn-secondary" %>
+            <%= form.submit "Update Promoter", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h2>New Selection Marker</h2>
+      </div>
+      <div class="card-body">
+        <%= form_with model: [:admin, @selection_marker], local: true do |form| %>
+          <% if @selection_marker.errors.any? %>
+            <div class="alert alert-danger">
+              <h6 class="mb-2">Please fix the following errors:</h6>
+              <ul class="mb-0">
+                <% @selection_marker.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="mb-3">
+            <%= form.label :name, "Marker Name", class: "form-label" %>
+            <%= form.text_field :name, class: "form-control", required: true, placeholder: "e.g., Zeocin, G418, Hygromycin" %>
+            <div class="form-text">Short identifier for the selection marker</div>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :resistance, "Resistance", class: "form-label" %>
+            <%= form.text_field :resistance, class: "form-control", placeholder: "e.g., Zeocin, Geneticin, Hygromycin B" %>
+            <div class="form-text">Full name of the antibiotic resistance (optional)</div>
+          </div>
+
+          <div class="mb-4">
+            <%= form.label :concentration, "Working Concentration", class: "form-label" %>
+            <%= form.text_field :concentration, class: "form-control", placeholder: "e.g., 100 μg/mL, 200 μg/mL" %>
+            <div class="form-text">Typical working concentration for selection (optional)</div>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <%= link_to "Cancel", admin_selection_markers_path, class: "btn btn-secondary" %>
+            <%= form.submit "Create Selection Marker", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

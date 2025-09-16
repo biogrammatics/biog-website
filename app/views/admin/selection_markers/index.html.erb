@@ -1,0 +1,52 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Manage Selection Markers</h1>
+  <%= link_to "New Selection Marker", new_admin_selection_marker_path, class: "btn btn-primary" %>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <% if @selection_markers.any? %>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Resistance</th>
+              <th>Concentration</th>
+              <th>Vectors Using</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @selection_markers.each do |marker| %>
+              <tr>
+                <td><strong><%= marker.name %></strong></td>
+                <td><%= marker.resistance.presence || "-" %></td>
+                <td><%= marker.concentration.presence || "-" %></td>
+                <td>
+                  <%= marker.vectors.count %>
+                  <% if marker.vectors.any? %>
+                    <small class="text-muted">(in use)</small>
+                  <% end %>
+                </td>
+                <td>
+                  <div class="btn-group btn-group-sm" role="group">
+                    <%= link_to "View", admin_selection_marker_path(marker), class: "btn btn-outline-primary" %>
+                    <%= link_to "Edit", edit_admin_selection_marker_path(marker), class: "btn btn-outline-secondary" %>
+                    <% unless marker.vectors.any? %>
+                      <%= button_to "Delete", admin_selection_marker_path(marker), method: :delete, 
+                          data: { turbo_confirm: "Are you sure?" }, 
+                          class: "btn btn-outline-danger" %>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <p class="text-muted text-center py-4">No selection markers found.</p>
+    <% end %>
+  </div>
+</div>

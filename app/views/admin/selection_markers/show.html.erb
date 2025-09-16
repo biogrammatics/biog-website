@@ -1,0 +1,68 @@
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h2>Selection Marker Details</h2>
+        <div>
+          <%= link_to "Edit", edit_admin_selection_marker_path(@selection_marker), class: "btn btn-primary btn-sm" %>
+          <%= link_to "Back to Selection Markers", admin_selection_markers_path, class: "btn btn-secondary btn-sm" %>
+        </div>
+      </div>
+      <div class="card-body">
+        <dl class="row">
+          <dt class="col-sm-3">Name</dt>
+          <dd class="col-sm-9"><%= @selection_marker.name %></dd>
+
+          <dt class="col-sm-3">Resistance</dt>
+          <dd class="col-sm-9"><%= @selection_marker.resistance.presence || "-" %></dd>
+
+          <dt class="col-sm-3">Concentration</dt>
+          <dd class="col-sm-9"><%= @selection_marker.concentration.presence || "-" %></dd>
+        </dl>
+
+        <hr class="my-4">
+
+        <h5>Vectors Using This Selection Marker</h5>
+        <% if @selection_marker.vectors.any? %>
+          <div class="table-responsive">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>Vector Name</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @selection_marker.vectors.includes(:product_status).each do |vector| %>
+                  <tr>
+                    <td><%= link_to vector.name, admin_vector_path(vector), class: "text-decoration-none" %></td>
+                    <td><%= vector.category %></td>
+                    <td>
+                      <% if vector.product_status&.is_available? %>
+                        <span class="badge bg-success">Active</span>
+                      <% else %>
+                        <span class="badge bg-secondary">Inactive</span>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% else %>
+          <p class="text-muted">No vectors are currently using this selection marker.</p>
+        <% end %>
+
+        <% unless @selection_marker.vectors.any? %>
+          <hr class="my-4">
+          <div class="d-flex justify-content-end">
+            <%= button_to "Delete Selection Marker", admin_selection_marker_path(@selection_marker), method: :delete, 
+                data: { turbo_confirm: "Are you sure you want to delete this selection marker?" }, 
+                class: "btn btn-danger" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

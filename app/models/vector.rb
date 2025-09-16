@@ -6,6 +6,7 @@ class Vector < ApplicationRecord
   belongs_to :product_status
   has_many :subscription_vectors, dependent: :destroy
   has_many :subscriptions, through: :subscription_vectors
+  has_many :custom_projects, foreign_key: :selected_vector_id, dependent: :nullify
 
   has_many_attached :files
   has_one_attached :map_image
@@ -21,6 +22,10 @@ class Vector < ApplicationRecord
   scope :active, -> { joins(:product_status).where(product_statuses: { is_available: true }) }
   scope :heterologous_expression, -> { where(category: "Heterologous Protein Expression") }
   scope :genome_engineering, -> { where(category: "Genome Engineering") }
+
+  # Scopes to match ExpressionVector behavior
+  scope :available, -> { available_for_sale.active }
+  scope :protein_expression, -> { heterologous_expression }
 
   CATEGORIES = [
     "Heterologous Protein Expression",
@@ -129,6 +134,52 @@ class Vector < ApplicationRecord
   # Prevent deletion if purchased
   def can_be_deleted?
     !has_been_purchased? && !in_subscriptions?
+  end
+
+  # Methods to match ExpressionVector interface
+  def display_name
+    if promoter && selection_marker
+      "#{name} (#{promoter.name}/#{selection_marker.name})"
+    else
+      name
+    end
+  end
+
+  def feature_list
+    return [] if features.blank?
+    features.split(",").map(&:strip)
+  end
+
+  def formatted_price
+    if available_for_sale? && sale_price
+      "$#{sale_price.to_f}"
+    else
+      "Contact for pricing"
+    end
+  end
+
+  # Additional getter methods for compatibility
+  def backbone
+    # This field doesn't exist in vectors table, could be added or derived from description
+    nil
+  end
+
+  def cloning_sites
+    # This field doesn't exist in vectors table, could be added or derived from features
+    feature_list.select { |f| f.downcase.include?("site") || f.downcase.include?("cloning") }.join(", ")
+  end
+
+  def additional_notes
+    # Map to description field
+    description
+  end
+
+  def drug_selection
+    selection_marker&.name || "Not specified"
+  end
+
+  def price
+    sale_price
   end
 
   private

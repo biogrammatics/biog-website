@@ -31,13 +31,13 @@ class CustomProjectsController < ApplicationController
         generate_dna_sequence(@custom_project)
         redirect_to @custom_project, notice: "Protein expression strain request submitted successfully! We'll generate the DNA sequence and contact you for approval."
       else
-        @expression_vectors = ExpressionVector.available.protein_expression
+        @expression_vectors = Vector.available.protein_expression
         render :protein_expression, status: :unprocessable_entity
       end
     else
       # Show form
       @custom_project = authenticated? ? Current.user.custom_projects.build : CustomProject.new
-      @expression_vectors = ExpressionVector.available.protein_expression
+      @expression_vectors = Vector.available.protein_expression
     end
   end
 

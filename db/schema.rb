@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_13_230146) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_16_224024) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -105,24 +105,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_13_230146) do
     t.check_constraint "estimated_cost > 0 OR estimated_cost IS NULL", name: "custom_projects_estimated_cost_positive"
     t.check_constraint "project_type IN ('strain_only', 'strain_and_testing', 'full_service', 'consultation', 'protein_expression') OR project_type IS NULL", name: "custom_projects_project_type_check"
     t.check_constraint "status IN ('pending', 'in_progress', 'completed', 'cancelled', 'awaiting_approval', 'sequence_approved')", name: "custom_projects_status_check"
-  end
-
-  create_table "expression_vectors", force: :cascade do |t|
-    t.string "name", null: false
-    t.text "description"
-    t.string "promoter", null: false
-    t.string "drug_selection", null: false
-    t.text "features"
-    t.decimal "price", precision: 10, scale: 2
-    t.boolean "available", default: true
-    t.string "vector_type", default: "protein_expression"
-    t.string "backbone"
-    t.string "cloning_sites"
-    t.text "additional_notes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["available"], name: "index_expression_vectors_on_available"
-    t.index ["vector_type"], name: "index_expression_vectors_on_vector_type"
   end
 
   create_table "host_organisms", force: :cascade do |t|
@@ -337,8 +319,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_13_230146) do
   add_foreign_key "addresses", "users"
   add_foreign_key "cart_items", "carts"
   add_foreign_key "carts", "users"
-  add_foreign_key "custom_projects", "expression_vectors", column: "selected_vector_id"
   add_foreign_key "custom_projects", "users"
+  add_foreign_key "custom_projects", "vectors", column: "selected_vector_id"
   add_foreign_key "order_items", "orders"
   add_foreign_key "orders", "users"
   add_foreign_key "pichia_strains", "product_statuses"

@@ -16,6 +16,8 @@ class Admin::UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    # Handle admin field separately for security
+    @user.admin = params[:user][:admin] == "1" if params[:user][:admin].present?
 
     if @user.save
       redirect_to admin_users_path, notice: "User was successfully created."
@@ -35,6 +37,8 @@ class Admin::UsersController < ApplicationController
     end
 
     if @user.update(user_params)
+      # Handle admin field separately for security
+      @user.update_column(:admin, params[:user][:admin] == "1") if params[:user][:admin].present?
       redirect_to admin_users_path, notice: "User was successfully updated."
     else
       render :edit, status: :unprocessable_entity
@@ -57,7 +61,8 @@ class Admin::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:email_address, :first_name, :last_name, :password, :password_confirmation, :admin, :twist_username)
+    # Admin field is handled separately for security reasons
+    params.require(:user).permit(:email_address, :first_name, :last_name, :password, :password_confirmation, :twist_username)
   end
 
   def require_admin

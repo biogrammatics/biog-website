@@ -133,7 +133,7 @@ body {
 
 .modern-hero {
   background: linear-gradient(135deg, var(--modern-white) 0%, var(--modern-gray-50) 100%);
-  padding: var(--space-3xl) 0;
+  padding: var(--space-3xl) 0 calc(var(--space-3xl) + var(--space-lg)) 0;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -173,6 +173,35 @@ body {
   color: var(--modern-gray-600);
   margin-bottom: var(--space-xl);
   font-weight: 400;
+}
+
+.modern-hero-mission {
+  margin: var(--space-xl) 0;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.modern-hero-mission p {
+  text-align: left;
+  line-height: 1.7;
+  color: var(--modern-gray-700);
+  margin-bottom: 0;
+}
+
+.modern-hero-tagline {
+  margin: var(--space-xl) 0;
+  text-align: center;
+}
+
+.modern-hero-tagline h2 {
+  margin-bottom: var(--space-sm);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.modern-hero-tagline .modern-hero-subtitle {
+  margin-bottom: 0;
 }
 
 .modern-hero-cta {

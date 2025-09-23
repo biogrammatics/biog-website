@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_16_224024) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_23_200012) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -298,9 +298,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_16_224024) do
     t.string "snapgene_file_name"
     t.integer "snapgene_file_size"
     t.datetime "snapgene_uploaded_at"
+    t.index ["available_for_sale", "category", "product_status_id"], name: "index_vectors_on_sale_category_status"
     t.index ["available_for_sale"], name: "index_vectors_on_available_for_sale"
+    t.index ["available_for_subscription", "category", "product_status_id"], name: "index_vectors_on_subscription_category_status"
     t.index ["available_for_subscription"], name: "index_vectors_on_available_for_subscription"
     t.index ["category", "product_status_id"], name: "index_vectors_on_category_and_product_status_id"
+    t.index ["category", "promoter_id", "product_status_id"], name: "index_vectors_on_category_promoter_status"
     t.index ["category"], name: "index_vectors_on_category"
     t.index ["host_organism_id"], name: "index_vectors_on_host_organism_id"
     t.index ["name"], name: "index_vectors_on_name"

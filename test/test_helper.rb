@@ -1,4 +1,11 @@
 ENV["RAILS_ENV"] ||= "test"
+
+# Fix namespace collision between Ruby's Matrix::Vector and our Vector model
+# Remove the Matrix::Vector constant if it exists before loading Rails
+if defined?(Matrix)
+  Matrix.send(:remove_const, :Vector) if Matrix.const_defined?(:Vector)
+end
+
 require_relative "../config/environment"
 require "rails/test_help"
 

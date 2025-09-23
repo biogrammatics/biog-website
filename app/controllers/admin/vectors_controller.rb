@@ -88,11 +88,16 @@ class Admin::VectorsController < ApplicationController
   end
 
   def vector_params
-    params.require(:vector).permit(:name, :description, :category, :available_for_sale,
-                                   :available_for_subscription, :sale_price, :subscription_price,
-                                   :promoter_id, :selection_marker_id, :vector_type_id,
-                                   :host_organism_id, :has_lox_sites, :vector_size,
-                                   :file_version, :features, :product_status_id, :has_files,
-                                   :map_image, files: [])
+    permitted_params = params.require(:vector).permit(:name, :description, :category, :available_for_sale,
+                                                      :available_for_subscription, :sale_price, :subscription_price,
+                                                      :promoter_id, :selection_marker_id, :vector_type_id,
+                                                      :host_organism_id, :has_lox_sites, :vector_size,
+                                                      :file_version, :features, :product_status_id, :has_files,
+                                                      :map_image, files: [])
+
+    # Convert blank category to nil to avoid constraint violations
+    permitted_params[:category] = nil if permitted_params[:category].blank?
+
+    permitted_params
   end
 end

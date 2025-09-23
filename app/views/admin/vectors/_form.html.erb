@@ -32,13 +32,12 @@
     <%= form.label :category, class: "form-label" %>
     <%= form.select :category,
         options_for_select([
-          ['', ''],
           ['Heterologous Protein Expression', 'Heterologous Protein Expression'],
           ['Genome Engineering', 'Genome Engineering']
         ], @vector.category),
         { prompt: "Select category..." },
         { class: "form-select #{'is-invalid' if @vector.errors[:category].any?}" } %>
-    <div class="form-text">Optional - leave blank if not applicable</div>
+    <div class="form-text">Will default to "Heterologous Protein Expression" if not selected</div>
     <% if @vector.errors[:category].any? %>
       <div class="invalid-feedback">
         <%= @vector.errors[:category].first %>

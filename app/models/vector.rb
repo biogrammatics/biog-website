@@ -1,4 +1,9 @@
 class Vector < ApplicationRecord
+  CATEGORIES = [
+    "Heterologous Protein Expression",
+    "Genome Engineering"
+  ].freeze
+
   belongs_to :promoter, optional: true
   belongs_to :selection_marker, optional: true
   belongs_to :vector_type, optional: true
@@ -12,7 +17,7 @@ class Vector < ApplicationRecord
   has_one_attached :map_image
 
   validates :name, presence: true, uniqueness: true
-  validates :category, inclusion: { in: CATEGORIES }, allow_nil: true, allow_blank: true
+  validates :category, inclusion: { in: CATEGORIES }, allow_nil: true
   validates :sale_price, presence: true, if: :available_for_sale?
   validates :subscription_price, presence: true, if: :available_for_subscription?
 
@@ -28,11 +33,6 @@ class Vector < ApplicationRecord
   # Scopes to match ExpressionVector behavior
   scope :available, -> { available_for_sale.active }
   scope :protein_expression, -> { heterologous_expression }
-
-  CATEGORIES = [
-    "Heterologous Protein Expression",
-    "Genome Engineering"
-  ].freeze
 
   def available?
     product_status&.is_available?
@@ -187,8 +187,10 @@ class Vector < ApplicationRecord
   private
 
   def set_default_category
-    # Set default category if nil or blank
-    if category.blank?
+    # Normalize blank strings to nil, then set default category
+    self.category = nil if category.blank?
+
+    if category.nil?
       self.category = "Heterologous Protein Expression"
     end
   end

@@ -99,15 +99,15 @@
               <small class="form-text text-muted">Paste your complete amino acid sequence here</small>
             </div>
 
-            <% if @custom_project.amino_acid_sequence.present? %>
+            <% if @form.amino_acid_sequence.present? %>
               <div class="card bg-light">
                 <div class="card-body py-2">
                   <small>
-                    <strong>Sequence Length:</strong> <%= @custom_project.sequence_length %> amino acids |
-                    <strong>Starts with M:</strong> <%= @custom_project.starts_with_methionine? ? '✓ Yes' : '✗ No' %> |
-                    <strong>Ends with *:</strong> <%= @custom_project.ends_with_stop_codon? ? '✓ Yes' : '✗ No' %>
-                    <% if @custom_project.sequence_length > 0 %>
-                      | <strong>Estimated MW:</strong> ~<%= number_with_delimiter(@custom_project.estimated_molecular_weight) %> Da
+                    <strong>Sequence Length:</strong> <%= @form.sequence_length %> amino acids |
+                    <strong>Starts with M:</strong> <%= @form.starts_with_methionine? ? '✓ Yes' : '✗ No' %> |
+                    <strong>Ends with *:</strong> <%= @form.ends_with_stop_codon? ? '✓ Yes' : '✗ No' %>
+                    <% if @form.sequence_length > 0 %>
+                      | <strong>Estimated MW:</strong> ~<%= number_with_delimiter(@form.estimated_molecular_weight) %> Da
                     <% end %>
                   </small>
                 </div>

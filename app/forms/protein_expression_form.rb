@@ -57,6 +57,16 @@ class ProteinExpressionForm
     (sequence_length * 110).round
   end
 
+  def starts_with_methionine?
+    return false unless amino_acid_sequence.present?
+    clean_amino_acid_sequence.start_with?("M")
+  end
+
+  def ends_with_stop_codon?
+    return false unless amino_acid_sequence.present?
+    clean_amino_acid_sequence.end_with?("*")
+  end
+
   private
 
   attr_reader :user

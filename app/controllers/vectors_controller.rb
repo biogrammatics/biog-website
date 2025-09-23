@@ -5,15 +5,28 @@ class VectorsController < ApplicationController
     # Get vector type from params (default to 'sale')
     @vector_type = params[:vector_type] || "sale"
 
+    # Get category from params (default to 'all')
+    @category = params[:category] || "all"
+
     # Base query with includes
     base_query = Vector.includes(:promoter, :selection_marker, :vector_type, :product_status)
       .joins(:product_status).where(product_statuses: { is_available: true })
 
     # Filter based on vector type
-    @vectors = if @vector_type == "subscription"
-      base_query.where(available_for_subscription: true).order(:name)
+    vectors_by_type = if @vector_type == "subscription"
+      base_query.where(available_for_subscription: true)
     else
-      base_query.where(available_for_sale: true).order(:name)
+      base_query.where(available_for_sale: true)
+    end
+
+    # Filter based on category
+    @vectors = case @category
+    when "expression"
+      vectors_by_type.where(category: "Heterologous Protein Expression").order(:name)
+    when "engineering"
+      vectors_by_type.where(category: "Genome Engineering").order(:name)
+    else
+      vectors_by_type.order(:name)
     end
 
     # Group vectors by promoter with specific ordering - "None" promoter last
@@ -39,6 +52,7 @@ class VectorsController < ApplicationController
     @vectors = []
     @vectors_by_promoter = {}
     @vector_type = "sale"
+    @category = "all"
   end
 
   def show

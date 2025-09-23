@@ -2,25 +2,57 @@
 <p class="lead">Browse our comprehensive collection of Pichia pastoris vectors for protein expression and genome engineering</p>
 
 <!-- Toggle between sale and subscription vectors -->
-<div class="d-flex justify-content-center mb-4">
+<div class="d-flex justify-content-center mb-3">
   <div class="vector-type-toggle" role="group" aria-label="Vector type toggle">
-    <%= link_to vectors_path(vector_type: 'sale'),
+    <%= link_to vectors_path(vector_type: 'sale', category: @category),
                 class: "btn #{@vector_type == 'sale' ? 'btn-primary' : 'btn-outline-secondary'}" do %>
       <i class="bi bi-cart"></i> For Sale
     <% end %>
-    <%= link_to vectors_path(vector_type: 'subscription'),
+    <%= link_to vectors_path(vector_type: 'subscription', category: @category),
                 class: "btn #{@vector_type == 'subscription' ? 'btn-primary' : 'btn-outline-secondary'}" do %>
       <i class="bi bi-arrow-repeat"></i> Subscription (Twist)
     <% end %>
   </div>
 </div>
 
+<!-- Toggle between categories -->
+<div class="d-flex justify-content-center mb-4">
+  <div class="vector-type-toggle" role="group" aria-label="Category toggle">
+    <%= link_to vectors_path(vector_type: @vector_type, category: 'all'),
+                class: "btn #{@category == 'all' ? 'btn-primary' : 'btn-outline-secondary'}" do %>
+      <i class="bi bi-grid-3x3"></i> All Vectors
+    <% end %>
+    <%= link_to vectors_path(vector_type: @vector_type, category: 'expression'),
+                class: "btn #{@category == 'expression' ? 'btn-primary' : 'btn-outline-secondary'}" do %>
+      <i class="bi bi-cpu"></i> Protein Expression
+    <% end %>
+    <%= link_to vectors_path(vector_type: @vector_type, category: 'engineering'),
+                class: "btn #{@category == 'engineering' ? 'btn-primary' : 'btn-outline-secondary'}" do %>
+      <i class="bi bi-tools"></i> Genome Engineering
+    <% end %>
+  </div>
+</div>
+
 <% if @vectors.empty? %>
   <div class="alert alert-info" role="alert">
-    <% if @vector_type == 'subscription' %>
-      No subscription vectors are currently available through Twist. Please check back later or view our vectors for sale.
+    <% if @category == 'expression' %>
+      <% if @vector_type == 'subscription' %>
+        No protein expression vectors are currently available through Twist subscription. Please check back later or view other categories.
+      <% else %>
+        No protein expression vectors are currently available for sale. Please check back later or view other categories.
+      <% end %>
+    <% elsif @category == 'engineering' %>
+      <% if @vector_type == 'subscription' %>
+        No genome engineering vectors are currently available through Twist subscription. Please check back later or view other categories.
+      <% else %>
+        No genome engineering vectors are currently available for sale. Please check back later or view other categories.
+      <% end %>
     <% else %>
-      No vectors are currently available for sale. Please check back later or view our subscription vectors.
+      <% if @vector_type == 'subscription' %>
+        No subscription vectors are currently available through Twist. Please check back later or view our vectors for sale.
+      <% else %>
+        No vectors are currently available for sale. Please check back later or view our subscription vectors.
+      <% end %>
     <% end %>
   </div>
 <% else %>

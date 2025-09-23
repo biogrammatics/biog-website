@@ -1,6 +1,6 @@
 class CustomProjectsController < ApplicationController
-  allow_unauthenticated_access only: [ :new, :services, :protein_expression ]
-  before_action :require_authentication, except: [ :new, :services, :protein_expression ]
+  allow_unauthenticated_access only: [ :new, :services, :protein_expression, :enhanced_protein_expression ]
+  before_action :require_authentication, except: [ :new, :services, :protein_expression, :enhanced_protein_expression ]
   before_action :set_custom_project, only: [ :show, :edit, :update, :destroy, :approve_dna_sequence, :reject_dna_sequence ]
 
   def index
@@ -37,6 +37,31 @@ class CustomProjectsController < ApplicationController
     else
       # Show form
       @form = ProteinExpressionForm.new(authenticated? ? Current.user : nil)
+      @expression_vectors = Vector.available.protein_expression
+    end
+  end
+
+  # Enhanced protein expression with FASTA upload and multiple proteins
+  def enhanced_protein_expression
+    if request.post?
+      # Handle form submission - require authentication
+      unless authenticated?
+        redirect_to new_session_path, alert: "Please sign in to submit an enhanced protein expression request."
+        return
+      end
+
+      @form = EnhancedProteinExpressionForm.new(Current.user, enhanced_protein_expression_params)
+
+      if @custom_project = @form.save
+        protein_count = @custom_project.proteins.count
+        redirect_to @custom_project, notice: "Enhanced protein expression request submitted successfully! #{protein_count} protein(s) will be processed and optimized."
+      else
+        @expression_vectors = Vector.available.protein_expression
+        render :enhanced_protein_expression, status: :unprocessable_entity
+      end
+    else
+      # Show form
+      @form = EnhancedProteinExpressionForm.new(authenticated? ? Current.user : nil)
       @expression_vectors = Vector.available.protein_expression
     end
   end
@@ -108,6 +133,16 @@ class CustomProjectsController < ApplicationController
     params.require(:custom_project).permit(
       :project_name, :protein_name, :protein_description,
       :amino_acid_sequence, :selected_vector_id, :notes
+    )
+  end
+
+  def enhanced_protein_expression_params
+    params.require(:enhanced_protein_expression_form).permit(
+      :project_name, :selected_vector_id, :notes, :input_method, :fasta_file,
+      proteins_attributes: [
+        :name, :description, :amino_acid_sequence,
+        :secretion_signal, :n_terminal_tag, :c_terminal_tag
+      ]
     )
   end
 end

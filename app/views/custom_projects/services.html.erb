@@ -14,25 +14,79 @@
 
       <!-- Service Cards -->
       <div class="row g-4 mb-5">
-        <!-- Protein Expression Service -->
-        <div class="col-lg-6">
+        <!-- Enhanced Protein Expression Service -->
+        <div class="col-lg-4">
+          <div class="card h-100 border-success shadow-sm">
+            <div class="card-header bg-success text-white">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-star fa-2x me-3"></i>
+                <div>
+                  <h4 class="mb-0">Enhanced Protein Expression</h4>
+                  <small class="opacity-75">NEW: FASTA upload + modification tools</small>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <h6 class="text-success mb-3">Perfect for:</h6>
+              <ul class="list-unstyled mb-4">
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Multiple proteins in one request</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>FASTA file batch upload</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Secretion signal addition</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Purification tag insertion</li>
+              </ul>
+
+              <div class="bg-light p-3 rounded mb-4">
+                <h6 class="fw-bold mb-2">Enhanced Features:</h6>
+                <div class="row">
+                  <div class="col-6">
+                    <small class="d-block">✓ Multi-protein support</small>
+                    <small class="d-block">✓ FASTA file upload</small>
+                    <small class="d-block">✓ Sequence modification</small>
+                  </div>
+                  <div class="col-6">
+                    <small class="d-block">✓ His/FLAG/GST tags</small>
+                    <small class="d-block">✓ Secretion signals</small>
+                    <small class="d-block">✓ Batch processing</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center mb-3">
+                <span class="badge bg-success fs-6 px-3 py-2">Starting at $750</span>
+                <br>
+                <small class="text-muted">Per protein + vector costs</small>
+              </div>
+            </div>
+            <div class="card-footer bg-transparent">
+              <%= link_to "Start Enhanced Request",
+                  enhanced_protein_expression_custom_projects_path,
+                  class: "btn btn-success btn-lg w-100" %>
+              <small class="d-block text-center text-muted mt-2">
+                <i class="fas fa-clock me-1"></i>Typical turnaround: 2-3 weeks
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Standard Protein Expression Service -->
+        <div class="col-lg-4">
           <div class="card h-100 border-primary shadow-sm">
             <div class="card-header bg-primary text-white">
               <div class="d-flex align-items-center">
                 <i class="fas fa-dna fa-2x me-3"></i>
                 <div>
-                  <h4 class="mb-0">Protein Expression Strain</h4>
-                  <small class="opacity-75">Specialized amino acid to strain service</small>
+                  <h4 class="mb-0">Standard Protein Expression</h4>
+                  <small class="opacity-75">Single protein, manual entry</small>
                 </div>
               </div>
             </div>
             <div class="card-body">
               <h6 class="text-primary mb-3">Perfect for:</h6>
               <ul class="list-unstyled mb-4">
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Converting amino acid sequences to expression strains</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Codon optimization for Pichia pastoris</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Vector selection and cloning</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Ready-to-use expression strains</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Single protein expression projects</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Simple amino acid to strain conversion</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Quick turnaround projects</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Standard protein expression</li>
               </ul>
 
               <div class="bg-light p-3 rounded mb-4">
@@ -58,7 +112,7 @@
               </div>
             </div>
             <div class="card-footer bg-transparent">
-              <%= link_to "Start Protein Expression Request",
+              <%= link_to "Start Standard Request",
                   protein_expression_custom_projects_path,
                   class: "btn btn-primary btn-lg w-100" %>
               <small class="d-block text-center text-muted mt-2">

@@ -1,6 +1,8 @@
 class CustomProject < ApplicationRecord
   belongs_to :user
   belongs_to :selected_vector, class_name: "Vector", foreign_key: :selected_vector_id, optional: true
+  has_many :proteins, dependent: :destroy
+  has_one_attached :fasta_file
 
   STATUSES = %w[pending in_progress completed cancelled awaiting_approval sequence_approved].freeze
   PROJECT_TYPES = %w[strain_only strain_and_testing full_service consultation protein_expression].freeze

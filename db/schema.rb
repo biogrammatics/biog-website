@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_23_202331) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_23_223829) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -101,6 +101,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_202331) do
     t.string "protein_name"
     t.decimal "protein_molecular_weight"
     t.text "protein_description"
+    t.boolean "fasta_processed", default: false
+    t.text "fasta_processing_notes"
     t.index ["created_at"], name: "index_custom_projects_on_created_at"
     t.index ["project_type"], name: "index_custom_projects_on_project_type"
     t.index ["selected_vector_id"], name: "index_custom_projects_on_selected_vector_id"
@@ -199,6 +201,48 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_202331) do
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_promoters_on_name"
     t.check_constraint "strength IN ('Weak', 'Medium', 'Strong', 'Very Strong') OR strength IS NULL", name: "promoters_strength_check"
+  end
+
+  create_table "protein_tags", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "sequence", null: false
+    t.string "tag_type", null: false
+    t.text "description"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_protein_tags_on_active"
+    t.index ["tag_type"], name: "index_protein_tags_on_tag_type"
+  end
+
+  create_table "proteins", force: :cascade do |t|
+    t.integer "custom_project_id", null: false
+    t.string "name", null: false
+    t.text "description"
+    t.text "amino_acid_sequence", null: false
+    t.text "original_sequence"
+    t.string "secretion_signal"
+    t.string "n_terminal_tag"
+    t.string "c_terminal_tag"
+    t.decimal "molecular_weight", precision: 10, scale: 2
+    t.text "dna_sequence"
+    t.integer "sequence_order", default: 1
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["custom_project_id", "sequence_order"], name: "index_proteins_on_custom_project_id_and_sequence_order"
+    t.index ["custom_project_id"], name: "index_proteins_on_custom_project_id"
+  end
+
+  create_table "secretion_signals", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "sequence", null: false
+    t.string "organism", default: "Pichia pastoris"
+    t.text "description"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_secretion_signals_on_active"
+    t.index ["organism"], name: "index_secretion_signals_on_organism"
   end
 
   create_table "selection_markers", force: :cascade do |t|
@@ -337,6 +381,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_202331) do
   add_foreign_key "orders", "users"
   add_foreign_key "pichia_strains", "product_statuses"
   add_foreign_key "pichia_strains", "strain_types"
+  add_foreign_key "proteins", "custom_projects"
   add_foreign_key "sessions", "users"
   add_foreign_key "subscription_vectors", "subscriptions"
   add_foreign_key "subscription_vectors", "vectors"

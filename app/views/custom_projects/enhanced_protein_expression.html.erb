@@ -1,0 +1,454 @@
+<div class="container mt-4">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><%= link_to "Home", root_path %></li>
+      <li class="breadcrumb-item"><%= link_to "Services", services_custom_projects_path %></li>
+      <li class="breadcrumb-item active" aria-current="page">Enhanced Protein Expression</li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <h1 class="mb-4">
+        <i class="fas fa-dna me-2 text-primary"></i>
+        Enhanced Protein Expression Service
+      </h1>
+
+      <div class="alert alert-info">
+        <h5 class="alert-heading">New Features!</h5>
+        <ul class="mb-0">
+          <li><strong>FASTA File Upload:</strong> Upload multiple protein sequences at once</li>
+          <li><strong>Sequence Modification Tools:</strong> Add secretion signals and purification tags</li>
+          <li><strong>Multiple Proteins:</strong> Request multiple proteins in a single project</li>
+        </ul>
+      </div>
+
+      <% unless authenticated? %>
+        <div class="alert alert-warning">
+          <h5 class="alert-heading">Account Required</h5>
+          <p>To submit a protein expression request, you'll need to create an account or sign in. This helps us manage your project and keep you updated on progress.</p>
+          <hr>
+          <div class="d-flex gap-2">
+            <%= link_to "Sign In", new_session_path, class: "btn btn-primary" %>
+            <%= link_to "Create Account", new_session_path, class: "btn btn-outline-primary" %>
+          </div>
+        </div>
+        <hr>
+        <h5>Preview Request Form</h5>
+        <p class="text-muted">You can review the request form below, then sign in to submit your request.</p>
+      <% end %>
+
+      <%= form_with model: @form, url: authenticated? ? enhanced_protein_expression_custom_projects_path : "#", local: true, multipart: true do |form| %>
+        <% if @form.errors.any? %>
+          <div class="alert alert-danger">
+            <h4><%= pluralize(@form.errors.count, "error") %> prohibited this request from being saved:</h4>
+            <ul class="mb-0">
+              <% @form.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <!-- Project Details -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Project Details</h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <%= form.label :project_name, "Project Name", class: "form-label" %>
+              <%= form.text_field :project_name, class: "form-control", placeholder: "e.g., Multi-protein expression project" %>
+              <small class="form-text text-muted">Give your project a descriptive name for tracking</small>
+            </div>
+
+            <div class="mb-3">
+              <%= form.label :notes, "Project Notes (Optional)", class: "form-label" %>
+              <%= form.text_area :notes, rows: 3, class: "form-control",
+                  placeholder: "Any special requirements, timeline constraints, or questions?" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input Method Selection -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Protein Input Method</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-check">
+                  <%= form.radio_button :input_method, "manual", class: "form-check-input", id: "input_manual" %>
+                  <%= form.label :input_method, "Manual Entry", class: "form-check-label", for: "input_manual" %>
+                  <small class="d-block text-muted">Enter protein sequences manually with modification tools</small>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-check">
+                  <%= form.radio_button :input_method, "fasta", class: "form-check-input", id: "input_fasta" %>
+                  <%= form.label :input_method, "FASTA File Upload", class: "form-check-label", for: "input_fasta" %>
+                  <small class="d-block text-muted">Upload a FASTA file with multiple sequences</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FASTA Upload Section -->
+        <div id="fasta-upload-section" class="card mb-4" style="display: none;">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="fas fa-upload me-2"></i>
+              FASTA File Upload
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <%= form.label :fasta_file, "Select FASTA File", class: "form-label" %>
+              <%= form.file_field :fasta_file, class: "form-control", accept: ".fasta,.fas,.txt,.fa" %>
+              <small class="form-text text-muted">
+                Supported formats: .fasta, .fas, .fa, .txt
+              </small>
+            </div>
+
+            <div class="alert alert-info">
+              <h6 class="alert-heading">FASTA Format Requirements:</h6>
+              <ul class="mb-0">
+                <li>Each protein must start with a header line beginning with ">"</li>
+                <li>Header format: >ProteinName [description] or >ProteinName description</li>
+                <li>Amino acid sequences using single-letter codes (ARNDCEQGHILKMFPSTWYV)</li>
+                <li>Sequences will be automatically validated and formatted</li>
+              </ul>
+            </div>
+
+            <div class="card bg-light">
+              <div class="card-body">
+                <h6>Example FASTA format:</h6>
+                <pre><code>>Insulin [Human insulin hormone]
+MALWMRLLPLLALLALWGPDPAAAFVNQHLCGSHLVEALYLVCGERGFFYTPKTRREAEDLQVGQVELGGGPGAGSLQPLALEGSLQKRGIVEQCCTSICSLYQLENYCN*
+
+>Lysozyme [Chicken egg white lysozyme]
+MKALIVLGLVLLSVTVQGKVFERCELARTLKRLGMDGYRGISLANWMCLAKWESGYNTRATNYNAGDRSTDYGIFQINSRYWCNDGKTPGAVNACHLSCSALLQDNIADAVACAKRVVRDPQGIRAWVAWRNRCQNRDVRQYVQGCGV*</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Manual Protein Entry Section -->
+        <div id="manual-entry-section" class="mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5>Protein Sequences</h5>
+            <button type="button" id="add-protein-btn" class="btn btn-outline-primary btn-sm">
+              <i class="fas fa-plus me-1"></i>Add Another Protein
+            </button>
+          </div>
+
+          <div id="proteins-container">
+            <!-- Protein forms will be inserted here -->
+          </div>
+        </div>
+
+        <!-- Vector Selection -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Expression Vector Selection</h5>
+          </div>
+          <div class="card-body">
+            <p class="text-muted">Choose the expression vector that best fits your proteins and experimental needs.</p>
+
+            <% @expression_vectors.each do |vector| %>
+              <div class="form-check mb-3">
+                <%= form.radio_button :selected_vector_id, vector.id, class: "form-check-input", id: "vector_#{vector.id}" %>
+                <%= form.label :selected_vector_id, class: "form-check-label w-100", for: "vector_#{vector.id}" do %>
+                  <div class="card">
+                    <div class="card-body py-3">
+                      <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                          <h6 class="mb-1"><%= vector.display_name %></h6>
+                          <p class="text-muted mb-2"><%= vector.description %></p>
+
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <small>
+                                <strong>Backbone:</strong> <%= vector.backbone %><br>
+                                <strong>Cloning Sites:</strong> <%= vector.cloning_sites %>
+                              </small>
+                            </div>
+                            <div class="col-sm-6">
+                              <small>
+                                <% if vector.feature_list.any? %>
+                                  <strong>Features:</strong> <%= vector.feature_list.join(', ') %>
+                                <% end %>
+                              </small>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="text-end ms-3">
+                          <h6 class="text-primary mb-0"><%= vector.formatted_price %></h6>
+                          <small class="text-muted">per vector</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Next Steps -->
+        <div class="alert alert-success">
+          <h5 class="alert-heading"><i class="fas fa-lightbulb me-2"></i>What happens next?</h5>
+          <ol class="mb-0">
+            <li><strong>Submit Request:</strong> Submit your protein sequences and vector choice</li>
+            <li><strong>Sequence Review:</strong> We'll review and optimize your sequences (24-48 hours)</li>
+            <li><strong>DNA Generation:</strong> Generate codon-optimized DNA sequences</li>
+            <li><strong>Synthesis & Cloning:</strong> Synthesize DNA and clone into chosen vectors</li>
+            <li><strong>Strain Delivery:</strong> Receive your custom Pichia pastoris expression strains</li>
+          </ol>
+        </div>
+
+        <!-- Submit Buttons -->
+        <div class="d-grid gap-2 d-md-block mb-5">
+          <% if authenticated? %>
+            <%= form.submit "Submit Enhanced Protein Expression Request", class: "btn btn-success btn-lg" %>
+            <%= link_to "Cancel", custom_projects_path, class: "btn btn-outline-secondary btn-lg" %>
+          <% else %>
+            <%= link_to "Sign In to Submit Request", new_session_path, class: "btn btn-success btn-lg" %>
+            <%= link_to "Back to Services", services_custom_projects_path, class: "btn btn-outline-secondary btn-lg" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+      <div class="card position-sticky" style="top: 20px;">
+        <div class="card-header">
+          <h6 class="mb-0">Enhanced Service Features</h6>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <h6 class="text-primary">✓ Multi-Protein Support</h6>
+            <small class="text-muted">Submit multiple proteins in a single request for batch processing</small>
+          </div>
+
+          <div class="mb-3">
+            <h6 class="text-primary">✓ FASTA File Upload</h6>
+            <small class="text-muted">Upload sequences directly from bioinformatics tools</small>
+          </div>
+
+          <div class="mb-3">
+            <h6 class="text-primary">✓ Secretion Signals</h6>
+            <small class="text-muted">Choose from optimized secretion signals for protein export</small>
+          </div>
+
+          <div class="mb-3">
+            <h6 class="text-primary">✓ Purification Tags</h6>
+            <small class="text-muted">Add His-tags, FLAG, GST, and other purification tags</small>
+          </div>
+
+          <hr>
+
+          <div class="text-center">
+            <h6 class="text-success">Starting at $750</h6>
+            <small class="text-muted">Per protein + vector costs</small>
+          </div>
+
+          <hr>
+
+          <div>
+            <h6>Need Help?</h6>
+            <small class="text-muted">
+              Questions about sequence requirements or modifications?
+              <%= link_to "Contact our team", "#", class: "text-primary" %> for guidance.
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Protein Form Template -->
+<template id="protein-form-template">
+  <div class="protein-form card mb-3">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h6 class="mb-0">Protein <span class="protein-number">1</span></h6>
+      <button type="button" class="btn btn-outline-danger btn-sm remove-protein-btn">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="card-body">
+      <!-- Protein details will be inserted here -->
+    </div>
+  </div>
+</template>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const inputMethodRadios = document.querySelectorAll('input[name="enhanced_protein_expression_form[input_method]"]');
+  const fastaSection = document.getElementById('fasta-upload-section');
+  const manualSection = document.getElementById('manual-entry-section');
+  const addProteinBtn = document.getElementById('add-protein-btn');
+  const proteinsContainer = document.getElementById('proteins-container');
+
+  let proteinCount = 0;
+
+  // Handle input method switching
+  inputMethodRadios.forEach(radio => {
+    radio.addEventListener('change', function() {
+      if (this.value === 'fasta') {
+        fastaSection.style.display = 'block';
+        manualSection.style.display = 'none';
+      } else {
+        fastaSection.style.display = 'none';
+        manualSection.style.display = 'block';
+        if (proteinCount === 0) {
+          addProteinForm();
+        }
+      }
+    });
+  });
+
+  // Initialize with manual input
+  const defaultMethod = document.querySelector('input[name="enhanced_protein_expression_form[input_method]"]:checked');
+  if (defaultMethod && defaultMethod.value === 'manual') {
+    addProteinForm();
+  }
+
+  // Add protein form
+  addProteinBtn.addEventListener('click', addProteinForm);
+
+  function addProteinForm() {
+    proteinCount++;
+    const proteinForm = createProteinForm(proteinCount);
+    proteinsContainer.appendChild(proteinForm);
+    updateRemoveButtons();
+  }
+
+  function createProteinForm(number) {
+    const div = document.createElement('div');
+    div.className = 'protein-form card mb-3';
+    div.innerHTML = \`
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0">Protein \${number}</h6>
+        <button type="button" class="btn btn-outline-danger btn-sm remove-protein-btn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">Protein Name</label>
+              <input type="text" name="enhanced_protein_expression_form[proteins_attributes][\${number-1}][name]"
+                     class="form-control" placeholder="e.g., Human Insulin">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">Description (Optional)</label>
+              <input type="text" name="enhanced_protein_expression_form[proteins_attributes][\${number-1}][description]"
+                     class="form-control" placeholder="Brief description">
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Amino Acid Sequence</label>
+          <textarea name="enhanced_protein_expression_form[proteins_attributes][\${number-1}][amino_acid_sequence]"
+                    rows="4" class="form-control font-monospace sequence-input"
+                    placeholder="MATLYGDSGLWQNILDQLSSLLNQAEGLQAAGGSALQY*"></textarea>
+          <small class="form-text text-muted">Single-letter amino acid codes (A-Z, *)</small>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label class="form-label">Secretion Signal</label>
+              <select name="enhanced_protein_expression_form[proteins_attributes][\${number-1}][secretion_signal]"
+                      class="form-select">
+                <option value="">None</option>
+                <% SecretionSignal.active.each do |signal| %>
+                  <option value="<%= signal.sequence %>"><%= signal.display_name %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label class="form-label">N-Terminal Tag</label>
+              <select name="enhanced_protein_expression_form[proteins_attributes][\${number-1}][n_terminal_tag]"
+                      class="form-select">
+                <option value="">None</option>
+                <% ProteinTag.active.n_terminal.each do |tag| %>
+                  <option value="<%= tag.sequence %>"><%= tag.display_name %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label class="form-label">C-Terminal Tag</label>
+              <select name="enhanced_protein_expression_form[proteins_attributes][\${number-1}][c_terminal_tag]"
+                      class="form-select">
+                <option value="">None</option>
+                <% ProteinTag.active.c_terminal.each do |tag| %>
+                  <option value="<%= tag.sequence %>"><%= tag.display_name %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    \`;
+
+    // Add remove functionality
+    const removeBtn = div.querySelector('.remove-protein-btn');
+    removeBtn.addEventListener('click', function() {
+      div.remove();
+      proteinCount--;
+      updateProteinNumbers();
+      updateRemoveButtons();
+    });
+
+    // Add sequence formatting
+    const sequenceInput = div.querySelector('.sequence-input');
+    sequenceInput.addEventListener('input', function() {
+      this.value = this.value.toUpperCase().replace(/[^ARNDCEQGHILKMFPSTWYV*\\s]/g, '');
+    });
+
+    return div;
+  }
+
+  function updateProteinNumbers() {
+    const forms = proteinsContainer.querySelectorAll('.protein-form');
+    forms.forEach((form, index) => {
+      const numberSpan = form.querySelector('.protein-number');
+      if (numberSpan) {
+        numberSpan.textContent = index + 1;
+      }
+
+      // Update input names
+      const inputs = form.querySelectorAll('input, select, textarea');
+      inputs.forEach(input => {
+        if (input.name) {
+          input.name = input.name.replace(/\\[\\d+\\]/, \`[\${index}]\`);
+        }
+      });
+    });
+  }
+
+  function updateRemoveButtons() {
+    const forms = proteinsContainer.querySelectorAll('.protein-form');
+    const removeButtons = proteinsContainer.querySelectorAll('.remove-protein-btn');
+
+    removeButtons.forEach(btn => {
+      btn.style.display = forms.length > 1 ? 'block' : 'none';
+    });
+  }
+});
+</script>

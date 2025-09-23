@@ -88,6 +88,10 @@ PichiaStrain.find_or_create_by!(name: "GS115") do |ps|
   ps.product_status = active_status
 end
 
+# Load protein expression components
+load Rails.root.join('db', 'seeds', 'secretion_signals.rb')
+load Rails.root.join('db', 'seeds', 'protein_tags.rb')
+
 puts "Database seeded successfully!"
 puts "Created:"
 puts "- #{ProductStatus.count} product statuses"
@@ -98,3 +102,5 @@ puts "- #{HostOrganism.count} host organisms"
 puts "- #{StrainType.count} strain types"
 puts "- #{Vector.count} vectors"
 puts "- #{PichiaStrain.count} Pichia strains"
+puts "- #{SecretionSignal.count} secretion signals"
+puts "- #{ProteinTag.count} protein tags"

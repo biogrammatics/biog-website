@@ -15,6 +15,8 @@ Rails.application.routes.draw do
       get :services
       get :protein_expression
       post :protein_expression
+      get :enhanced_protein_expression
+      post :enhanced_protein_expression
     end
     member do
       patch :approve_dna_sequence

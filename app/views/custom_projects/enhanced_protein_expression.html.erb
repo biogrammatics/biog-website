@@ -84,7 +84,7 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-check">
-                  <%= form.radio_button :input_method, "manual", class: "form-check-input", id: "input_manual" %>
+                  <%= form.radio_button :input_method, "manual", class: "form-check-input", id: "input_manual", checked: true %>
                   <%= form.label :input_method, "Manual Entry", class: "form-check-label", for: "input_manual" %>
                   <small class="d-block text-muted">Enter protein sequences manually with modification tools</small>
                 </div>
@@ -356,6 +356,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let proteinCount = 0;
 
+  // Make server data available to JavaScript
+  const secretionSignals = <%= raw SecretionSignal.active.map { |s| { name: s.display_name, value: s.sequence } }.to_json %>;
+  const nTerminalTags = <%= raw ProteinTag.active.n_terminal.map { |t| { name: t.display_name, value: t.sequence } }.to_json %>;
+  const cTerminalTags = <%= raw ProteinTag.active.c_terminal.map { |t| { name: t.display_name, value: t.sequence } }.to_json %>;
+
   // Handle custom strain selection
   if (customStrainCheckbox) {
     customStrainCheckbox.addEventListener('change', function() {
@@ -379,11 +384,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Initialize with manual input
-  const defaultMethod = document.querySelector('input[name="enhanced_protein_expression_form[input_method]"]:checked');
-  if (defaultMethod && defaultMethod.value === 'manual') {
-    addProteinForm();
-  }
+  // Initialize with manual input (default)
+  manualSection.style.display = 'block';
+  fastaSection.style.display = 'none';
+  addProteinForm();
 
   // Add protein form
   addProteinBtn.addEventListener('click', addProteinForm);
@@ -398,6 +402,25 @@ document.addEventListener('DOMContentLoaded', function() {
   function createProteinForm(number) {
     const div = document.createElement('div');
     div.className = 'protein-form card mb-3';
+
+    // Build secretion signal options
+    let secretionSignalOptions = '<option value="">None</option>';
+    secretionSignals.forEach(signal => {
+      secretionSignalOptions += `<option value="${signal.value}">${signal.name}</option>`;
+    });
+
+    // Build N-terminal tag options
+    let nTerminalOptions = '<option value="">None</option>';
+    nTerminalTags.forEach(tag => {
+      nTerminalOptions += `<option value="${tag.value}">${tag.name}</option>`;
+    });
+
+    // Build C-terminal tag options
+    let cTerminalOptions = '<option value="">None</option>';
+    cTerminalTags.forEach(tag => {
+      cTerminalOptions += `<option value="${tag.value}">${tag.name}</option>`;
+    });
+
     div.innerHTML = \`
       <div class="card-header d-flex justify-content-between align-items-center">
         <h6 class="mb-0">Protein \${number}</h6>
@@ -437,10 +460,7 @@ document.addEventListener('DOMContentLoaded', function() {
               <label class="form-label">Secretion Signal</label>
               <select name="enhanced_protein_expression_form[proteins_attributes][\${number-1}][secretion_signal]"
                       class="form-select">
-                <option value="">None</option>
-                <% SecretionSignal.active.each do |signal| %>
-                  <option value="<%= signal.sequence %>"><%= signal.display_name %></option>
-                <% end %>
+                \${secretionSignalOptions}
               </select>
             </div>
           </div>
@@ -449,10 +469,7 @@ document.addEventListener('DOMContentLoaded', function() {
               <label class="form-label">N-Terminal Tag</label>
               <select name="enhanced_protein_expression_form[proteins_attributes][\${number-1}][n_terminal_tag]"
                       class="form-select">
-                <option value="">None</option>
-                <% ProteinTag.active.n_terminal.each do |tag| %>
-                  <option value="<%= tag.sequence %>"><%= tag.display_name %></option>
-                <% end %>
+                \${nTerminalOptions}
               </select>
             </div>
           </div>
@@ -461,10 +478,7 @@ document.addEventListener('DOMContentLoaded', function() {
               <label class="form-label">C-Terminal Tag</label>
               <select name="enhanced_protein_expression_form[proteins_attributes][\${number-1}][c_terminal_tag]"
                       class="form-select">
-                <option value="">None</option>
-                <% ProteinTag.active.c_terminal.each do |tag| %>
-                  <option value="<%= tag.sequence %>"><%= tag.display_name %></option>
-                <% end %>
+                \${cTerminalOptions}
               </select>
             </div>
           </div>

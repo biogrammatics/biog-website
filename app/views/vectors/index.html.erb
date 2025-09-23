@@ -18,10 +18,6 @@
 <!-- Toggle between categories -->
 <div class="d-flex justify-content-center mb-4">
   <div class="vector-type-toggle" role="group" aria-label="Category toggle">
-    <%= link_to vectors_path(vector_type: @vector_type, category: 'all'),
-                class: "btn #{@category == 'all' ? 'btn-primary' : 'btn-outline-secondary'}" do %>
-      <i class="bi bi-grid-3x3"></i> All Vectors
-    <% end %>
     <%= link_to vectors_path(vector_type: @vector_type, category: 'expression'),
                 class: "btn #{@category == 'expression' ? 'btn-primary' : 'btn-outline-secondary'}" do %>
       <i class="bi bi-cpu"></i> Protein Expression
@@ -37,21 +33,15 @@
   <div class="alert alert-info" role="alert">
     <% if @category == 'expression' %>
       <% if @vector_type == 'subscription' %>
-        No protein expression vectors are currently available through Twist subscription. Please check back later or view other categories.
+        No protein expression vectors are currently available through Twist subscription. Please check back later or try genome engineering vectors.
       <% else %>
-        No protein expression vectors are currently available for sale. Please check back later or view other categories.
-      <% end %>
-    <% elsif @category == 'engineering' %>
-      <% if @vector_type == 'subscription' %>
-        No genome engineering vectors are currently available through Twist subscription. Please check back later or view other categories.
-      <% else %>
-        No genome engineering vectors are currently available for sale. Please check back later or view other categories.
+        No protein expression vectors are currently available for sale. Please check back later or try genome engineering vectors.
       <% end %>
     <% else %>
       <% if @vector_type == 'subscription' %>
-        No subscription vectors are currently available through Twist. Please check back later or view our vectors for sale.
+        No genome engineering vectors are currently available through Twist subscription. Please check back later or try protein expression vectors.
       <% else %>
-        No vectors are currently available for sale. Please check back later or view our subscription vectors.
+        No genome engineering vectors are currently available for sale. Please check back later or try protein expression vectors.
       <% end %>
     <% end %>
   </div>

@@ -12,10 +12,10 @@ class Vector < ApplicationRecord
   has_one_attached :map_image
 
   validates :name, presence: true, uniqueness: true
+  validates :category, presence: true, inclusion: { in: CATEGORIES }
   validates :sale_price, presence: true, if: :available_for_sale?
   validates :subscription_price, presence: true, if: :available_for_subscription?
 
-  before_validation :normalize_category
   before_destroy :check_if_can_be_deleted
 
   scope :available_for_sale, -> { where(available_for_sale: true) }
@@ -184,10 +184,6 @@ class Vector < ApplicationRecord
   end
 
   private
-
-  def normalize_category
-    self.category = nil if category.blank?
-  end
 
   def check_if_can_be_deleted
     if has_been_purchased?

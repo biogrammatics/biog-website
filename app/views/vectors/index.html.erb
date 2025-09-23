@@ -1,9 +1,27 @@
 <h1>Vector Collection</h1>
 <p class="lead">Browse our comprehensive collection of Pichia pastoris vectors for protein expression and genome engineering</p>
 
+<!-- Toggle between sale and subscription vectors -->
+<div class="d-flex justify-content-center mb-4">
+  <div class="vector-type-toggle" role="group" aria-label="Vector type toggle">
+    <%= link_to vectors_path(vector_type: 'sale'),
+                class: "btn #{@vector_type == 'sale' ? 'btn-primary' : 'btn-outline-secondary'}" do %>
+      <i class="bi bi-cart"></i> For Sale
+    <% end %>
+    <%= link_to vectors_path(vector_type: 'subscription'),
+                class: "btn #{@vector_type == 'subscription' ? 'btn-primary' : 'btn-outline-secondary'}" do %>
+      <i class="bi bi-arrow-repeat"></i> Subscription (Twist)
+    <% end %>
+  </div>
+</div>
+
 <% if @vectors.empty? %>
   <div class="alert alert-info" role="alert">
-    No vectors are currently available. Please check back later.
+    <% if @vector_type == 'subscription' %>
+      No subscription vectors are currently available through Twist. Please check back later or view our vectors for sale.
+    <% else %>
+      No vectors are currently available for sale. Please check back later or view our subscription vectors.
+    <% end %>
   </div>
 <% else %>
   <% @vectors_by_promoter.each do |promoter, vectors| %>
@@ -96,11 +114,19 @@
                   
                   <div class="d-flex justify-content-between align-items-center mt-auto">
                     <div>
-                      <% if vector.sale_price %>
-                        <strong class="text-bio-success measurement">$<%= number_with_precision(vector.sale_price, precision: 0) %></strong>
-                      <% end %>
-                      <% if vector.subscription_price %>
-                        <br><small class="text-muted measurement">Subscription: $<%= number_with_precision(vector.subscription_price, precision: 0) %></small>
+                      <% if @vector_type == 'subscription' %>
+                        <% if vector.subscription_price %>
+                          <strong class="text-bio-success measurement">$<%= number_with_precision(vector.subscription_price, precision: 0) %></strong>
+                          <small class="text-muted d-block">per subscription</small>
+                        <% else %>
+                          <small class="text-muted">Contact for pricing</small>
+                        <% end %>
+                      <% else %>
+                        <% if vector.sale_price %>
+                          <strong class="text-bio-success measurement">$<%= number_with_precision(vector.sale_price, precision: 0) %></strong>
+                        <% else %>
+                          <small class="text-muted">Contact for pricing</small>
+                        <% end %>
                       <% end %>
                     </div>
                     <%= link_to "View Details", vector, class: "btn btn-sm btn-primary" %>

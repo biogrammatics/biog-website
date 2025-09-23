@@ -2,9 +2,19 @@ class VectorsController < ApplicationController
   allow_unauthenticated_access
 
   def index
-    @vectors = Vector.includes(:promoter, :selection_marker, :vector_type, :product_status)
+    # Get vector type from params (default to 'sale')
+    @vector_type = params[:vector_type] || "sale"
+
+    # Base query with includes
+    base_query = Vector.includes(:promoter, :selection_marker, :vector_type, :product_status)
       .joins(:product_status).where(product_statuses: { is_available: true })
-      .order(:name)
+
+    # Filter based on vector type
+    @vectors = if @vector_type == "subscription"
+      base_query.where(available_for_subscription: true).order(:name)
+    else
+      base_query.where(available_for_sale: true).order(:name)
+    end
 
     # Group vectors by promoter with specific ordering - "None" promoter last
     @vectors_by_promoter = {}
@@ -28,6 +38,7 @@ class VectorsController < ApplicationController
     # Handle case where models/tables might not exist in test
     @vectors = []
     @vectors_by_promoter = {}
+    @vector_type = "sale"
   end
 
   def show

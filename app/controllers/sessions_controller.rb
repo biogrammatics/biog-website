@@ -46,46 +46,21 @@ class SessionsController < ApplicationController
   end
 
   def transfer_session_cart_to_user(user)
-    return unless session[:cart].present?
+    session_cart_service = SessionCartService.new(session)
+    return if session_cart_service.empty?
 
-    session_cart = session[:cart]
     user_cart = user.current_cart
+    cart_items = session_cart_service.cart_items
 
-    session_cart.each do |key, item_data|
-      # Ensure key is in the expected format (e.g., "Vector_1")
-      next unless key.is_a?(String) && key.include?("_")
-
-      parts = key.split("_", 2)
-      next if parts.length != 2
-
-      item_type, item_id = parts
-
-      # Validate item_data structure
-      next unless item_data.is_a?(Hash) && item_data["quantity"].present?
-
+    cart_items.each do |cart_item|
       begin
-        case item_type
-        when "Vector"
-          item = Vector.find(item_id)
-        when "PichiaStrain"
-          item = PichiaStrain.find(item_id)
-        else
-          # Skip unknown item types instead of failing
-          next
-        end
-
-        user_cart.add_item(item, item_data["quantity"])
-      rescue ActiveRecord::RecordNotFound
-        # Item no longer exists, skip it
-        next
+        user_cart.add_item(cart_item.item, cart_item.quantity)
       rescue StandardError => e
-        # Log unexpected errors but don't fail the entire transfer
-        Rails.logger.warn "Failed to transfer cart item #{key}: #{e.message}"
+        Rails.logger.warn "Failed to transfer cart item #{cart_item.session_key}: #{e.message}"
         next
       end
     end
 
-    # Clear session cart after transfer
-    session[:cart] = {}
+    session_cart_service.clear
   end
 end

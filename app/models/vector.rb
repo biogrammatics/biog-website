@@ -75,5 +75,4 @@ class Vector < ApplicationRecord
       self.category = "Heterologous Protein Expression"
     end
   end
-
 end

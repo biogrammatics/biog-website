@@ -1,6 +1,4 @@
-class Admin::SelectionMarkersController < ApplicationController
-  before_action :require_authentication
-  before_action :require_admin
+class Admin::SelectionMarkersController < Admin::BaseController
   before_action :set_selection_marker, only: [ :show, :edit, :update, :destroy ]
 
   def index
@@ -52,9 +50,5 @@ class Admin::SelectionMarkersController < ApplicationController
 
   def selection_marker_params
     params.require(:selection_marker).permit(:name, :resistance, :concentration)
-  end
-
-  def require_admin
-    redirect_to root_path, alert: "Not authorized" unless admin_signed_in?
   end
 end

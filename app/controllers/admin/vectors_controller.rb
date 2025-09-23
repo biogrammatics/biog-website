@@ -1,5 +1,4 @@
-class Admin::VectorsController < ApplicationController
-  before_action :require_admin!
+class Admin::VectorsController < Admin::BaseController
   before_action :set_vector, only: [ :show, :edit, :update, :destroy, :remove_file, :remove_map ]
   before_action :load_form_data, only: [ :new, :edit, :create, :update ]
 

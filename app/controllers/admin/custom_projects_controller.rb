@@ -1,5 +1,4 @@
-class Admin::CustomProjectsController < ApplicationController
-  before_action :require_admin!
+class Admin::CustomProjectsController < Admin::BaseController
   before_action :set_custom_project, only: [ :show, :edit, :update, :update_status, :destroy ]
 
   def index

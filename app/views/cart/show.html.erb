@@ -54,28 +54,28 @@
                     <% @cart_items.each do |cart_item| %>
                       <tr>
                         <td>
-                          <strong><%= cart_item[:item].name %></strong>
+                          <strong><%= cart_item.item.name %></strong>
                         </td>
                         <td>
-                          <%= cart_item[:item].description %>
+                          <%= cart_item.item.description %>
                         </td>
                         <td>
-                          $<%= cart_item[:price] %>
+                          $<%= cart_item.price %>
                         </td>
                         <td>
                           <%= form_with url: update_item_cart_path, method: :patch, local: true, class: "d-inline" do |f| %>
-                            <%= f.hidden_field :item_key, value: cart_item[:key] %>
-                            <%= f.number_field :quantity, value: cart_item[:quantity], min: 1, class: "form-control form-control-sm d-inline", style: "width: 80px;" %>
+                            <%= f.hidden_field :item_key, value: cart_item.session_key %>
+                            <%= f.number_field :quantity, value: cart_item.quantity, min: 1, class: "form-control form-control-sm d-inline", style: "width: 80px;" %>
                             <%= f.submit "Update", class: "btn btn-sm btn-outline-primary ms-2" %>
                           <% end %>
                         </td>
                         <td>
-                          <strong>$<%= cart_item[:quantity] * cart_item[:price].to_f %></strong>
+                          <strong>$<%= cart_item.total_price %></strong>
                         </td>
                         <td>
-                          <%= button_to "Remove", remove_item_cart_path, params: { item_key: cart_item[:key] }, method: :delete, 
+                          <%= button_to "Remove", remove_item_cart_path, params: { item_key: cart_item.session_key }, method: :delete,
                               class: "btn btn-sm btn-outline-danger",
-                              confirm: "Are you sure you want to remove #{cart_item[:item].name} from your cart?" %>
+                              confirm: "Are you sure you want to remove #{cart_item.item.name} from your cart?" %>
                         </td>
                       </tr>
                     <% end %>
@@ -88,7 +88,7 @@
                       <% if authenticated? %>
                         $<%= @cart.total_price %>
                       <% else %>
-                        $<%= @cart_items.sum { |item| item[:quantity] * item[:price].to_f } %>
+                        $<%= @cart_items.sum(&:total_price) %>
                       <% end %>
                     </th>
                     <th></th>

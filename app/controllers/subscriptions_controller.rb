@@ -1,6 +1,6 @@
 class SubscriptionsController < ApplicationController
   allow_unauthenticated_access only: [ :index ]
-  before_action :authenticate_user!, except: [ :index ]
+  before_action :require_authentication, except: [ :index ]
   before_action :set_subscription, only: [ :show, :add_vector ]
 
   def index
@@ -70,11 +70,5 @@ class SubscriptionsController < ApplicationController
 
   def subscription_params
     params.require(:subscription).permit(:twist_username, :onboarding_fee, :minimum_prorated_fee)
-  end
-
-  def authenticate_user!
-    unless authenticated?
-      redirect_to new_session_path, alert: "Please sign in to access subscriptions."
-    end
   end
 end

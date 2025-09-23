@@ -1,6 +1,4 @@
-class Admin::UsersController < ApplicationController
-  before_action :require_authentication
-  before_action :require_admin
+class Admin::UsersController < Admin::BaseController
   before_action :set_user, only: [ :show, :edit, :update, :destroy ]
 
   def index
@@ -63,9 +61,5 @@ class Admin::UsersController < ApplicationController
   def user_params
     # Admin field is handled separately for security reasons
     params.require(:user).permit(:email_address, :first_name, :last_name, :password, :password_confirmation, :twist_username)
-  end
-
-  def require_admin
-    redirect_to root_path, alert: "Not authorized" unless admin_signed_in?
   end
 end

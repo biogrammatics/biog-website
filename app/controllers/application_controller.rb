@@ -23,8 +23,7 @@ class ApplicationController < ActionController::Base
     if authenticated?
       Current.user.current_cart.total_items
     else
-      session_cart = session[:cart] || {}
-      session_cart.sum { |key, item_data| item_data["quantity"] || 0 }
+      SessionCartService.new(session).total_items
     end
   end
   helper_method :current_cart_items_count

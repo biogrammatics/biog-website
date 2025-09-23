@@ -1,6 +1,4 @@
-class Admin::PromotersController < ApplicationController
-  before_action :require_authentication
-  before_action :require_admin
+class Admin::PromotersController < Admin::BaseController
   before_action :set_promoter, only: [ :show, :edit, :update, :destroy ]
 
   def index
@@ -52,9 +50,5 @@ class Admin::PromotersController < ApplicationController
 
   def promoter_params
     params.require(:promoter).permit(:name, :full_name, :inducible, :strength)
-  end
-
-  def require_admin
-    redirect_to root_path, alert: "Not authorized" unless admin_signed_in?
   end
 end

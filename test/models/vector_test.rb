@@ -140,7 +140,7 @@ class VectorTest < ActiveSupport::TestCase
   # Feature list tests
   test "feature_list returns array of features" do
     @vector.features = "Feature 1, Feature 2, Feature 3"
-    expected = ["Feature 1", "Feature 2", "Feature 3"]
+    expected = [ "Feature 1", "Feature 2", "Feature 3" ]
     assert_equal expected, @vector.feature_list
   end
 

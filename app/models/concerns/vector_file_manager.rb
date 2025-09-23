@@ -39,7 +39,7 @@ module VectorFileManager
     return map_image unless map_image.variable?
 
     generate_image_variant(
-      resize_to_fill: [612, 452],
+      resize_to_fill: [ 612, 452 ],
       format: :webp,
       saver: { quality: 85 }
     )
@@ -58,7 +58,7 @@ module VectorFileManager
     return map_image unless map_image.variable?
 
     generate_image_variant(
-      resize_to_limit: [3087, 1620],
+      resize_to_limit: [ 3087, 1620 ],
       format: :webp,
       saver: { quality: 90 }
     )

@@ -11,7 +11,7 @@ class CustomProjectsController < ApplicationController
   end
 
   def new
-    @custom_project = authenticated? ? Current.user.custom_projects.build : CustomProject.new
+    @form = CustomProjectForm.new(authenticated? ? Current.user : nil)
   end
 
   # New action for protein expression strain requests
@@ -23,12 +23,9 @@ class CustomProjectsController < ApplicationController
         return
       end
 
-      @custom_project = Current.user.custom_projects.build(protein_expression_params)
-      @custom_project.project_type = "protein_expression"
+      @form = ProteinExpressionForm.new(Current.user, protein_expression_params)
 
-      if @custom_project.save
-        # Generate DNA sequence (simulated for now)
-        generate_dna_sequence(@custom_project)
+      if @custom_project = @form.save
         redirect_to @custom_project, notice: "Protein expression strain request submitted successfully! We'll generate the DNA sequence and contact you for approval."
       else
         @expression_vectors = Vector.available.protein_expression
@@ -36,15 +33,15 @@ class CustomProjectsController < ApplicationController
       end
     else
       # Show form
-      @custom_project = authenticated? ? Current.user.custom_projects.build : CustomProject.new
+      @form = ProteinExpressionForm.new(authenticated? ? Current.user : nil)
       @expression_vectors = Vector.available.protein_expression
     end
   end
 
   def create
-    @custom_project = Current.user.custom_projects.build(custom_project_params)
+    @form = CustomProjectForm.new(Current.user, custom_project_params)
 
-    if @custom_project.save
+    if @custom_project = @form.save
       redirect_to @custom_project, notice: "Custom project was successfully created."
     else
       render :new, status: :unprocessable_entity
@@ -108,29 +105,6 @@ class CustomProjectsController < ApplicationController
     params.require(:custom_project).permit(
       :project_name, :protein_name, :protein_description,
       :amino_acid_sequence, :selected_vector_id, :notes
-    )
-  end
-
-  # Simulate DNA sequence generation (in production, this would use actual codon optimization)
-  def generate_dna_sequence(project)
-    return unless project.amino_acid_sequence.present?
-
-    # Simple codon table for demonstration (E. coli optimized)
-    codon_table = {
-      "M" => "ATG", "A" => "GCA", "R" => "CGC", "N" => "AAC", "D" => "GAC",
-      "C" => "TGC", "E" => "GAA", "Q" => "CAG", "G" => "GGC", "H" => "CAC",
-      "I" => "ATC", "L" => "CTG", "K" => "AAG", "F" => "TTC", "P" => "CCC",
-      "S" => "TCC", "T" => "ACC", "W" => "TGG", "Y" => "TAC", "V" => "GTC",
-      "*" => "TAA"
-    }
-
-    cleaned_sequence = project.clean_amino_acid_sequence
-    dna_sequence = cleaned_sequence.chars.map { |aa| codon_table[aa] || "NNN" }.join
-
-    project.update!(
-      dna_sequence: dna_sequence,
-      status: "awaiting_approval",
-      codon_optimization_notes: "Generated using BioGrammatics proprietary Pichia pastoris codon optimization protocol. Sequence optimized for high expression in Pichia."
     )
   end
 end

@@ -18,7 +18,7 @@ namespace :vectors do
     puts "Both sale and subscription: #{Vector.where(available_for_sale: true, available_for_subscription: true).count}"
 
     puts "\n--- Vectors without categories ---"
-    no_category = Vector.where(category: [nil, ""])
+    no_category = Vector.where(category: [ nil, "" ])
     if no_category.any?
       puts "Found #{no_category.count} vectors without categories:"
       no_category.limit(10).each do |vector|
@@ -30,7 +30,7 @@ namespace :vectors do
     end
 
     puts "\n--- Sample of vectors by category ---"
-    ["Heterologous Protein Expression", "Genome Engineering"].each do |cat|
+    [ "Heterologous Protein Expression", "Genome Engineering" ].each do |cat|
       puts "\n#{cat}:"
       Vector.where(category: cat).limit(3).each do |vector|
         puts "  - #{vector.name} (Sale: $#{vector.sale_price || 'N/A'}, Sub: $#{vector.subscription_price || 'N/A'})"
@@ -44,7 +44,7 @@ namespace :vectors do
   task fix_categories: :environment do
     puts "\n=== FIXING VECTOR CATEGORIES ==="
 
-    no_category = Vector.where(category: [nil, ""])
+    no_category = Vector.where(category: [ nil, "" ])
     if no_category.any?
       puts "Found #{no_category.count} vectors without categories"
       puts "Setting them to 'Heterologous Protein Expression'..."

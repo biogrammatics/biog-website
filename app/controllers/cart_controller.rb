@@ -6,7 +6,7 @@ class CartController < ApplicationController
     if authenticated?
       @cart_items = @cart.cart_items.includes(:item)
     else
-      @cart_items = session_cart_items
+      @cart_items = session_cart_service.cart_items
     end
   end
 
@@ -29,7 +29,7 @@ class CartController < ApplicationController
     if authenticated?
       @cart.add_item(item, quantity)
     else
-      add_item_to_session(item, quantity)
+      session_cart_service.add_item(item, quantity)
     end
 
     redirect_to cart_path, notice: "#{item.name} added to cart!"
@@ -52,7 +52,8 @@ class CartController < ApplicationController
         redirect_to cart_path, notice: "Item removed from cart!"
       end
     else
-      update_session_item(params[:item_key], params[:quantity].to_i)
+      session_cart_service.update_item(params[:item_key], params[:quantity].to_i)
+      redirect_to cart_path, notice: quantity > 0 ? "Cart updated!" : "Item removed from cart!"
     end
   rescue ActiveRecord::RecordNotFound
     redirect_to cart_path, alert: "Cart item not found."
@@ -65,7 +66,8 @@ class CartController < ApplicationController
       cart_item.destroy
       redirect_to cart_path, notice: "#{item_name} removed from cart!"
     else
-      remove_session_item(params[:item_key])
+      session_cart_service.remove_item(params[:item_key])
+      redirect_to cart_path, notice: "Item removed from cart!"
     end
   rescue ActiveRecord::RecordNotFound
     redirect_to cart_path, alert: "Cart item not found."
@@ -75,7 +77,7 @@ class CartController < ApplicationController
     if authenticated?
       @cart.cart_items.destroy_all
     else
-      session[:cart] = {}
+      session_cart_service.clear
     end
     redirect_to cart_path, notice: "Cart cleared!"
   end
@@ -96,78 +98,7 @@ class CartController < ApplicationController
     @cart = authenticated? ? Current.user.current_cart : nil
   end
 
-  # Session cart methods for guest users
-  def session_cart
-    session[:cart] ||= {}
-  end
-
-  def session_cart_items
-    items = []
-    session_cart.each do |key, item_data|
-      item_type, item_id = key.split("_")
-
-      begin
-        case item_type
-        when "Vector"
-          item = Vector.find(item_id)
-        when "PichiaStrain"
-          item = PichiaStrain.find(item_id)
-        else
-          next
-        end
-
-        items << {
-          key: key,
-          item: item,
-          quantity: item_data["quantity"],
-          price: item_data["price"]
-        }
-      rescue ActiveRecord::RecordNotFound
-        # Item no longer exists, remove from session
-        session_cart.delete(key)
-      end
-    end
-    items
-  end
-
-  def add_item_to_session(item, quantity)
-    key = "#{item.class.name}_#{item.id}"
-
-    if session_cart[key]
-      session_cart[key]["quantity"] += quantity
-    else
-      session_cart[key] = {
-        "quantity" => quantity,
-        "price" => item.sale_price
-      }
-    end
-
-    session.mark_as_loaded!
-  end
-
-  def update_session_item(key, quantity)
-    if quantity > 0
-      session_cart[key]["quantity"] = quantity
-      redirect_to cart_path, notice: "Cart updated!"
-    else
-      session_cart.delete(key)
-      redirect_to cart_path, notice: "Item removed from cart!"
-    end
-    session.mark_as_loaded!
-  end
-
-  def remove_session_item(key)
-    item_data = session_cart[key]
-    session_cart.delete(key)
-    session.mark_as_loaded!
-    redirect_to cart_path, notice: "Item removed from cart!"
-  end
-
-  def session_cart_total_items
-    session_cart.sum { |key, item_data| item_data["quantity"] }
-  end
-
-  def session_cart_total_price
-    session_cart.sum { |key, item_data| item_data["quantity"] * item_data["price"] }
+  def session_cart_service
+    @session_cart_service ||= SessionCartService.new(session)
   end
 end

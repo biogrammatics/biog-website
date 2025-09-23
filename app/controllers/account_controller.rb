@@ -1,5 +1,5 @@
 class AccountController < ApplicationController
-  before_action :authenticate_user!
+  before_action :require_authentication
 
   def show
     @user = Current.user
@@ -14,10 +14,4 @@ class AccountController < ApplicationController
   end
 
   private
-
-  def authenticate_user!
-    unless authenticated?
-      redirect_to new_session_path, alert: "Please sign in to access your account."
-    end
-  end
 end

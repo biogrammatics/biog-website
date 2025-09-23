@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_23_200012) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_23_202331) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -55,6 +55,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_200012) do
     t.boolean "is_default"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_addresses_on_created_at"
+    t.index ["user_id", "address_type", "created_at"], name: "index_addresses_on_user_id_and_address_type_and_created_at"
+    t.index ["user_id", "created_at"], name: "index_addresses_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
@@ -98,9 +101,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_200012) do
     t.string "protein_name"
     t.decimal "protein_molecular_weight"
     t.text "protein_description"
+    t.index ["created_at"], name: "index_custom_projects_on_created_at"
     t.index ["project_type"], name: "index_custom_projects_on_project_type"
     t.index ["selected_vector_id"], name: "index_custom_projects_on_selected_vector_id"
     t.index ["status"], name: "index_custom_projects_on_status"
+    t.index ["user_id", "created_at"], name: "index_custom_projects_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_custom_projects_on_user_id"
     t.check_constraint "estimated_cost > 0 OR estimated_cost IS NULL", name: "custom_projects_estimated_cost_positive"
     t.check_constraint "project_type IN ('strain_only', 'strain_and_testing', 'full_service', 'consultation', 'protein_expression') OR project_type IS NULL", name: "custom_projects_project_type_check"
@@ -143,6 +148,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_200012) do
     t.datetime "ordered_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_orders_on_created_at"
+    t.index ["user_id", "created_at"], name: "index_orders_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -246,7 +253,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_200012) do
     t.decimal "minimum_prorated_fee", precision: 8, scale: 2, default: "50.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_subscriptions_on_created_at"
     t.index ["status"], name: "index_subscriptions_on_status"
+    t.index ["user_id", "created_at"], name: "index_subscriptions_on_user_id_and_created_at"
     t.index ["user_id", "status"], name: "index_subscriptions_on_user_id_and_status", where: "status = 'active'"
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
     t.check_constraint "minimum_prorated_fee > 0", name: "subscriptions_minimum_prorated_fee_positive"

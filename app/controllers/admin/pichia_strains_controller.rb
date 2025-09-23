@@ -1,5 +1,4 @@
-class Admin::PichiaStrainsController < ApplicationController
-  before_action :require_admin!
+class Admin::PichiaStrainsController < Admin::BaseController
   before_action :set_pichia_strain, only: [ :show, :edit, :update, :destroy ]
   before_action :load_form_data, only: [ :new, :edit, :create, :update ]
 

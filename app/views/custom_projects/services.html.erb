@@ -1,0 +1,209 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <!-- Header Section -->
+      <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold text-primary mb-3">
+          <i class="fas fa-cogs me-3"></i>
+          Choose Your Service
+        </h1>
+        <p class="lead text-muted">
+          Select the custom service that best fits your protein expression needs
+        </p>
+      </div>
+
+      <!-- Service Cards -->
+      <div class="row g-4 mb-5">
+        <!-- Protein Expression Service -->
+        <div class="col-lg-6">
+          <div class="card h-100 border-primary shadow-sm">
+            <div class="card-header bg-primary text-white">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-dna fa-2x me-3"></i>
+                <div>
+                  <h4 class="mb-0">Protein Expression Strain</h4>
+                  <small class="opacity-75">Specialized amino acid to strain service</small>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <h6 class="text-primary mb-3">Perfect for:</h6>
+              <ul class="list-unstyled mb-4">
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Converting amino acid sequences to expression strains</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Codon optimization for Pichia pastoris</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Vector selection and cloning</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Ready-to-use expression strains</li>
+              </ul>
+
+              <div class="bg-light p-3 rounded mb-4">
+                <h6 class="fw-bold mb-2">Service Includes:</h6>
+                <div class="row">
+                  <div class="col-6">
+                    <small class="d-block">✓ Sequence analysis</small>
+                    <small class="d-block">✓ Codon optimization</small>
+                    <small class="d-block">✓ DNA synthesis</small>
+                  </div>
+                  <div class="col-6">
+                    <small class="d-block">✓ Vector cloning</small>
+                    <small class="d-block">✓ Strain transformation</small>
+                    <small class="d-block">✓ Quality verification</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center mb-3">
+                <span class="badge bg-success fs-6 px-3 py-2">Starting at $750</span>
+                <br>
+                <small class="text-muted">Final pricing depends on complexity</small>
+              </div>
+            </div>
+            <div class="card-footer bg-transparent">
+              <%= link_to "Start Protein Expression Request",
+                  protein_expression_custom_projects_path,
+                  class: "btn btn-primary btn-lg w-100" %>
+              <small class="d-block text-center text-muted mt-2">
+                <i class="fas fa-clock me-1"></i>Typical turnaround: 2-3 weeks
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <!-- General Custom Projects -->
+        <div class="col-lg-6">
+          <div class="card h-100 border-info shadow-sm">
+            <div class="card-header bg-info text-white">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-project-diagram fa-2x me-3"></i>
+                <div>
+                  <h4 class="mb-0">Custom Project</h4>
+                  <small class="opacity-75">Tailored solutions for complex needs</small>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <h6 class="text-info mb-3">Perfect for:</h6>
+              <ul class="list-unstyled mb-4">
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Complex multi-step projects</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Expression optimization studies</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Custom strain development</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Consultation and troubleshooting</li>
+              </ul>
+
+              <div class="bg-light p-3 rounded mb-4">
+                <h6 class="fw-bold mb-2">Service Options:</h6>
+                <div class="row">
+                  <div class="col-12">
+                    <small class="d-block">• Strain Generation Only</small>
+                    <small class="d-block">• Strain + Expression Testing</small>
+                    <small class="d-block">• Full Service (Design to Delivery)</small>
+                    <small class="d-block">• Expert Consultation</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center mb-3">
+                <span class="badge bg-info fs-6 px-3 py-2">Custom Pricing</span>
+                <br>
+                <small class="text-muted">Quote provided within 24-48 hours</small>
+              </div>
+            </div>
+            <div class="card-footer bg-transparent">
+              <%= link_to "Start Custom Project",
+                  new_custom_project_path,
+                  class: "btn btn-info btn-lg w-100" %>
+              <small class="d-block text-center text-muted mt-2">
+                <i class="fas fa-clock me-1"></i>Timeline varies by project scope
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison Section -->
+      <div class="row justify-content-center mb-5">
+        <div class="col-lg-10">
+          <div class="card">
+            <div class="card-header text-center">
+              <h5 class="mb-0">Service Comparison</h5>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th class="text-center">Protein Expression</th>
+                      <th class="text-center">Custom Project</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Best for</strong></td>
+                      <td class="text-center">Known amino acid sequences</td>
+                      <td class="text-center">Complex or undefined requirements</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Input required</strong></td>
+                      <td class="text-center">Amino acid sequence</td>
+                      <td class="text-center">Project description</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Pricing</strong></td>
+                      <td class="text-center">Fixed starting price</td>
+                      <td class="text-center">Custom quote</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Timeline</strong></td>
+                      <td class="text-center">2-3 weeks standard</td>
+                      <td class="text-center">Varies by scope</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Process</strong></td>
+                      <td class="text-center">Streamlined workflow</td>
+                      <td class="text-center">Consultation-based</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Help Section -->
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="alert alert-light border">
+            <div class="text-center">
+              <h5 class="alert-heading">
+                <i class="fas fa-question-circle me-2"></i>
+                Not sure which service you need?
+              </h5>
+              <p class="mb-3">
+                Our team is here to help you choose the right solution for your protein expression needs.
+              </p>
+              <div class="d-flex justify-content-center gap-3">
+                <a href="mailto:info@biogrammatics.com" class="btn btn-outline-primary">
+                  <i class="fas fa-envelope me-1"></i>
+                  Email Us
+                </a>
+                <a href="tel:+1234567890" class="btn btn-outline-primary">
+                  <i class="fas fa-phone me-1"></i>
+                  Call Us
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="text-center mt-4 mb-5">
+        <%= link_to "← Back to Home", root_path, class: "btn btn-outline-secondary" %>
+        <% if authenticated? %>
+          <%= link_to "View My Projects", custom_projects_path, class: "btn btn-outline-secondary ms-2" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,8 +1,28 @@
 <div class="container">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mt-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><%= link_to "Home", root_path %></li>
+      <li class="breadcrumb-item"><%= link_to "Services", services_custom_projects_path %></li>
+      <li class="breadcrumb-item active" aria-current="page">Custom Project</li>
+    </ol>
+  </nav>
+
   <div class="row justify-content-center">
     <div class="col-md-8">
-      <h1>Start a Custom Project</h1>
-      <p class="lead">Tell us about your protein expression needs</p>
+      <div class="text-center mb-4">
+        <h1><i class="fas fa-project-diagram me-2 text-info"></i>Custom Project Request</h1>
+        <p class="lead">Tell us about your complex protein expression needs</p>
+
+        <div class="alert alert-info">
+          <strong>This form is for:</strong> Complex projects, expression optimization, custom strain development, or consultation.
+          <br>
+          <small>
+            Looking for a simple amino acid to strain conversion?
+            <%= link_to "Try Protein Expression Service", services_custom_projects_path, class: "text-decoration-none fw-bold" %> instead.
+          </small>
+        </div>
+      </div>
       
       <% unless authenticated? %>
         <div class="alert alert-info">

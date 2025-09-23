@@ -20,7 +20,7 @@
       </div>
       <div class="modern-hero-cta">
         <%= link_to "Browse Vectors", vectors_path, class: "modern-btn modern-btn-primary" %>
-        <%= link_to "Custom Projects", new_custom_project_path, class: "modern-btn modern-btn-secondary" %>
+        <%= link_to "Custom Services", services_custom_projects_path, class: "modern-btn modern-btn-secondary" %>
       </div>
     </div>
   </div>
@@ -67,12 +67,11 @@
           <li>Expert consultation</li>
         </ul>
         <div class="mt-auto">
+          <%= link_to "Choose Your Service", services_custom_projects_path, class: "modern-btn modern-btn-accent mb-2 w-100" %>
           <% if authenticated? %>
-            <%= link_to "Start New Project", new_custom_project_path, class: "modern-btn modern-btn-accent mb-2 w-100" %>
             <%= link_to "View My Projects", custom_projects_path, class: "modern-btn modern-btn-secondary w-100" %>
           <% else %>
-            <%= link_to "Sign In to Start", new_session_path, class: "modern-btn modern-btn-accent mb-2 w-100" %>
-            <p class="modern-caption text-center">Account required for custom projects</p>
+            <p class="modern-caption text-center">Preview services available without signup</p>
           <% end %>
         </div>
       </div>

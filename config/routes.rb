@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   # Custom Projects routes
   resources :custom_projects do
     collection do
+      get :services
       get :protein_expression
       post :protein_expression
     end

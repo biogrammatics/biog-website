@@ -1,6 +1,6 @@
 class CustomProjectsController < ApplicationController
-  allow_unauthenticated_access only: [ :new, :protein_expression ]
-  before_action :require_authentication, except: [ :new, :protein_expression ]
+  allow_unauthenticated_access only: [ :new, :services, :protein_expression ]
+  before_action :require_authentication, except: [ :new, :services, :protein_expression ]
   before_action :set_custom_project, only: [ :show, :edit, :update, :destroy, :approve_dna_sequence, :reject_dna_sequence ]
 
   def index
@@ -12,6 +12,9 @@ class CustomProjectsController < ApplicationController
 
   def new
     @form = CustomProjectForm.new(authenticated? ? Current.user : nil)
+  end
+
+  def services
   end
 
   # New action for protein expression strain requests

@@ -139,6 +139,7 @@ class CustomProjectsController < ApplicationController
   def enhanced_protein_expression_params
     params.require(:enhanced_protein_expression_form).permit(
       :project_name, :selected_vector_id, :notes, :input_method, :fasta_file,
+      :copy_number_determination, :glycerol_stocks, :custom_strain_selection, :custom_strain_name,
       proteins_attributes: [
         :name, :description, :amino_acid_sequence,
         :secretion_signal, :n_terminal_tag, :c_terminal_tag

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_23_223829) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_23_230012) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -103,6 +103,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_223829) do
     t.text "protein_description"
     t.boolean "fasta_processed", default: false
     t.text "fasta_processing_notes"
+    t.boolean "copy_number_determination", default: false
+    t.boolean "glycerol_stocks", default: false
+    t.string "custom_strain_name"
+    t.string "delivery_format", default: "plate"
     t.index ["created_at"], name: "index_custom_projects_on_created_at"
     t.index ["project_type"], name: "index_custom_projects_on_project_type"
     t.index ["selected_vector_id"], name: "index_custom_projects_on_selected_vector_id"

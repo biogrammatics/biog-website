@@ -16,6 +16,6 @@ class CreateProteins < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :proteins, [:custom_project_id, :sequence_order]
+    add_index :proteins, [ :custom_project_id, :sequence_order ]
   end
 end

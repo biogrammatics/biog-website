@@ -6,10 +6,16 @@ class EnhancedProteinExpressionForm
   attribute :selected_vector_id, :integer
   attribute :notes, :string
   attribute :fasta_file
-  attribute :input_method, :string, default: 'manual' # 'manual' or 'fasta'
+  attribute :input_method, :string, default: "manual" # 'manual' or 'fasta'
+
+  # Optional services
+  attribute :copy_number_determination, :boolean, default: false
+  attribute :glycerol_stocks, :boolean, default: false
+  attribute :custom_strain_selection, :boolean, default: false
+  attribute :custom_strain_name, :string
 
   # For manual input
-  attribute :proteins_attributes, default: -> { [{}] }
+  attribute :proteins_attributes, default: -> { [ {} ] }
 
   validates :project_name, presence: true
   validates :selected_vector_id, presence: true
@@ -28,7 +34,7 @@ class EnhancedProteinExpressionForm
   end
 
   def proteins_attributes
-    @proteins_attributes ||= [{}]
+    @proteins_attributes ||= [ {} ]
   end
 
   def proteins
@@ -78,16 +84,20 @@ class EnhancedProteinExpressionForm
     {
       project_name: project_name,
       selected_vector_id: selected_vector_id,
-      notes: notes
+      notes: notes,
+      copy_number_determination: copy_number_determination,
+      glycerol_stocks: glycerol_stocks,
+      custom_strain_name: custom_strain_selection ? custom_strain_name : nil,
+      delivery_format: glycerol_stocks ? "glycerol_stocks" : "plate"
     }
   end
 
   def ensure_default_protein
-    @proteins_attributes = [{}] if @proteins_attributes.empty?
+    @proteins_attributes = [ {} ] if @proteins_attributes.empty?
   end
 
   def validate_proteins_or_fasta
-    if input_method == 'fasta'
+    if input_method == "fasta"
       validate_fasta_input
     else
       validate_manual_input
@@ -101,7 +111,7 @@ class EnhancedProteinExpressionForm
     end
 
     # Validate file type
-    unless fasta_file.content_type.in?(['text/plain', 'application/octet-stream', 'text/x-fasta'])
+    unless fasta_file.content_type.in?([ "text/plain", "application/octet-stream", "text/x-fasta" ])
       errors.add(:fasta_file, "must be a text file (.fasta, .fas, .txt)")
       return
     end
@@ -144,7 +154,7 @@ class EnhancedProteinExpressionForm
   end
 
   def handle_input_method
-    if input_method == 'fasta'
+    if input_method == "fasta"
       process_fasta_file
     else
       create_proteins_from_manual_input

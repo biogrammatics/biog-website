@@ -6,8 +6,8 @@ class ProteinTag < ApplicationRecord
   validates :tag_type, presence: true, inclusion: { in: TAG_TYPES }
 
   scope :active, -> { where(active: true) }
-  scope :n_terminal, -> { where(tag_type: 'n_terminal') }
-  scope :c_terminal, -> { where(tag_type: 'c_terminal') }
+  scope :n_terminal, -> { where(tag_type: "n_terminal") }
+  scope :c_terminal, -> { where(tag_type: "c_terminal") }
 
   def display_name
     "#{name} (#{tag_type.humanize})"

@@ -23,8 +23,11 @@ class VectorsController < ApplicationController
     @vectors = if @category == "engineering"
       vectors_by_type.where(category: "Genome Engineering").order(:name)
     else
-      # Default to expression
-      vectors_by_type.where(category: "Heterologous Protein Expression").order(:name)
+      # Default to expression, also include nil/blank categories for backward compatibility
+      vectors_by_type.where(
+        "category = ? OR category IS NULL OR category = ''",
+        "Heterologous Protein Expression"
+      ).order(:name)
     end
 
     # Group vectors by promoter with specific ordering - "None" promoter last

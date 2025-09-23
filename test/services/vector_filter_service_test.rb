@@ -10,6 +10,8 @@ class VectorFilterServiceTest < ActiveSupport::TestCase
       category: "Heterologous Protein Expression",
       available_for_sale: true,
       available_for_subscription: true,
+      sale_price: 100.0,
+      subscription_price: 50.0,
       promoter: @promoter,
       product_status: @product_status
     )
@@ -19,6 +21,7 @@ class VectorFilterServiceTest < ActiveSupport::TestCase
       category: "Genome Engineering",
       available_for_sale: true,
       available_for_subscription: false,
+      sale_price: 150.0,
       product_status: @product_status
     )
   end
@@ -84,12 +87,12 @@ class VectorFilterServiceTest < ActiveSupport::TestCase
   end
 
   test "handles errors gracefully" do
-    # Simulate database error
-    Vector.stubs(:includes).raises(ActiveRecord::StatementInvalid.new("DB error"))
+    # Simulate database error by stubbing the includes method
+    Vector.stub(:includes, -> { raise ActiveRecord::StatementInvalid.new("DB error") }) do
+      service = VectorFilterService.new.call
 
-    service = VectorFilterService.new.call
-
-    assert_equal [], service.vectors
-    assert_equal({}, service.vectors_by_promoter)
+      assert_equal [], service.vectors
+      assert_equal({}, service.vectors_by_promoter)
+    end
   end
 end

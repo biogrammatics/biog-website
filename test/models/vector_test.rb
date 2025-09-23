@@ -96,6 +96,7 @@ class VectorTest < ActiveSupport::TestCase
     unavailable_vector = Vector.create!(
       name: "Unavailable Vector",
       available_for_sale: false,
+      available_for_subscription: false,
       product_status: @product_status
     )
 
@@ -108,6 +109,9 @@ class VectorTest < ActiveSupport::TestCase
     engineering_vector = Vector.create!(
       name: "Engineering Vector",
       category: "Genome Engineering",
+      available_for_sale: true,
+      available_for_subscription: false,
+      sale_price: 150.0,
       product_status: @product_status
     )
 

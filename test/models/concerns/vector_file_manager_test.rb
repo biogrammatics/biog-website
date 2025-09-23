@@ -7,6 +7,9 @@ class VectorFileManagerTest < ActiveSupport::TestCase
       name: "Test Vector",
       description: "A test vector for file management",
       category: "Heterologous Protein Expression",
+      available_for_sale: true,
+      available_for_subscription: false,
+      sale_price: 100.0,
       product_status: @product_status
     )
   end

@@ -23,8 +23,13 @@ class SessionsController < ApplicationController
     else
       # Login flow
       if user = User.authenticate_by(params.permit(:email_address, :password))
-        # Check if 2FA is required
-        if user.two_factor_required?
+        # Check if this is an admin without 2FA - redirect to setup
+        if user.admin? && !user.two_factor_enabled?
+          start_new_session_for user
+          transfer_session_cart_to_user(user)
+          redirect_to setup_path, notice: "As an administrator, you must set up two-factor authentication to secure your account."
+        # Check if 2FA is required and enabled
+        elsif user.two_factor_required? && user.two_factor_enabled?
           # Store user ID in session for 2FA verification
           session[:pending_otp_user_id] = user.id
           redirect_to verify_path

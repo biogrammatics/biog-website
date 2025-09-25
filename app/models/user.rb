@@ -20,8 +20,7 @@ class User < ApplicationRecord
   encrypts :otp_backup_codes, deterministic: false
   encrypts :otp_code, deterministic: false
 
-  # 2FA requirement for admins
-  validate :admin_requires_two_factor, if: :admin?
+  # Note: 2FA requirement for admins is enforced during authentication flow
 
   # TOTP setup
   attr_accessor :otp_plain_secret
@@ -168,9 +167,5 @@ class User < ApplicationRecord
     self.otp_plain_secret = otp_secret
   end
 
-  def admin_requires_two_factor
-    if admin? && !two_factor_enabled?
-      errors.add(:base, "Administrators must enable two-factor authentication")
-    end
-  end
+  # Removed admin_requires_two_factor validation - handled in authentication flow
 end

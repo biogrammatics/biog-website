@@ -52,7 +52,7 @@
 
       <div class="grid md:grid-cols-2 gap-6">
         <!-- Authenticator App Option -->
-        <div class="border rounded-lg p-6">
+        <div class="border rounded-lg p-6" style="border: 1px solid #d1d5db; border-radius: 8px; padding: 24px; margin-bottom: 16px; background: white;">
           <h3 class="text-xl font-semibold mb-4">Authenticator App</h3>
           <p class="text-gray-600 mb-4">
             Use an app like Google Authenticator, Authy, or 1Password to generate time-based codes.
@@ -63,11 +63,12 @@
             <li>✓ No phone number required</li>
           </ul>
           <%= link_to "Set Up Authenticator App", enable_totp_path,
-                      class: "block text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" %>
+                      class: "block text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition",
+                      style: "display: block; text-align: center; background-color: #2563eb; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none;" %>
         </div>
 
         <!-- SMS Option -->
-        <div class="border rounded-lg p-6">
+        <div class="border rounded-lg p-6" style="border: 1px solid #d1d5db; border-radius: 8px; padding: 24px; margin-bottom: 16px; background: white;">
           <h3 class="text-xl font-semibold mb-4">SMS Text Message</h3>
           <p class="text-gray-600 mb-4">
             Receive a 6-digit code via text message to your phone.
@@ -78,7 +79,8 @@
             <li>⚠ Requires cell service</li>
           </ul>
           <%= link_to "Set Up SMS Authentication", enable_sms_path,
-                      class: "block text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" %>
+                      class: "block text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition",
+                      style: "display: block; text-align: center; background-color: #2563eb; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none;" %>
         </div>
       </div>
     <% end %>

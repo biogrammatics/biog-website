@@ -5,7 +5,18 @@ class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
+  before_action :enforce_admin_2fa_setup
+
   private
+
+  def enforce_admin_2fa_setup
+    return unless authenticated?
+    return if request.path.start_with?("/two_factor") || request.path.start_with?("/session")
+
+    if Current.user.admin? && !Current.user.two_factor_enabled?
+      redirect_to setup_path, alert: "You must complete two-factor authentication setup to continue."
+    end
+  end
 
   def require_admin!
     unless Current.user&.admin?

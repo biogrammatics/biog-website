@@ -2,6 +2,17 @@
   <h1 class="text-3xl font-bold mb-8">Two-Factor Authentication Setup</h1>
 
   <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <!-- Debug Info (remove in production) -->
+    <% if Rails.env.development? || Rails.env.production? %>
+      <div class="bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded mb-6 text-sm">
+        <strong>Debug Info:</strong>
+        Admin: <%= @user.admin? %> |
+        2FA Enabled: <%= @user.two_factor_enabled? %> |
+        OTP Secret Present: <%= @user.otp_secret.present? %> |
+        OTP Delivery Method: <%= @user.otp_delivery_method %>
+      </div>
+    <% end %>
+
     <% if @user.admin? && !@user.two_factor_enabled? %>
       <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
         <strong>Important:</strong> As an administrator, you are required to enable two-factor authentication to access your account.

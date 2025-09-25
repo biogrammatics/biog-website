@@ -6,6 +6,11 @@ class TwoFactorAuthenticationController < ApplicationController
 
   def setup
     @user = Current.user
+
+    # Prevent admins from accessing other pages without setting up 2FA
+    if @user.admin? && !@user.two_factor_enabled?
+      session[:admin_needs_2fa] = true
+    end
   end
 
   def enable_totp

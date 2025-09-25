@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
 
   # Two-Factor Authentication routes
-  namespace :two_factor do
+  scope :two_factor, controller: :two_factor_authentication do
     get :setup
     get :enable_totp
     post :confirm_totp

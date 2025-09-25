@@ -30,6 +30,11 @@ gem "bcrypt", "~> 3.1.7"
 # Authentication & Authorization
 gem "cancancan"
 
+# Two-Factor Authentication
+gem "rotp"          # TOTP/HOTP library for authenticator apps
+gem "rqrcode"       # QR code generation for easy setup
+gem "twilio-ruby"   # SMS delivery for phone-based 2FA
+
 # File Management
 gem "image_processing", "~> 1.2"
 

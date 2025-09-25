@@ -5,6 +5,24 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
 
+  # Two-Factor Authentication routes
+  namespace :two_factor do
+    get :setup
+    get :enable_totp
+    post :confirm_totp
+    get :enable_sms
+    post :verify_phone
+    get :confirm_phone
+    post :verify_phone_code
+    get :backup_codes
+    post :regenerate_backup_codes
+    get :disable
+    post :confirm_disable
+    get :verify
+    post :verify_code
+    post :resend_code
+  end
+
   # Main application routes
   resources :vectors, only: [ :index, :show ]
   resources :pichia_strains, only: [ :index, :show ]

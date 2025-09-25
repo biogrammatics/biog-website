@@ -1,0 +1,75 @@
+<div class="max-w-md mx-auto px-4 py-8 mt-16">
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold">Two-Factor Authentication</h1>
+    <p class="text-gray-600 mt-2">Enter your verification code to continue</p>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <%= form_with url: two_factor_verify_code_path, local: true do |f| %>
+      <% if flash[:notice] %>
+        <div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded mb-4">
+          <%= flash[:notice] %>
+        </div>
+      <% end %>
+
+      <% if flash[:alert] %>
+        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+          <%= flash[:alert] %>
+        </div>
+      <% end %>
+
+      <div class="mb-6">
+        <% if @user.otp_delivery_method == 'totp' %>
+          <%= f.label :otp_code, "Enter code from your authenticator app", class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <% else %>
+          <%= f.label :otp_code, "Enter code sent to your phone", class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <% end %>
+
+        <%= f.text_field :otp_code,
+                        placeholder: "000000",
+                        maxlength: 6,
+                        pattern: "[0-9]{6}",
+                        inputmode: "numeric",
+                        autocomplete: "one-time-code",
+                        class: "w-full px-4 py-2 text-2xl text-center tracking-widest border rounded focus:outline-none focus:border-blue-500",
+                        required: true,
+                        autofocus: true %>
+      </div>
+
+      <div class="mb-6">
+        <%= f.submit "Verify", class: "w-full bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition cursor-pointer" %>
+      </div>
+
+      <div class="space-y-3 text-center text-sm">
+        <% if @user.otp_delivery_method == 'sms' %>
+          <div>
+            <%= link_to "Resend code", two_factor_resend_code_path,
+                        method: :post,
+                        class: "text-blue-600 hover:underline" %>
+          </div>
+        <% end %>
+
+        <div>
+          <details>
+            <summary class="cursor-pointer text-gray-600 hover:text-gray-800">
+              Lost your phone or can't get codes?
+            </summary>
+            <div class="mt-2 p-3 bg-gray-50 rounded text-left">
+              <p class="text-gray-600 mb-2">You can use one of your backup codes:</p>
+              <%= f.text_field :otp_code,
+                              placeholder: "xxxx-xxxx",
+                              class: "w-full px-3 py-2 border rounded focus:outline-none focus:border-blue-500",
+                              name: "otp_code_backup" %>
+              <p class="text-xs text-gray-500 mt-1">Enter backup code format: xxxx-xxxx</p>
+            </div>
+          </details>
+        </div>
+
+        <div class="pt-4 border-t">
+          <%= link_to "Sign in with a different account", new_session_path,
+                      class: "text-gray-600 hover:underline" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

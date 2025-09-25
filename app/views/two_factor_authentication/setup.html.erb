@@ -1,0 +1,74 @@
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-8">Two-Factor Authentication Setup</h1>
+
+  <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <% if @user.admin? && !@user.two_factor_enabled? %>
+      <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+        <strong>Important:</strong> As an administrator, you are required to enable two-factor authentication to access your account.
+      </div>
+    <% end %>
+
+    <% if @user.two_factor_enabled? %>
+      <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-6">
+        <p><strong>Two-factor authentication is currently enabled.</strong></p>
+        <p class="mt-2">Method: <%= @user.otp_delivery_method == 'totp' ? 'Authenticator App' : 'SMS' %></p>
+        <% if @user.otp_delivery_method == 'sms' %>
+          <p>Phone: <%= @user.phone_number.gsub(/(\d{3})(\d{3})(\d{4})/, '(\1) \2-\3') %></p>
+        <% end %>
+      </div>
+
+      <div class="space-y-4">
+        <%= link_to "View/Regenerate Backup Codes", two_factor_regenerate_backup_codes_path,
+                    method: :post,
+                    class: "inline-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition",
+                    data: { confirm: "This will generate new backup codes and invalidate the old ones. Continue?" } %>
+
+        <% unless @user.admin? %>
+          <%= link_to "Disable Two-Factor Authentication", two_factor_disable_path,
+                      class: "inline-block bg-red-600 text-white px-6 py-3 rounded hover:bg-red-700 transition ml-4" %>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-700 mb-6">
+        Two-factor authentication adds an extra layer of security to your account.
+        Choose your preferred method below:
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- Authenticator App Option -->
+        <div class="border rounded-lg p-6">
+          <h3 class="text-xl font-semibold mb-4">Authenticator App</h3>
+          <p class="text-gray-600 mb-4">
+            Use an app like Google Authenticator, Authy, or 1Password to generate time-based codes.
+          </p>
+          <ul class="text-sm text-gray-600 mb-6 space-y-2">
+            <li>✓ Works offline</li>
+            <li>✓ Most secure option</li>
+            <li>✓ No phone number required</li>
+          </ul>
+          <%= link_to "Set Up Authenticator App", two_factor_enable_totp_path,
+                      class: "block text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" %>
+        </div>
+
+        <!-- SMS Option -->
+        <div class="border rounded-lg p-6">
+          <h3 class="text-xl font-semibold mb-4">SMS Text Message</h3>
+          <p class="text-gray-600 mb-4">
+            Receive a 6-digit code via text message to your phone.
+          </p>
+          <ul class="text-sm text-gray-600 mb-6 space-y-2">
+            <li>✓ Easy to use</li>
+            <li>✓ No app required</li>
+            <li>⚠ Requires cell service</li>
+          </ul>
+          <%= link_to "Set Up SMS Authentication", two_factor_enable_sms_path,
+                      class: "block text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="text-center">
+    <%= link_to "Back to Account", account_path, class: "text-blue-600 hover:underline" %>
+  </div>
+</div>

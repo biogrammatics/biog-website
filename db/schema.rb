@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_23_230012) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_25_221623) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -320,7 +320,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_230012) do
     t.string "last_name", limit: 100
     t.boolean "admin", default: false, null: false
     t.string "twist_username", limit: 100
+    t.string "otp_secret"
+    t.boolean "otp_required_for_login", default: false
+    t.string "phone_number"
+    t.boolean "phone_verified", default: false
+    t.string "otp_delivery_method", default: "totp"
+    t.boolean "two_factor_enabled", default: false
+    t.datetime "two_factor_confirmed_at"
+    t.text "otp_backup_codes"
+    t.string "otp_code"
+    t.datetime "otp_code_sent_at"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
+    t.index ["otp_required_for_login"], name: "index_users_on_otp_required_for_login"
+    t.index ["phone_number"], name: "index_users_on_phone_number"
+    t.index ["two_factor_enabled"], name: "index_users_on_two_factor_enabled"
   end
 
   create_table "vector_types", force: :cascade do |t|

@@ -23,9 +23,16 @@ class SessionsController < ApplicationController
     else
       # Login flow
       if user = User.authenticate_by(params.permit(:email_address, :password))
-        start_new_session_for user
-        transfer_session_cart_to_user(user)
-        redirect_to after_authentication_url
+        # Check if 2FA is required
+        if user.two_factor_required?
+          # Store user ID in session for 2FA verification
+          session[:pending_otp_user_id] = user.id
+          redirect_to two_factor_verify_path
+        else
+          start_new_session_for user
+          transfer_session_cart_to_user(user)
+          redirect_to after_authentication_url
+        end
       else
         @checkout = params[:checkout].present?
         @user = User.new

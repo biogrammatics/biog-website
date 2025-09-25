@@ -24,6 +24,9 @@
           <a href="#profile" class="list-group-item list-group-item-action">
             Profile
           </a>
+          <a href="#security" class="list-group-item list-group-item-action">
+            Security
+          </a>
         </div>
       </div>
     </div>
@@ -391,7 +394,69 @@
           </div>
         </div>
       </div>
-      
+
+      <!-- Security Section -->
+      <div id="security" class="mb-5">
+        <div class="card">
+          <div class="card-header">
+            <h3>Security Settings</h3>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">
+                <h5>Two-Factor Authentication</h5>
+                <% if @user.two_factor_enabled? %>
+                  <div class="alert alert-success d-flex justify-content-between align-items-center">
+                    <div>
+                      <i class="fas fa-shield-alt me-2"></i>
+                      <strong>Two-factor authentication is enabled</strong>
+                      <p class="mb-0 mt-1 text-sm">
+                        Method: <%= @user.otp_delivery_method == 'totp' ? 'Authenticator App' : 'SMS to ' + @user.phone_number.gsub(/(\d{3})(\d{3})(\d{4})/, '(\\1) \\2-\\3') %>
+                      </p>
+                    </div>
+                    <%= link_to "Manage 2FA Settings", two_factor_setup_path, class: "btn btn-outline-success btn-sm" %>
+                  </div>
+                <% else %>
+                  <div class="alert alert-warning d-flex justify-content-between align-items-center">
+                    <div>
+                      <i class="fas fa-exclamation-triangle me-2"></i>
+                      <strong>Two-factor authentication is not enabled</strong>
+                      <p class="mb-0 mt-1">
+                        <% if @user.admin? %>
+                          <span class="text-danger">As an administrator, you are required to enable 2FA.</span>
+                        <% else %>
+                          Add an extra layer of security to your account.
+                        <% end %>
+                      </p>
+                    </div>
+                    <%= link_to "Enable 2FA", two_factor_setup_path, class: "btn btn-warning btn-sm text-dark" %>
+                  </div>
+                <% end %>
+
+                <hr>
+
+                <h5>Password</h5>
+                <p class="text-muted">Keep your account secure with a strong, unique password.</p>
+                <%= link_to "Change Password", new_password_path, class: "btn btn-outline-secondary" %>
+
+                <hr>
+
+                <h5>Active Sessions</h5>
+                <p class="text-muted">
+                  You are currently signed in on <%= pluralize(@user.sessions.count, 'device') %>.
+                </p>
+                <% if @user.sessions.count > 1 %>
+                  <button class="btn btn-outline-danger btn-sm" disabled>
+                    Sign out other devices
+                    <small class="d-block">Coming Soon</small>
+                  </button>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Saved Addresses -->
       <div class="card mt-4">
         <div class="card-header">

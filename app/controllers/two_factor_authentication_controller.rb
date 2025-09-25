@@ -7,6 +7,11 @@ class TwoFactorAuthenticationController < ApplicationController
   def setup
     @user = Current.user
 
+    # Ensure OTP secret exists (for users created before 2FA system)
+    unless @user.otp_secret.present?
+      @user.update!(otp_secret: ROTP::Base32.random)
+    end
+
     # Prevent admins from accessing other pages without setting up 2FA
     if @user.admin? && !@user.two_factor_enabled?
       session[:admin_needs_2fa] = true

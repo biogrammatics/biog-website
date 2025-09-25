@@ -1,6 +1,6 @@
 class TwoFactorAuthenticationController < ApplicationController
-  before_action :require_authentication
-  before_action :require_pending_otp, only: [ :verify, :verify_code ]
+  before_action :require_authentication, except: [ :verify, :verify_code, :resend_code ]
+  before_action :require_pending_otp, only: [ :verify, :verify_code, :resend_code ]
   rate_limit to: 5, within: 1.minute, only: [ :verify_code ],
              with: -> { redirect_to verify_path, alert: "Too many attempts. Please try again later." }
 

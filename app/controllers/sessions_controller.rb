@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
         if user.two_factor_required?
           # Store user ID in session for 2FA verification
           session[:pending_otp_user_id] = user.id
-          redirect_to two_factor_verify_path
+          redirect_to verify_path
         else
           start_new_session_for user
           transfer_session_cart_to_user(user)

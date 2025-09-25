@@ -11,7 +11,7 @@
       To disable two-factor authentication, please confirm your password:
     </p>
 
-    <%= form_with url: two_factor_confirm_disable_path, local: true do |f| %>
+    <%= form_with url: confirm_disable_path, local: true do |f| %>
       <% if flash[:alert] %>
         <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
           <%= flash[:alert] %>
@@ -42,7 +42,7 @@
         <%= f.submit "Disable Two-Factor Authentication",
                     class: "bg-red-600 text-white px-6 py-3 rounded hover:bg-red-700 transition cursor-pointer",
                     data: { confirm: "Are you sure you want to disable two-factor authentication?" } %>
-        <%= link_to "Cancel", two_factor_setup_path, class: "text-gray-600 hover:underline" %>
+        <%= link_to "Cancel", setup_path, class: "text-gray-600 hover:underline" %>
       </div>
     <% end %>
   </div>

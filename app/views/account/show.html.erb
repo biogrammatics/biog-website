@@ -414,7 +414,7 @@
                         Method: <%= @user.otp_delivery_method == 'totp' ? 'Authenticator App' : 'SMS to ' + @user.phone_number.gsub(/(\d{3})(\d{3})(\d{4})/, '(\\1) \\2-\\3') %>
                       </p>
                     </div>
-                    <%= link_to "Manage 2FA Settings", two_factor_setup_path, class: "btn btn-outline-success btn-sm" %>
+                    <%= link_to "Manage 2FA Settings", setup_path, class: "btn btn-outline-success btn-sm" %>
                   </div>
                 <% else %>
                   <div class="alert alert-warning d-flex justify-content-between align-items-center">
@@ -429,7 +429,7 @@
                         <% end %>
                       </p>
                     </div>
-                    <%= link_to "Enable 2FA", two_factor_setup_path, class: "btn btn-warning btn-sm text-dark" %>
+                    <%= link_to "Enable 2FA", setup_path, class: "btn btn-warning btn-sm text-dark" %>
                   </div>
                 <% end %>
 

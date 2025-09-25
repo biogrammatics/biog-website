@@ -18,13 +18,13 @@
       </div>
 
       <div class="space-y-4">
-        <%= link_to "View/Regenerate Backup Codes", two_factor_regenerate_backup_codes_path,
+        <%= link_to "View/Regenerate Backup Codes", regenerate_backup_codes_path,
                     method: :post,
                     class: "inline-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition",
                     data: { confirm: "This will generate new backup codes and invalidate the old ones. Continue?" } %>
 
         <% unless @user.admin? %>
-          <%= link_to "Disable Two-Factor Authentication", two_factor_disable_path,
+          <%= link_to "Disable Two-Factor Authentication", disable_path,
                       class: "inline-block bg-red-600 text-white px-6 py-3 rounded hover:bg-red-700 transition ml-4" %>
         <% end %>
       </div>
@@ -46,7 +46,7 @@
             <li>✓ Most secure option</li>
             <li>✓ No phone number required</li>
           </ul>
-          <%= link_to "Set Up Authenticator App", two_factor_enable_totp_path,
+          <%= link_to "Set Up Authenticator App", enable_totp_path,
                       class: "block text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" %>
         </div>
 
@@ -61,7 +61,7 @@
             <li>✓ No app required</li>
             <li>⚠ Requires cell service</li>
           </ul>
-          <%= link_to "Set Up SMS Authentication", two_factor_enable_sms_path,
+          <%= link_to "Set Up SMS Authentication", enable_sms_path,
                       class: "block text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" %>
         </div>
       </div>

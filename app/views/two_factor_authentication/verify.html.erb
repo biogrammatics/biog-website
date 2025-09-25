@@ -5,7 +5,7 @@
   </div>
 
   <div class="bg-white rounded-lg shadow-md p-6">
-    <%= form_with url: two_factor_verify_code_path, local: true do |f| %>
+    <%= form_with url: verify_code_path, local: true do |f| %>
       <% if flash[:notice] %>
         <div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded mb-4">
           <%= flash[:notice] %>
@@ -43,7 +43,7 @@
       <div class="space-y-3 text-center text-sm">
         <% if @user.otp_delivery_method == 'sms' %>
           <div>
-            <%= link_to "Resend code", two_factor_resend_code_path,
+            <%= link_to "Resend code", resend_code_path,
                         method: :post,
                         class: "text-blue-600 hover:underline" %>
           </div>

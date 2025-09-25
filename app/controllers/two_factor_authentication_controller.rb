@@ -2,7 +2,7 @@ class TwoFactorAuthenticationController < ApplicationController
   before_action :require_authentication
   before_action :require_pending_otp, only: [ :verify, :verify_code ]
   rate_limit to: 5, within: 1.minute, only: [ :verify_code ],
-             with: -> { redirect_to two_factor_verify_path, alert: "Too many attempts. Please try again later." }
+             with: -> { redirect_to verify_path, alert: "Too many attempts. Please try again later." }
 
   def setup
     @user = Current.user
@@ -39,7 +39,7 @@ class TwoFactorAuthenticationController < ApplicationController
 
       flash[:notice] = "Two-factor authentication has been enabled successfully!"
       session[:show_backup_codes] = true
-      redirect_to two_factor_backup_codes_path
+      redirect_to backup_codes_path
     else
       flash.now[:alert] = "Invalid code. Please try again."
       @qr_code = @user.generate_qr_code
@@ -67,14 +67,14 @@ class TwoFactorAuthenticationController < ApplicationController
 
       if TwilioService.new.send_phone_verification(@user.phone_number, code)
         flash[:notice] = "Verification code sent to #{phone}"
-        redirect_to two_factor_confirm_phone_path
+        redirect_to confirm_phone_path
       else
         flash[:alert] = "Failed to send verification code. Please check the phone number."
-        redirect_to two_factor_enable_sms_path
+        redirect_to enable_sms_path
       end
     else
       flash[:alert] = "Please enter a valid phone number"
-      redirect_to two_factor_enable_sms_path
+      redirect_to enable_sms_path
     end
   end
 
@@ -101,7 +101,7 @@ class TwoFactorAuthenticationController < ApplicationController
 
       flash[:notice] = "Two-factor authentication via SMS has been enabled successfully!"
       session[:show_backup_codes] = true
-      redirect_to two_factor_backup_codes_path
+      redirect_to backup_codes_path
     else
       flash.now[:alert] = "Invalid or expired code. Please try again."
       render :confirm_phone, status: :unprocessable_entity
@@ -202,7 +202,7 @@ class TwoFactorAuthenticationController < ApplicationController
       flash[:alert] = "Resending codes is only available for SMS authentication."
     end
 
-    redirect_to two_factor_verify_path
+    redirect_to verify_path
   end
 
   private

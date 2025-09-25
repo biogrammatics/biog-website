@@ -77,7 +77,7 @@ class User < ApplicationRecord
       module_size: 4,
       standalone: true,
       use_path: true
-    )
+    ).html_safe
   end
 
   def validate_otp_code(code)

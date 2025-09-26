@@ -92,6 +92,9 @@ Rails.application.routes.draw do
         patch :update_status
       end
     end
+    # Twilio testing routes
+    get :test_sms, to: "dashboard#test_sms"
+    post :send_test_sms, to: "dashboard#send_test_sms"
   end
 
   # Cookie consent and policies

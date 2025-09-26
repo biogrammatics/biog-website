@@ -1,0 +1,47 @@
+<div class="max-w-6xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-8">Admin Dashboard</h1>
+
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- User Management -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h3 class="text-xl font-semibold mb-4">User Management</h3>
+      <div class="space-y-3">
+        <%= link_to "Manage Users", admin_users_path,
+                    class: "block text-blue-600 hover:underline" %>
+      </div>
+    </div>
+
+    <!-- Content Management -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h3 class="text-xl font-semibold mb-4">Content Management</h3>
+      <div class="space-y-3">
+        <%= link_to "Vectors", admin_vectors_path,
+                    class: "block text-blue-600 hover:underline" %>
+        <%= link_to "Promoters", admin_promoters_path,
+                    class: "block text-blue-600 hover:underline" %>
+        <%= link_to "Selection Markers", admin_selection_markers_path,
+                    class: "block text-blue-600 hover:underline" %>
+        <%= link_to "Pichia Strains", admin_pichia_strains_path,
+                    class: "block text-blue-600 hover:underline" %>
+      </div>
+    </div>
+
+    <!-- Project Management -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h3 class="text-xl font-semibold mb-4">Project Management</h3>
+      <div class="space-y-3">
+        <%= link_to "Custom Projects", admin_custom_projects_path,
+                    class: "block text-blue-600 hover:underline" %>
+      </div>
+    </div>
+
+    <!-- System Tools -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h3 class="text-xl font-semibold mb-4">System Tools</h3>
+      <div class="space-y-3">
+        <%= link_to "Test SMS Integration", admin_test_sms_path,
+                    class: "block text-blue-600 hover:underline" %>
+      </div>
+    </div>
+  </div>
+</div>

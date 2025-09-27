@@ -18,12 +18,18 @@ class Admin::DashboardController < Admin::BaseController
     end
 
     service = TwilioService.new
+    result = service.send_otp_code(phone_number, test_code)
 
-    if service.send_otp_code(phone_number, test_code)
-      flash[:notice] = "Test SMS sent successfully to #{phone_number} with code: #{test_code}"
+    if result[:success]
+      flash[:notice] = "✅ SMS sent successfully to #{phone_number}! Code: #{test_code}, Message SID: #{result[:message_sid]}, Status: #{result[:status]}"
       redirect_to admin_test_sms_path
     else
-      flash[:alert] = "Failed to send SMS. Check Twilio credentials and logs."
+      error_details = []
+      error_details << "Error: #{result[:error]}" if result[:error]
+      error_details << "Code: #{result[:code]}" if result[:code]
+      error_details << "Details: #{result[:details]}" if result[:details]
+
+      flash[:alert] = "❌ SMS failed: #{error_details.join(' | ')}"
       render :test_sms, status: :unprocessable_entity
     end
   end

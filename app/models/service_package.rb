@@ -14,11 +14,11 @@ class ServicePackage < ApplicationRecord
   before_validation :generate_slug, if: -> { name.present? && slug.blank? }
 
   def diy?
-    selection_type == 'diy'
+    selection_type == "diy"
   end
 
   def service?
-    selection_type == 'service'
+    selection_type == "service"
   end
 
   private

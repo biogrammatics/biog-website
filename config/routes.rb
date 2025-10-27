@@ -42,6 +42,17 @@ Rails.application.routes.draw do
     end
   end
 
+  # Protein Pathway Funnel routes
+  scope :protein_pathway, as: :protein_pathway, controller: :protein_pathway do
+    get "/", action: :index
+    get "step/:step", action: :step, as: :step
+    post "select", action: :select, as: :select
+    get "review", action: :review, as: :review
+    get "quote", action: :quote_form, as: :quote_form
+    post "quote", action: :submit_quote, as: :submit_quote
+    get "thank-you", action: :thank_you, as: :thank_you
+  end
+
   # Cart routes
   resource :cart, only: [ :show ], controller: "cart" do
     post :add_item

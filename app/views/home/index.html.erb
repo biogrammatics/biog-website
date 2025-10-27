@@ -19,8 +19,8 @@
         </p>
       </div>
       <div class="modern-hero-cta">
-        <%= link_to "Browse Vectors", vectors_path, class: "modern-btn modern-btn-primary" %>
-        <%= link_to "Custom Services", services_custom_projects_path, class: "modern-btn modern-btn-secondary" %>
+        <%= link_to "Your Path to Protein", protein_pathway_path, class: "modern-btn modern-btn-primary" %>
+        <%= link_to "Browse Vectors", vectors_path, class: "modern-btn modern-btn-secondary" %>
       </div>
     </div>
   </div>
@@ -73,6 +73,35 @@
           <% else %>
             <p class="modern-caption text-center">Preview services available without signup</p>
           <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Your Path to Protein Section -->
+<section class="modern-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  <div class="modern-container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 text-white">
+        <h2 class="modern-h2 text-white mb-4">Not Sure Where to Start?</h2>
+        <p class="modern-body-lg mb-4">
+          Our interactive "Your Path to Protein" tool helps you navigate the entire protein expression journey.
+          Choose between DIY and full-service options for each step, and get an instant customized quote.
+        </p>
+        <ul class="mb-4" style="font-size: 1.1rem;">
+          <li>✓ 6 guided steps from gene to protein</li>
+          <li>✓ Mix DIY and service options</li>
+          <li>✓ Instant pricing estimates</li>
+          <li>✓ Expert recommendations</li>
+        </ul>
+        <%= link_to protein_pathway_path, class: "modern-btn modern-btn-secondary" style: "background: white; color: #667eea;" do %>
+          <i class="bi bi-compass"></i> Start Your Path
+        <% end %>
+      </div>
+      <div class="col-lg-6 text-center text-white">
+        <div style="font-size: 8rem; opacity: 0.3;">
+          <i class="bi bi-diagram-3"></i>
         </div>
       </div>
     </div>

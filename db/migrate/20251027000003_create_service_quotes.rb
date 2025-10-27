@@ -33,7 +33,7 @@ class CreateServiceQuotes < ActiveRecord::Migration[8.0]
     add_index :service_quotes, :email_address
     add_index :service_quotes, :status
     add_index :service_quotes, :created_at
-    add_index :service_quotes, [:user_id, :status]
+    add_index :service_quotes, [ :user_id, :status ]
     add_index :service_quotes, :session_id
   end
 end

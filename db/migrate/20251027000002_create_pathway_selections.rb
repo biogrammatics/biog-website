@@ -13,7 +13,7 @@ class CreatePathwaySelections < ActiveRecord::Migration[8.0]
     end
 
     add_index :pathway_selections, :session_id
-    add_index :pathway_selections, [:user_id, :status]
+    add_index :pathway_selections, [ :user_id, :status ]
     add_index :pathway_selections, :status
     add_index :pathway_selections, :created_at
   end

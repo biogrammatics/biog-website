@@ -1,0 +1,138 @@
+<!-- Header -->
+<section class="modern-section-sm" style="background: var(--modern-gray-50);">
+  <div class="modern-container">
+    <div class="text-center">
+      <h1 class="modern-h1">Review Your Path</h1>
+      <p class="modern-body-lg text-muted">
+        Review your selections and get your customized quote
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Selections Review -->
+<section class="modern-section">
+  <div class="modern-container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <% if @selections.empty? %>
+          <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle"></i>
+            You haven't made any selections yet.
+            <%= link_to "Start from Step 1", protein_pathway_step_path(step: 1), class: "alert-link" %>
+          </div>
+        <% else %>
+          <!-- Selections Summary -->
+          <div class="card mb-4">
+            <div class="card-header bg-white">
+              <h3 class="h5 mb-0"><i class="bi bi-list-check"></i> Your Selections</h3>
+            </div>
+            <div class="card-body">
+              <% @selections.each do |selection| %>
+                <div class="selection-item">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                      <div class="d-flex align-items-center mb-2">
+                        <span class="badge bg-secondary me-2">Step <%= selection.step_number %></span>
+                        <h5 class="mb-0"><%= selection.service_package.name %></h5>
+                      </div>
+                      <div class="selection-choice">
+                        <% if selection.diy? %>
+                          <span class="badge bg-info">
+                            <i class="bi bi-person-workspace"></i> DIY
+                          </span>
+                          <p class="mt-2 mb-0 text-muted">You'll handle this step in your own lab</p>
+                        <% else %>
+                          <span class="badge bg-success">
+                            <i class="bi bi-gear-wide-connected"></i> Service
+                          </span>
+                          <p class="mt-2 mb-0">
+                            <strong>Price:</strong> <%= number_to_currency(selection.service_package.estimated_price) %>
+                            · <strong>Turnaround:</strong> <%= selection.service_package.estimated_turnaround %>
+                          </p>
+                        <% end %>
+                      </div>
+                    </div>
+                    <div>
+                      <%= link_to protein_pathway_step_path(step: selection.step_number), class: "btn btn-sm btn-outline-secondary" do %>
+                        <i class="bi bi-pencil"></i> Edit
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+                <% unless selection == @selections.last %>
+                  <hr>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Service Summary -->
+          <% if @service_selections.any? %>
+            <div class="card border-success mb-4">
+              <div class="card-header bg-success text-white">
+                <h3 class="h5 mb-0"><i class="bi bi-calculator"></i> Service Estimate</h3>
+              </div>
+              <div class="card-body">
+                <table class="table table-borderless mb-0">
+                  <tbody>
+                    <% @service_selections.each do |selection| %>
+                      <tr>
+                        <td><%= selection.service_package.name %></td>
+                        <td class="text-end"><%= number_to_currency(selection.service_package.estimated_price) %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                  <tfoot>
+                    <tr class="border-top">
+                      <td class="fw-bold">Estimated Total</td>
+                      <td class="text-end fw-bold h4 mb-0"><%= number_to_currency(@total_estimate) %></td>
+                    </tr>
+                  </tfoot>
+                </table>
+                <div class="alert alert-info mt-3 mb-0">
+                  <small>
+                    <i class="bi bi-info-circle"></i>
+                    This is an estimate. Final pricing will be provided in your detailed quote based on your specific requirements.
+                  </small>
+                </div>
+              </div>
+            </div>
+          <% else %>
+            <div class="alert alert-info">
+              <i class="bi bi-info-circle"></i>
+              You've chosen to DIY all steps. You can purchase reagents directly from our catalog.
+            </div>
+          <% end %>
+
+          <!-- CTA Buttons -->
+          <div class="d-flex gap-3">
+            <%= link_to protein_pathway_step_path(step: 1), class: "modern-btn modern-btn-secondary" do %>
+              <i class="bi bi-arrow-left"></i> Back to Steps
+            <% end %>
+
+            <% if @service_selections.any? %>
+              <%= link_to protein_pathway_quote_form_path, class: "modern-btn modern-btn-primary flex-grow-1" do %>
+                Request Detailed Quote <i class="bi bi-arrow-right"></i>
+              <% end %>
+            <% else %>
+              <%= link_to vectors_path, class: "modern-btn modern-btn-primary flex-grow-1" do %>
+                Browse Reagents <i class="bi bi-arrow-right"></i>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.selection-item {
+  padding: 1rem 0;
+}
+
+.selection-choice {
+  margin-left: 2rem;
+}
+</style>

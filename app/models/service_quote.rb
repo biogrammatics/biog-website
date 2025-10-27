@@ -4,8 +4,8 @@ class ServiceQuote < ApplicationRecord
   validates :email_address, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :status, presence: true, inclusion: { in: %w[pending contacted quoted converted declined] }
 
-  scope :pending, -> { where(status: 'pending') }
-  scope :contacted, -> { where(status: 'contacted') }
+  scope :pending, -> { where(status: "pending") }
+  scope :contacted, -> { where(status: "contacted") }
   scope :recent, -> { order(created_at: :desc) }
 
   # Serialize selected_services as JSON
@@ -22,7 +22,7 @@ class ServiceQuote < ApplicationRecord
   end
 
   def converted?
-    status == 'converted'
+    status == "converted"
   end
 
   # Calculate total from selected services
@@ -30,7 +30,7 @@ class ServiceQuote < ApplicationRecord
     return 0 unless selected_services.is_a?(Array)
 
     selected_services.sum do |service|
-      service['price'].to_f
+      service["price"].to_f
     end
   end
 

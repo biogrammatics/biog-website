@@ -1,0 +1,123 @@
+<!-- Hero Section -->
+<section class="modern-hero">
+  <div class="modern-container">
+    <div class="modern-hero-content">
+      <h1 class="modern-hero-title">
+        Your Path to Protein
+      </h1>
+      <p class="modern-hero-subtitle">
+        Navigate your protein expression journey with expert guidance at every step
+      </p>
+      <div class="modern-hero-tagline">
+        <p class="modern-body-lg">
+          Whether you're a DIY researcher or need full-service support, we'll help you choose the right approach for each stage of your project. Get a customized quote based on your specific needs.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="modern-section">
+  <div class="modern-container">
+    <div class="modern-section-header">
+      <h2 class="modern-section-title">How It Works</h2>
+      <p class="modern-section-subtitle">
+        Six key steps to protein expression success
+      </p>
+    </div>
+
+    <div class="modern-grid modern-grid-3">
+      <% @service_packages.each do |package| %>
+        <div class="modern-card">
+          <div class="modern-card-icon">
+            <div class="step-number"><%= package.step_number %></div>
+          </div>
+          <h3 class="modern-card-title"><%= package.name %></h3>
+          <p class="modern-card-description">
+            <%= truncate(package.description, length: 150) %>
+          </p>
+          <div class="mt-auto">
+            <p class="modern-caption text-muted">
+              Estimated: <%= number_to_currency(package.estimated_price) %> · <%= package.estimated_turnaround %>
+            </p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="modern-text-center mt-5">
+      <div class="alert alert-info d-inline-block">
+        <i class="bi bi-info-circle"></i>
+        <strong>Full Service Value: <%= number_to_currency(@total_value) %></strong>
+        <p class="mb-0 mt-2">Mix and match DIY and service options to fit your budget and timeline</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Choose Your Path Section -->
+<section class="modern-section" style="background: var(--modern-gray-50);">
+  <div class="modern-container">
+    <div class="modern-section-header">
+      <h2 class="modern-section-title">Choose Your Approach</h2>
+      <p class="modern-section-subtitle">
+        For each step, you'll choose between DIY or full-service options
+      </p>
+    </div>
+
+    <div class="modern-grid modern-grid-2 mb-4">
+      <div class="modern-card">
+        <div class="modern-card-icon">
+          <i class="bi bi-person-workspace"></i>
+        </div>
+        <h3 class="modern-card-title">Do It Yourself</h3>
+        <p class="modern-card-description">
+          Purchase reagents and tools to complete each step in your own lab
+        </p>
+        <ul class="modern-card-features">
+          <li>Lower cost option</li>
+          <li>Full control over process</li>
+          <li>Requires lab resources</li>
+          <li>Longer timeline</li>
+        </ul>
+      </div>
+
+      <div class="modern-card">
+        <div class="modern-card-icon">
+          <i class="bi bi-gear-wide-connected"></i>
+        </div>
+        <h3 class="modern-card-title">Do It With Us</h3>
+        <p class="modern-card-description">
+          Let our experts handle the technical work while you focus on your research
+        </p>
+        <ul class="modern-card-features">
+          <li>Faster results</li>
+          <li>Expert execution</li>
+          <li>Guaranteed quality</li>
+          <li>Risk-free outcomes</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modern-text-center">
+      <%= link_to "Start Building Your Path", protein_pathway_step_path(step: 1), class: "modern-btn modern-btn-primary modern-btn-lg" %>
+      <p class="modern-caption mt-3">Takes 5-10 minutes · No obligation · Instant quote</p>
+    </div>
+  </div>
+</section>
+
+<style>
+.step-number {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--modern-accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+</style>

@@ -8,8 +8,8 @@ class PathwaySelection < ApplicationRecord
 
   scope :for_user, ->(user) { where(user: user) }
   scope :for_session, ->(session_id) { where(session_id: session_id) }
-  scope :in_progress, -> { where(status: 'in_progress') }
-  scope :completed, -> { where(status: 'completed') }
+  scope :in_progress, -> { where(status: "in_progress") }
+  scope :completed, -> { where(status: "completed") }
   scope :ordered, -> { order(:step_number) }
 
   # Get selections for a user or session
@@ -22,10 +22,10 @@ class PathwaySelection < ApplicationRecord
   end
 
   def diy?
-    selection_type == 'diy'
+    selection_type == "diy"
   end
 
   def service?
-    selection_type == 'service'
+    selection_type == "service"
   end
 end

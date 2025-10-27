@@ -1,0 +1,162 @@
+<!-- Header -->
+<section class="modern-section-sm" style="background: var(--modern-gray-50);">
+  <div class="modern-container">
+    <div class="text-center">
+      <h1 class="modern-h1">Request Your Quote</h1>
+      <p class="modern-body-lg text-muted">
+        Tell us about your project and we'll send you a detailed quote within 24 hours
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Quote Form -->
+<section class="modern-section">
+  <div class="modern-container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <%= form_with model: @service_quote, url: protein_pathway_submit_quote_path, class: "modern-form" do |f| %>
+          <% if @service_quote.errors.any? %>
+            <div class="alert alert-danger">
+              <h4 class="alert-heading">Please fix the following errors:</h4>
+              <ul class="mb-0">
+                <% @service_quote.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <!-- Contact Information -->
+          <div class="card mb-4">
+            <div class="card-header bg-white">
+              <h3 class="h5 mb-0"><i class="bi bi-person"></i> Contact Information</h3>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <%= f.label :full_name, class: "form-label" %>
+                    <%= f.text_field :full_name, class: "form-control", required: true, placeholder: "Dr. Jane Smith" %>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <%= f.label :email_address, class: "form-label" %>
+                    <%= f.email_field :email_address, class: "form-control", required: true,
+                        placeholder: "jane.smith@university.edu",
+                        value: (Current.user.email_address if authenticated?) %>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <%= f.label :organization, class: "form-label" %>
+                    <%= f.text_field :organization, class: "form-control", placeholder: "University of Example" %>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <%= f.label :phone_number, class: "form-label" %>
+                    <%= f.telephone_field :phone_number, class: "form-control", placeholder: "+1 (555) 123-4567" %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project Details -->
+          <div class="card mb-4">
+            <div class="card-header bg-white">
+              <h3 class="h5 mb-0"><i class="bi bi-clipboard-data"></i> Project Details</h3>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-12">
+                  <div class="form-group">
+                    <%= f.label :project_name, "Project Name (Optional)", class: "form-label" %>
+                    <%= f.text_field :project_name, class: "form-control", placeholder: "e.g., Antibody Fragment Production" %>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <%= f.label :target_protein_name, "Target Protein", class: "form-label" %>
+                    <%= f.text_field :target_protein_name, class: "form-control", placeholder: "e.g., scFv antibody, GFP" %>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <%= f.label :protein_tags, "Protein Tags (Optional)", class: "form-label" %>
+                    <%= f.text_field :protein_tags, class: "form-control", placeholder: "e.g., His-tag, FLAG-tag" %>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="form-group">
+                    <%= f.label :special_requirements, "Special Requirements or Questions", class: "form-label" %>
+                    <%= f.text_area :special_requirements, class: "form-control", rows: 4,
+                        placeholder: "Any specific requirements, timeline constraints, or questions about the services..." %>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="form-group">
+                    <%= f.label :notes, "Additional Notes (Optional)", class: "form-label" %>
+                    <%= f.text_area :notes, class: "form-control", rows: 3,
+                        placeholder: "Any other information that might be helpful..." %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Selected Services Summary -->
+          <div class="card border-success mb-4">
+            <div class="card-header bg-success text-white">
+              <h3 class="h5 mb-0"><i class="bi bi-check-circle"></i> Services You've Selected</h3>
+            </div>
+            <div class="card-body">
+              <% service_selections = @selections.select(&:service?) %>
+              <% if service_selections.any? %>
+                <ul class="list-unstyled mb-0">
+                  <% service_selections.each do |selection| %>
+                    <li class="mb-2">
+                      <i class="bi bi-check text-success"></i>
+                      <strong>Step <%= selection.step_number %>:</strong> <%= selection.service_package.name %>
+                      <span class="text-muted">(<%= number_to_currency(selection.service_package.estimated_price) %>)</span>
+                    </li>
+                  <% end %>
+                </ul>
+                <hr>
+                <div class="d-flex justify-content-between">
+                  <strong>Estimated Total:</strong>
+                  <strong class="h5 mb-0">
+                    <%= number_to_currency(service_selections.sum { |s| s.service_package.estimated_price }) %>
+                  </strong>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <div class="d-flex gap-3">
+            <%= link_to protein_pathway_review_path, class: "modern-btn modern-btn-secondary" do %>
+              <i class="bi bi-arrow-left"></i> Back to Review
+            <% end %>
+
+            <%= f.submit "Request Quote", class: "modern-btn modern-btn-primary flex-grow-1" %>
+          </div>
+
+          <p class="modern-caption text-center mt-3 text-muted">
+            By submitting this form, you agree to be contacted by BioGrammatics regarding your quote request.
+            We typically respond within 24 hours during business days.
+          </p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>

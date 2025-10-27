@@ -31,6 +31,17 @@ echo "=== Running database migrations ==="
 bundle exec rails db:create RAILS_ENV=production || true
 bundle exec rails db:migrate RAILS_ENV=production
 
+# Seed service packages if they don't exist
+echo "=== Checking service packages ==="
+RAILS_ENV=production bundle exec rails runner "
+  if ServicePackage.count == 0
+    puts 'No service packages found, seeding...'
+    load 'db/seeds/service_packages.rb'
+  else
+    puts \"Service packages already exist (count: #{ServicePackage.count})\"
+  end
+" || true
+
 # Seed the database with initial data (only run once on first deploy)
 # Comment this out after first deployment to avoid re-seeding
 if [[ "$RENDER_FIRST_DEPLOY" == "true" ]]; then

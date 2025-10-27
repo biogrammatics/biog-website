@@ -6,6 +6,8 @@ class User < ApplicationRecord
   has_many :custom_projects, dependent: :destroy
   has_many :addresses, dependent: :destroy
   has_many :orders, dependent: :destroy
+  has_many :pathway_selections, dependent: :destroy
+  has_many :service_quotes, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   normalizes :phone_number, with: ->(p) { p&.gsub(/\D/, "") }

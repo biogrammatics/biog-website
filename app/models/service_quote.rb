@@ -8,9 +8,6 @@ class ServiceQuote < ApplicationRecord
   scope :contacted, -> { where(status: "contacted") }
   scope :recent, -> { order(created_at: :desc) }
 
-  # Serialize selected_services as JSON
-  serialize :selected_services, coder: JSON
-
   before_create :generate_quote_number
 
   def contacted?

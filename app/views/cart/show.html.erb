@@ -44,9 +44,9 @@
                           <strong>$<%= cart_item.total_price %></strong>
                         </td>
                         <td>
-                          <%= button_to "Remove", remove_item_cart_path, params: { cart_item_id: cart_item.id }, method: :delete, 
+                          <%= button_to "Remove", remove_item_cart_path, params: { cart_item_id: cart_item.id }, method: :delete,
                               class: "btn btn-sm btn-outline-danger",
-                              confirm: "Are you sure you want to remove #{cart_item.item_name} from your cart?" %>
+                              data: { turbo_confirm: "Are you sure you want to remove #{cart_item.item_name} from your cart?" } %>
                         </td>
                       </tr>
                     <% end %>
@@ -75,7 +75,7 @@
                         <td>
                           <%= button_to "Remove", remove_item_cart_path, params: { item_key: cart_item.session_key }, method: :delete,
                               class: "btn btn-sm btn-outline-danger",
-                              confirm: "Are you sure you want to remove #{cart_item.item.name} from your cart?" %>
+                              data: { turbo_confirm: "Are you sure you want to remove #{cart_item.item.name} from your cart?" } %>
                         </td>
                       </tr>
                     <% end %>
@@ -100,9 +100,9 @@
             <div class="d-flex justify-content-between mt-4">
               <%= link_to "Continue Shopping", root_path, class: "btn btn-outline-secondary" %>
               <div>
-                <%= button_to "Clear Cart", clear_cart_path, method: :delete, 
+                <%= button_to "Clear Cart", clear_cart_path, method: :delete,
                     class: "btn btn-outline-warning me-2",
-                    confirm: "Are you sure you want to clear your entire cart?" %>
+                    data: { turbo_confirm: "Are you sure you want to clear your entire cart?" } %>
                 <%= button_to "Proceed to Checkout", checkout_cart_path, method: :post, class: "btn btn-primary" %>
               </div>
             </div>

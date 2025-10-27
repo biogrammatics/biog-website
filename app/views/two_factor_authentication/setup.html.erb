@@ -30,9 +30,11 @@
 
       <div class="space-y-4">
         <%= link_to "View/Regenerate Backup Codes", regenerate_backup_codes_path,
-                    method: :post,
                     class: "inline-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition",
-                    data: { confirm: "This will generate new backup codes and invalidate the old ones. Continue?" } %>
+                    data: {
+                      turbo_method: :post,
+                      turbo_confirm: "This will generate new backup codes and invalidate the old ones. Continue?"
+                    } %>
 
         <% unless @user.admin? %>
           <%= link_to "Disable Two-Factor Authentication", disable_path,

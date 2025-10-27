@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_25_221623) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_27_000003) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -159,6 +159,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_25_221623) do
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
+  create_table "pathway_selections", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "session_id"
+    t.integer "step_number", null: false
+    t.string "selection_type", null: false
+    t.integer "service_package_id"
+    t.text "notes"
+    t.string "status", default: "in_progress"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_pathway_selections_on_created_at"
+    t.index ["service_package_id"], name: "index_pathway_selections_on_service_package_id"
+    t.index ["session_id"], name: "index_pathway_selections_on_session_id"
+    t.index ["status"], name: "index_pathway_selections_on_status"
+    t.index ["user_id", "status"], name: "index_pathway_selections_on_user_id_and_status"
+    t.index ["user_id"], name: "index_pathway_selections_on_user_id"
+  end
+
   create_table "pichia_strains", force: :cascade do |t|
     t.string "name", limit: 255
     t.text "description"
@@ -257,6 +275,58 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_25_221623) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_selection_markers_on_name"
+  end
+
+  create_table "service_packages", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.integer "step_number", null: false
+    t.text "description"
+    t.text "diy_option"
+    t.text "service_option"
+    t.text "diy_challenges"
+    t.text "service_benefits"
+    t.text "whats_included"
+    t.decimal "estimated_price", precision: 10, scale: 2
+    t.string "estimated_turnaround"
+    t.boolean "active", default: true, null: false
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_service_packages_on_active"
+    t.index ["position"], name: "index_service_packages_on_position"
+    t.index ["slug"], name: "index_service_packages_on_slug", unique: true
+    t.index ["step_number"], name: "index_service_packages_on_step_number"
+  end
+
+  create_table "service_quotes", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "session_id"
+    t.string "quote_number"
+    t.string "email_address", null: false
+    t.string "full_name"
+    t.string "organization"
+    t.string "phone_number"
+    t.string "project_name"
+    t.string "target_protein_name"
+    t.text "protein_tags"
+    t.text "special_requirements"
+    t.text "notes"
+    t.json "selected_services"
+    t.decimal "estimated_total", precision: 10, scale: 2
+    t.string "status", default: "pending"
+    t.datetime "contacted_at"
+    t.datetime "quoted_at"
+    t.text "admin_notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_service_quotes_on_created_at"
+    t.index ["email_address"], name: "index_service_quotes_on_email_address"
+    t.index ["quote_number"], name: "index_service_quotes_on_quote_number", unique: true
+    t.index ["session_id"], name: "index_service_quotes_on_session_id"
+    t.index ["status"], name: "index_service_quotes_on_status"
+    t.index ["user_id", "status"], name: "index_service_quotes_on_user_id_and_status"
+    t.index ["user_id"], name: "index_service_quotes_on_user_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -396,9 +466,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_25_221623) do
   add_foreign_key "custom_projects", "vectors", column: "selected_vector_id"
   add_foreign_key "order_items", "orders"
   add_foreign_key "orders", "users"
+  add_foreign_key "pathway_selections", "service_packages"
+  add_foreign_key "pathway_selections", "users"
   add_foreign_key "pichia_strains", "product_statuses"
   add_foreign_key "pichia_strains", "strain_types"
   add_foreign_key "proteins", "custom_projects"
+  add_foreign_key "service_quotes", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "subscription_vectors", "subscriptions"
   add_foreign_key "subscription_vectors", "vectors"

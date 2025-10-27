@@ -55,6 +55,23 @@ class User < ApplicationRecord
     addresses.shipping.default_addresses.first
   end
 
+  # Login tracking methods
+  def last_login
+    sessions.order(created_at: :desc).first
+  end
+
+  def last_login_at
+    last_login&.created_at
+  end
+
+  def login_count
+    sessions.count
+  end
+
+  def recent_logins(limit = 10)
+    sessions.order(created_at: :desc).limit(limit)
+  end
+
   # 2FA Methods
   def two_factor_required?
     admin? || two_factor_enabled?

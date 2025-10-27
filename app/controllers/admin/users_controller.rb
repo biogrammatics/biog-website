@@ -2,10 +2,13 @@ class Admin::UsersController < Admin::BaseController
   before_action :set_user, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    @users = User.all.order(:email_address)
+    # Eager load the most recent session for each user to avoid N+1 queries
+    @users = User.includes(:sessions).all.order(:email_address)
   end
 
   def show
+    # Load recent sessions for the user detail view
+    @recent_sessions = @user.sessions.order(created_at: :desc).limit(20)
   end
 
   def new

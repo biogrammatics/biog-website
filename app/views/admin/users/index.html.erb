@@ -15,6 +15,7 @@
               <th>Name</th>
               <th>Role</th>
               <th>Twist Username</th>
+              <th>Last Login</th>
               <th>Created</th>
               <th>Actions</th>
             </tr>
@@ -33,6 +34,17 @@
                   <% end %>
                 </td>
                 <td><%= user.twist_username.presence || "-" %></td>
+                <td>
+                  <% if user.last_login_at %>
+                    <span title="<%= user.last_login_at.strftime("%B %d, %Y at %I:%M %p") %>">
+                      <%= time_ago_in_words(user.last_login_at) %> ago
+                    </span>
+                    <br>
+                    <small class="text-muted"><%= user.login_count %> logins</small>
+                  <% else %>
+                    <span class="text-muted">Never</span>
+                  <% end %>
+                </td>
                 <td><%= user.created_at.strftime("%b %d, %Y") %></td>
                 <td>
                   <div class="btn-group btn-group-sm" role="group">

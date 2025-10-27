@@ -17,106 +17,194 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%# Tailwind CSS %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%# Legacy CSS (will phase out) %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <%# Bootstrap Icons (keeping for now) %>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
   </head>
 
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-      <div class="container">
-        <%= link_to "BioGrammatics", root_path, class: "navbar-brand" %>
-        
-        <div class="navbar-nav ms-auto">
-          <%= link_to "Vectors", vectors_path, class: "nav-link" %>
-          <%= link_to "Strains", pichia_strains_path, class: "nav-link" %>
-          <%= link_to "Subscriptions", subscriptions_path, class: "nav-link" %>
-          <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-              Custom Services
-            </a>
-            <ul class="dropdown-menu">
-              <li><%= link_to "Protein Expression", protein_expression_custom_projects_path, class: "dropdown-item" %></li>
-              <li><%= link_to "Other Custom Projects", new_custom_project_path, class: "dropdown-item" %></li>
-            </ul>
+  <body class="bg-gray-50 min-h-screen flex flex-col">
+    <!-- Modern Navigation -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+      <div class="container-custom">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo -->
+          <div class="flex-shrink-0">
+            <%= link_to root_path, class: "flex items-center space-x-2" do %>
+              <span class="text-2xl font-bold text-charcoal">BioGrammatics</span>
+            <% end %>
           </div>
-          
-          <%= link_to cart_path, class: "nav-link position-relative" do %>
+
+          <!-- Desktop Navigation -->
+          <div class="hidden md:flex items-center space-x-1">
+            <%= link_to "Vectors", vectors_path, class: "px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100 transition-colors" %>
+            <%= link_to "Strains", pichia_strains_path, class: "px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100 transition-colors" %>
+            <%= link_to "Subscriptions", subscriptions_path, class: "px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100 transition-colors" %>
+
+            <!-- Custom Services Dropdown -->
+            <div class="relative dropdown">
+              <button class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100 transition-colors inline-flex items-center">
+                Custom Services
+                <i class="bi bi-chevron-down ml-1 text-xs"></i>
+              </button>
+              <div class="dropdown-menu">
+                <%= link_to protein_expression_custom_projects_path, class: "dropdown-item" do %>
+                  <i class="bi bi-diagram-3 mr-2"></i>Protein Expression
+                <% end %>
+                <%= link_to new_custom_project_path, class: "dropdown-item" do %>
+                  <i class="bi bi-gear-wide-connected mr-2"></i>Other Custom Projects
+                <% end %>
+              </div>
+            </div>
+
+            <!-- Cart -->
+            <%= link_to cart_path, class: "px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100 transition-colors relative inline-flex items-center" do %>
+              <i class="bi bi-cart3 mr-1"></i>
+              Cart
+              <% if has_cart_items? %>
+                <span class="badge absolute -top-1 -right-1"><%= current_cart_items_count %></span>
+              <% end %>
+            <% end %>
+
+            <% if authenticated? %>
+              <% if admin_signed_in? %>
+                <!-- Admin Dropdown -->
+                <div class="relative dropdown">
+                  <button class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100 transition-colors inline-flex items-center">
+                    Admin
+                    <i class="bi bi-chevron-down ml-1 text-xs"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <%= link_to admin_users_path, class: "dropdown-item" do %>
+                      <i class="bi bi-people mr-2"></i>Manage Users
+                    <% end %>
+                    <div class="border-t border-gray-200 my-1"></div>
+                    <%= link_to admin_vectors_path, class: "dropdown-item" do %>
+                      <i class="bi bi-diagram-2 mr-2"></i>Manage Vectors
+                    <% end %>
+                    <%= link_to admin_pichia_strains_path, class: "dropdown-item" do %>
+                      <i class="bi bi-droplet mr-2"></i>Manage Strains
+                    <% end %>
+                    <%= link_to admin_promoters_path, class: "dropdown-item" do %>
+                      <i class="bi bi-toggles mr-2"></i>Manage Promoters
+                    <% end %>
+                    <%= link_to admin_selection_markers_path, class: "dropdown-item" do %>
+                      <i class="bi bi-bookmark mr-2"></i>Manage Selection Markers
+                    <% end %>
+                    <div class="border-t border-gray-200 my-1"></div>
+                    <%= link_to admin_custom_projects_path, class: "dropdown-item" do %>
+                      <i class="bi bi-folder mr-2"></i>Manage Custom Projects
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+
+              <!-- User Dropdown -->
+              <div class="relative dropdown">
+                <button class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100 transition-colors inline-flex items-center">
+                  <i class="bi bi-person-circle mr-1"></i>
+                  <%= Current.user.full_name.presence || Current.user.email_address.split('@').first %>
+                  <i class="bi bi-chevron-down ml-1 text-xs"></i>
+                </button>
+                <div class="dropdown-menu right-0">
+                  <%= link_to account_path, class: "dropdown-item" do %>
+                    <i class="bi bi-gear mr-2"></i>Account
+                  <% end %>
+                  <div class="border-t border-gray-200 my-1"></div>
+                  <%= button_to session_path, method: :delete, class: "dropdown-item w-full text-left border-0 bg-transparent" do %>
+                    <i class="bi bi-box-arrow-right mr-2"></i>Sign Out
+                  <% end %>
+                </div>
+              </div>
+            <% else %>
+              <%= link_to new_session_path, class: "btn-primary text-sm px-4 py-2" do %>
+                Sign In
+              <% end %>
+            <% end %>
+          </div>
+
+          <!-- Mobile menu button -->
+          <div class="md:hidden">
+            <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-bio-green hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-bio-green">
+              <i class="bi bi-list text-2xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+          <%= link_to "Vectors", vectors_path, class: "block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100" %>
+          <%= link_to "Strains", pichia_strains_path, class: "block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100" %>
+          <%= link_to "Subscriptions", subscriptions_path, class: "block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100" %>
+          <%= link_to "Protein Expression", protein_expression_custom_projects_path, class: "block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100" %>
+          <%= link_to "Custom Projects", new_custom_project_path, class: "block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100" %>
+          <%= link_to cart_path, class: "block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100" do %>
             Cart
             <% if has_cart_items? %>
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                <%= current_cart_items_count %>
-              </span>
+              <span class="badge ml-2"><%= current_cart_items_count %></span>
             <% end %>
           <% end %>
-          
+
           <% if authenticated? %>
             <% if admin_signed_in? %>
-              <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                  Admin
-                </a>
-                <ul class="dropdown-menu">
-                  <li><%= link_to "Manage Users", admin_users_path, class: "dropdown-item" %></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><%= link_to "Manage Vectors", admin_vectors_path, class: "dropdown-item" %></li>
-                  <li><%= link_to "Manage Strains", admin_pichia_strains_path, class: "dropdown-item" %></li>
-                  <li><%= link_to "Manage Promoters", admin_promoters_path, class: "dropdown-item" %></li>
-                  <li><%= link_to "Manage Selection Markers", admin_selection_markers_path, class: "dropdown-item" %></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><%= link_to "Manage Custom Projects", admin_custom_projects_path, class: "dropdown-item" %></li>
-                </ul>
-              </div>
+              <div class="border-t border-gray-200 my-2"></div>
+              <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Admin</div>
+              <%= link_to "Manage Users", admin_users_path, class: "block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100" %>
+              <%= link_to "Manage Vectors", admin_vectors_path, class: "block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100" %>
+              <%= link_to "Manage Strains", admin_pichia_strains_path, class: "block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100" %>
+              <%= link_to "Manage Custom Projects", admin_custom_projects_path, class: "block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100" %>
             <% end %>
-            
-            <div class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                <%= Current.user.full_name.presence || Current.user.email_address %>
-              </a>
-              <ul class="dropdown-menu">
-                <li><%= link_to "Account", account_path, class: "dropdown-item" %></li>
-                <li><hr class="dropdown-divider"></li>
-                <li>
-                  <%= button_to "Sign Out", session_path, method: :delete, class: "dropdown-item border-0 bg-transparent text-start w-100" %>
-                </li>
-              </ul>
-            </div>
+            <div class="border-t border-gray-200 my-2"></div>
+            <%= link_to "Account", account_path, class: "block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100" %>
+            <%= button_to "Sign Out", session_path, method: :delete, class: "block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-bio-green hover:bg-gray-100 border-0 bg-transparent" %>
           <% else %>
-            <%= link_to "Sign In", new_session_path, class: "nav-link" %>
+            <%= link_to "Sign In", new_session_path, class: "block px-3 py-2 rounded-md text-base font-medium bg-bio-green text-white hover:bg-bio-green-dark" %>
           <% end %>
         </div>
       </div>
     </nav>
 
-    <div class="container">
+    <!-- Main Content -->
+    <main class="flex-grow">
       <%= yield %>
-    </div>
+    </main>
 
     <!-- Footer -->
-    <footer class="mt-5 py-4 border-top">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <p class="text-muted mb-0">&copy; <%= Date.current.year %> BioGrammatics. All rights reserved.</p>
+    <footer class="mt-auto bg-white border-t border-gray-200">
+      <div class="container-custom py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <p class="text-gray-600 text-sm">&copy; <%= Date.current.year %> BioGrammatics. All rights reserved.</p>
           </div>
-          <div class="col-md-6 text-md-end">
-            <%= link_to "Privacy Policy", privacy_path, class: "text-muted text-decoration-none me-3" %>
-            <%= link_to "Cookie Policy", cookies_policy_path, class: "text-muted text-decoration-none me-3" %>
-            <a href="#" onclick="manageCookies(); return false;" class="text-muted text-decoration-none">Cookie Settings</a>
+          <div class="flex flex-wrap gap-4 md:justify-end">
+            <%= link_to "Privacy Policy", privacy_path, class: "text-gray-600 hover:text-bio-green text-sm transition-colors" %>
+            <%= link_to "Cookie Policy", cookies_policy_path, class: "text-gray-600 hover:text-bio-green text-sm transition-colors" %>
+            <a href="#" onclick="manageCookies(); return false;" class="text-gray-600 hover:text-bio-green text-sm transition-colors">Cookie Settings</a>
           </div>
         </div>
       </div>
     </footer>
 
     <%= render 'shared/cookie_banner' %>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Rails UJS for form handling with method: :patch, :delete, etc. -->
+
+    <!-- Mobile menu toggle script -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuButton && mobileMenu) {
+          mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+          });
+        }
+
         // Handle forms with data-turbo-confirm attribute
         document.addEventListener('submit', function(e) {
           const form = e.target;

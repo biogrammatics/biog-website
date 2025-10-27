@@ -1,271 +1,357 @@
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <h1><%= @vector.name %></h1>
-  <%= link_to "← Back to Vectors", vectors_path, class: "btn btn-outline-secondary" %>
-</div>
-
-<div class="row">
-  <div class="col-md-8">
-    <% if @vector.map_image_exists? && @vector.map_thumbnail %>
-      <div class="card mb-4">
-        <div class="card-header">
-          <h3>Vector Map</h3>
-        </div>
-        <div class="card-body text-center">
-          <% begin %>
-            <a href="#" data-bs-toggle="modal" data-bs-target="#vectorMapModal">
-              <%= image_tag @vector.map_thumbnail, 
-                            class: "img-fluid",
-                            style: "max-width: 100%; max-height: 400px; cursor: zoom-in; object-fit: contain;",
-                            alt: "#{@vector.name} vector map" %>
-            </a>
-            <p class="text-muted mt-2">
-              <i class="bi bi-zoom-in"></i> Click to enlarge
-            </p>
-          <% rescue => e %>
-            <div class="text-center text-muted py-4">
-              <i class="bi bi-exclamation-triangle fs-1"></i>
-              <p>Vector map temporarily unavailable</p>
-            </div>
-          <% end %>
-        </div>
-      </div>
+<div class="container-custom py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-charcoal"><%= @vector.name %></h1>
+    <%= link_to vectors_path, class: "inline-flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" do %>
+      <i class="bi bi-arrow-left"></i>
+      Back to Vectors
     <% end %>
-    
-    <div class="card mb-4">
-      <div class="card-header">
-        <h3>Vector Details</h3>
-      </div>
-      <div class="card-body">
-        <p class="lead"><%= @vector.description %></p>
-        
-        <div class="row">
-          <div class="col-md-6">
-            <h5>Vector Components</h5>
-            <p><strong>Promoter:</strong> <%= @vector.promoter&.name || "Not specified" %>
-              <% if @vector.promoter&.full_name %>
-                <br><small class="text-muted">(<%= @vector.promoter.full_name %>)</small>
-              <% end %>
-            </p>
-            <p><strong>Selection Marker:</strong> <%= @vector.selection_marker&.name || "Not specified" %>
-              <% if @vector.selection_marker&.resistance %>
-                <br><small class="text-muted">Resistance: <%= @vector.selection_marker.resistance %></small>
-              <% end %>
-            </p>
-            <p><strong>Vector Type:</strong> <%= @vector.vector_type&.name || "Not specified" %></p>
-            <p><strong>Host Organism:</strong> <%= @vector.host_organism&.common_name || "Not specified" %>
-              <% if @vector.host_organism&.scientific_name %>
-                <br><small class="text-muted">(<em><%= @vector.host_organism.scientific_name %></em>)</small>
-              <% end %>
-            </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2 space-y-6">
+      <!-- Vector Map -->
+      <% if @vector.map_image_exists? && @vector.map_thumbnail %>
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h3 class="text-lg font-semibold text-charcoal">Vector Map</h3>
           </div>
-          
-          <div class="col-md-6">
-            <h5>Vector Properties</h5>
-            <p><strong>Size:</strong> <%= @vector.vector_size ? "#{@vector.vector_size} bp" : "Not specified" %></p>
-            <p><strong>Category:</strong> <%= @vector.category || "Not specified" %></p>
-            <p><strong>Lox Sites:</strong> 
-              <span class="badge <%= @vector.has_lox_sites? ? 'bg-success' : 'bg-secondary' %>">
-                <%= @vector.has_lox_sites? ? 'Present' : 'Not Present' %>
-              </span>
-            </p>
-            <p><strong>File Version:</strong> <%= @vector.file_version || "Not specified" %></p>
+          <div class="p-6 text-center">
+            <% begin %>
+              <button type="button" onclick="document.getElementById('vectorMapModal').classList.remove('hidden')" class="cursor-zoom-in">
+                <%= image_tag @vector.map_thumbnail,
+                              class: "max-w-full h-auto mx-auto transition-transform hover:scale-105",
+                              style: "max-height: 400px; object-fit: contain;",
+                              alt: "#{@vector.name} vector map" %>
+              </button>
+              <p class="text-gray-500 mt-3 text-sm">
+                <i class="bi bi-zoom-in"></i> Click to enlarge
+              </p>
+            <% rescue => e %>
+              <div class="text-center text-gray-500 py-8">
+                <i class="bi bi-exclamation-triangle text-4xl mb-3"></i>
+                <p>Vector map temporarily unavailable</p>
+              </div>
+            <% end %>
           </div>
         </div>
-        
-        <% if @vector.features.present? %>
-          <div class="mt-3">
-            <h5>Features</h5>
-            <p><%= simple_format(@vector.features) %></p>
-          </div>
-        <% end %>
-      </div>
-    </div>
-    
-    <div class="card mb-4">
-      <div class="card-header">
-        <h3>Available Files</h3>
-      </div>
-      <div class="card-body">
-        <% if @vector.files.attached? && @vector.files.any? %>
-          <ul class="list-group">
-            <% @vector.files.each do |file| %>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
+      <% end %>
+
+      <!-- Vector Details -->
+      <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h3 class="text-lg font-semibold text-charcoal">Vector Details</h3>
+        </div>
+        <div class="p-6">
+          <p class="text-lg text-gray-700 mb-6"><%= @vector.description %></p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h5 class="text-base font-semibold text-charcoal mb-4 pb-2 border-b border-gray-200">Vector Components</h5>
+
+              <div class="space-y-3">
                 <div>
-                  <% if file.filename.to_s.ends_with?('.dna') %>
-                    <i class="bi bi-file-earmark-binary text-primary"></i>
-                    <strong>SnapGene File</strong>
-                  <% elsif file.filename.to_s.ends_with?('.gb', '.gbk') %>
-                    <i class="bi bi-file-earmark-code text-success"></i>
-                    <strong>GenBank File</strong>
-                  <% else %>
-                    <i class="bi bi-file-earmark text-secondary"></i>
-                    <strong>File</strong>
+                  <p class="text-sm font-medium text-gray-600">Promoter</p>
+                  <p class="text-gray-900"><%= @vector.promoter&.name || "Not specified" %></p>
+                  <% if @vector.promoter&.full_name %>
+                    <p class="text-xs text-gray-500">(<%= @vector.promoter.full_name %>)</p>
                   <% end %>
-                  <span class="ms-2"><%= file.filename %></span>
-                  <small class="text-muted ms-2">(<%= number_to_human_size(file.byte_size) %>)</small>
                 </div>
-                
-                <% if authenticated? && (Current.user.admin? || user_has_access_to_vector?(@vector)) %>
-                  <%= link_to "Download", 
-                              rails_blob_path(file, disposition: "attachment"), 
-                              class: "btn btn-sm btn-primary" %>
-                <% else %>
-                  <button class="btn btn-sm btn-outline-secondary" disabled 
-                          title="Purchase or subscribe to download">
-                    <i class="bi bi-lock"></i> Download
-                  </button>
-                <% end %>
-              </li>
-            <% end %>
-          </ul>
-          
-          <% unless authenticated? && (Current.user.admin? || user_has_access_to_vector?(@vector)) %>
-            <div class="alert alert-info mt-3" role="alert">
-              <i class="bi bi-info-circle"></i>
-              <strong>Note:</strong> File downloads are available after purchase or with an active subscription.
+
+                <div>
+                  <p class="text-sm font-medium text-gray-600">Selection Marker</p>
+                  <p class="text-gray-900"><%= @vector.selection_marker&.name || "Not specified" %></p>
+                  <% if @vector.selection_marker&.resistance %>
+                    <p class="text-xs text-gray-500">Resistance: <%= @vector.selection_marker.resistance %></p>
+                  <% end %>
+                </div>
+
+                <div>
+                  <p class="text-sm font-medium text-gray-600">Vector Type</p>
+                  <p class="text-gray-900"><%= @vector.vector_type&.name || "Not specified" %></p>
+                </div>
+
+                <div>
+                  <p class="text-sm font-medium text-gray-600">Host Organism</p>
+                  <p class="text-gray-900"><%= @vector.host_organism&.common_name || "Not specified" %></p>
+                  <% if @vector.host_organism&.scientific_name %>
+                    <p class="text-xs text-gray-500 italic">(<%= @vector.host_organism.scientific_name %>)</p>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h5 class="text-base font-semibold text-charcoal mb-4 pb-2 border-b border-gray-200">Vector Properties</h5>
+
+              <div class="space-y-3">
+                <div>
+                  <p class="text-sm font-medium text-gray-600">Size</p>
+                  <p class="text-gray-900"><%= @vector.vector_size ? "#{number_with_delimiter(@vector.vector_size)} bp" : "Not specified" %></p>
+                </div>
+
+                <div>
+                  <p class="text-sm font-medium text-gray-600">Category</p>
+                  <p class="text-gray-900"><%= @vector.category || "Not specified" %></p>
+                </div>
+
+                <div>
+                  <p class="text-sm font-medium text-gray-600">Lox Sites</p>
+                  <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium <%= @vector.has_lox_sites? ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700' %>">
+                    <%= @vector.has_lox_sites? ? 'Present' : 'Not Present' %>
+                  </span>
+                </div>
+
+                <div>
+                  <p class="text-sm font-medium text-gray-600">File Version</p>
+                  <p class="text-gray-900"><%= @vector.file_version || "Not specified" %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <% if @vector.features.present? %>
+            <div class="mt-6 pt-6 border-t border-gray-200">
+              <h5 class="text-base font-semibold text-charcoal mb-3">Features</h5>
+              <div class="text-gray-700 text-sm"><%= simple_format(@vector.features) %></div>
             </div>
           <% end %>
-        <% else %>
-          <div class="alert alert-warning" role="alert">
-            No files are currently available for this vector.
-          </div>
-        <% end %>
+        </div>
+      </div>
+
+      <!-- Available Files -->
+      <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h3 class="text-lg font-semibold text-charcoal">Available Files</h3>
+        </div>
+        <div class="p-6">
+          <% if @vector.files.attached? && @vector.files.any? %>
+            <div class="space-y-3">
+              <% @vector.files.each do |file| %>
+                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                  <div class="flex items-center gap-3">
+                    <% if file.filename.to_s.ends_with?('.dna') %>
+                      <i class="bi bi-file-earmark-binary text-2xl text-blue-600"></i>
+                      <div>
+                        <p class="font-medium text-gray-900">SnapGene File</p>
+                        <p class="text-sm text-gray-500"><%= file.filename %> (<%= number_to_human_size(file.byte_size) %>)</p>
+                      </div>
+                    <% elsif file.filename.to_s.ends_with?('.gb', '.gbk') %>
+                      <i class="bi bi-file-earmark-code text-2xl text-green-600"></i>
+                      <div>
+                        <p class="font-medium text-gray-900">GenBank File</p>
+                        <p class="text-sm text-gray-500"><%= file.filename %> (<%= number_to_human_size(file.byte_size) %>)</p>
+                      </div>
+                    <% else %>
+                      <i class="bi bi-file-earmark text-2xl text-gray-600"></i>
+                      <div>
+                        <p class="font-medium text-gray-900">File</p>
+                        <p class="text-sm text-gray-500"><%= file.filename %> (<%= number_to_human_size(file.byte_size) %>)</p>
+                      </div>
+                    <% end %>
+                  </div>
+
+                  <% if authenticated? && (Current.user.admin? || user_has_access_to_vector?(@vector)) %>
+                    <%= link_to rails_blob_path(file, disposition: "attachment"),
+                                class: "inline-flex items-center gap-2 px-4 py-2 bg-bio-green text-white text-sm font-medium rounded-lg hover:bg-bio-green-dark transition-colors" do %>
+                      <i class="bi bi-download"></i>
+                      Download
+                    <% end %>
+                  <% else %>
+                    <button class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-400 text-sm font-medium rounded-lg cursor-not-allowed" disabled title="Purchase or subscribe to download">
+                      <i class="bi bi-lock"></i>
+                      Download
+                    </button>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+
+            <% unless authenticated? && (Current.user.admin? || user_has_access_to_vector?(@vector)) %>
+              <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
+                <div class="flex gap-3">
+                  <i class="bi bi-info-circle text-blue-600 text-xl flex-shrink-0"></i>
+                  <div>
+                    <p class="text-blue-900 font-medium">Note:</p>
+                    <p class="text-blue-800 text-sm">File downloads are available after purchase or with an active subscription.</p>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <div class="flex gap-3">
+                <i class="bi bi-exclamation-triangle text-yellow-600 text-xl flex-shrink-0"></i>
+                <p class="text-yellow-800">No files are currently available for this vector.</p>
+              </div>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
-  </div>
-  
-  <div class="col-md-4">
-    <div class="card mb-4">
-      <div class="card-header">
-        <h3>Pricing Options</h3>
-      </div>
-      <div class="card-body">
-        <% if @vector.available_for_sale? && @vector.sale_price %>
-          <div class="mb-3">
-            <h4>One-time Purchase</h4>
-            <div class="text-center">
-              <h2 class="text-success">$<%= @vector.sale_price %></h2>
-              <p class="text-muted">Perpetual license</p>
+
+    <!-- Sidebar -->
+    <div class="lg:col-span-1 space-y-6">
+      <!-- Pricing Options -->
+      <div class="bg-white rounded-xl border border-gray-200 overflow-hidden sticky top-20">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h3 class="text-lg font-semibold text-charcoal">Pricing Options</h3>
+        </div>
+        <div class="p-6 space-y-4">
+          <% if @vector.available_for_sale? && @vector.sale_price %>
+            <div>
+              <h4 class="font-semibold text-charcoal mb-3">One-time Purchase</h4>
+              <div class="text-center mb-4">
+                <p class="text-3xl font-bold text-bio-green">${<%= @vector.sale_price %></p>
+                <p class="text-sm text-gray-500">Perpetual license</p>
+              </div>
+              <%= button_to "Add to Cart", add_item_cart_path,
+                  params: { item_type: 'Vector', item_id: @vector.id, quantity: 1 },
+                  method: :post,
+                  class: "w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-bio-green text-white font-semibold rounded-lg hover:bg-bio-green-dark transition-colors shadow-md hover:shadow-lg" %>
             </div>
-            <%= button_to "Add to Cart", add_item_cart_path, 
-                params: { item_type: 'Vector', item_id: @vector.id, quantity: 1 }, 
-                method: :post,
-                class: "btn btn-success w-100" %>
-          </div>
-          <hr>
-        <% end %>
-        
-        <% if @vector.available_for_subscription? && @vector.subscription_price %>
-          <div class="mb-3">
-            <h4>Annual Subscription</h4>
-            <div class="text-center">
-              <h3 class="text-primary">$<%= @vector.subscription_price %></h3>
-              <p class="text-muted">Per year</p>
+            <div class="border-t border-gray-200 my-4"></div>
+          <% end %>
+
+          <% if @vector.available_for_subscription? && @vector.subscription_price %>
+            <div>
+              <h4 class="font-semibold text-charcoal mb-3">Annual Subscription</h4>
+              <div class="text-center mb-4">
+                <p class="text-3xl font-bold text-blue-600">${<%= @vector.subscription_price %></p>
+                <p class="text-sm text-gray-500">Per year</p>
+              </div>
+              <button class="w-full px-6 py-3 bg-gray-100 text-gray-500 font-semibold rounded-lg cursor-not-allowed" disabled>
+                <span class="block">Subscribe</span>
+                <span class="text-xs">Coming Soon</span>
+              </button>
             </div>
-            <button class="btn btn-primary w-100" disabled>
-              Subscribe
-              <small class="d-block">Coming Soon</small>
-            </button>
-          </div>
-        <% end %>
-        
-        <% unless (@vector.available_for_sale? && @vector.sale_price) || (@vector.available_for_subscription? && @vector.subscription_price) %>
-          <div class="alert alert-info" role="alert">
-            Contact us for pricing information.
-          </div>
-        <% end %>
-        
-        <div class="mt-3">
-          <button class="btn btn-outline-secondary w-100" disabled>
-            Request Quote
-            <small class="d-block">Coming Soon</small>
+          <% end %>
+
+          <% unless (@vector.available_for_sale? && @vector.sale_price) || (@vector.available_for_subscription? && @vector.subscription_price) %>
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <p class="text-blue-800 text-sm">Contact us for pricing information.</p>
+            </div>
+          <% end %>
+
+          <button class="w-full px-6 py-3 border border-gray-300 text-gray-500 font-medium rounded-lg cursor-not-allowed" disabled>
+            <span class="block">Request Quote</span>
+            <span class="text-xs">Coming Soon</span>
           </button>
         </div>
       </div>
-    </div>
-    
-    <div class="card mb-4">
-      <div class="card-header">
-        <h4>Product Status</h4>
+
+      <!-- Product Status -->
+      <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h4 class="text-base font-semibold text-charcoal">Product Status</h4>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium text-gray-600">Status:</span>
+            <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium <%= @vector.available? ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' %>">
+              <%= @vector.product_status&.name || "Unknown" %>
+            </span>
+          </div>
+          <% if @vector.product_status&.description %>
+            <p class="text-xs text-gray-500 mt-2"><%= @vector.product_status.description %></p>
+          <% end %>
+        </div>
       </div>
-      <div class="card-body">
-        <p>
-          <strong>Status:</strong> 
-          <span class="badge <%= @vector.available? ? 'bg-success' : 'bg-warning' %>">
-            <%= @vector.product_status&.name || "Unknown" %>
-          </span>
-        </p>
-        <% if @vector.product_status&.description %>
-          <p class="small text-muted"><%= @vector.product_status.description %></p>
-        <% end %>
-      </div>
-    </div>
-    
-    <div class="card">
-      <div class="card-header">
-        <h4>Need Help?</h4>
-      </div>
-      <div class="card-body">
-        <p class="small">Questions about this vector or need technical support?</p>
-        <button class="btn btn-outline-secondary btn-sm w-100" disabled>
-          Contact Support
-        </button>
-        
-        <hr>
-        
-        <h6>Related Products</h6>
-        <p class="small text-muted">
-          Looking for compatible strains or other vectors? Browse our full catalog.
-        </p>
-        <%= link_to "View All Vectors", vectors_path, class: "btn btn-sm btn-outline-primary me-1" %>
-        <%= link_to "View Strains", pichia_strains_path, class: "btn btn-sm btn-outline-info" %>
+
+      <!-- Need Help -->
+      <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h4 class="text-base font-semibold text-charcoal">Need Help?</h4>
+        </div>
+        <div class="p-6 space-y-4">
+          <p class="text-sm text-gray-600">Questions about this vector or need technical support?</p>
+          <button class="w-full px-4 py-2 border border-gray-300 text-gray-500 text-sm font-medium rounded-lg cursor-not-allowed" disabled>
+            Contact Support
+          </button>
+
+          <div class="border-t border-gray-200 pt-4">
+            <h6 class="font-semibold text-charcoal mb-2">Related Products</h6>
+            <p class="text-sm text-gray-600 mb-3">
+              Looking for compatible strains or other vectors? Browse our full catalog.
+            </p>
+            <div class="flex gap-2">
+              <%= link_to "View All Vectors", vectors_path, class: "flex-1 px-3 py-2 text-center border border-bio-green text-bio-green text-sm font-medium rounded-lg hover:bg-bio-green/10 transition-colors" %>
+              <%= link_to "View Strains", pichia_strains_path, class: "flex-1 px-3 py-2 text-center border border-blue-600 text-blue-600 text-sm font-medium rounded-lg hover:bg-blue-50 transition-colors" %>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- Vector Map Modal -->
 <% if @vector.map_image_exists? %>
-  <!-- Vector Map Modal -->
-  <div class="modal fade" id="vectorMapModal" tabindex="-1" aria-labelledby="vectorMapModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="vectorMapModalLabel"><%= @vector.name %> - Vector Map</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div id="vectorMapModal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <!-- Background overlay -->
+    <div class="fixed inset-0 bg-black bg-opacity-75 transition-opacity" onclick="document.getElementById('vectorMapModal').classList.add('hidden')"></div>
+
+    <!-- Modal panel -->
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+      <div class="relative inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-6xl sm:w-full">
+        <!-- Modal header -->
+        <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+          <h3 class="text-lg font-semibold text-charcoal" id="modal-title">
+            <%= @vector.name %> - Vector Map
+          </h3>
+          <button type="button" onclick="document.getElementById('vectorMapModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <i class="bi bi-x-lg text-xl"></i>
+          </button>
         </div>
-        <div class="modal-body text-center">
-          <% begin %>
-            <% if @vector.map_large %>
-              <%= image_tag @vector.map_large, 
-                            class: "img-fluid",
-                            style: "max-width: 100%;",
-                            alt: "#{@vector.name} vector map (full size)" %>
-            <% else %>
-              <%= image_tag @vector.map_image, 
-                            class: "img-fluid",
-                            style: "max-width: 100%;",
-                            alt: "#{@vector.name} vector map" %>
+
+        <!-- Modal body -->
+        <div class="bg-white px-6 py-6">
+          <div class="text-center">
+            <% begin %>
+              <% if @vector.map_large %>
+                <%= image_tag @vector.map_large,
+                              class: "max-w-full h-auto mx-auto",
+                              alt: "#{@vector.name} vector map (full size)" %>
+              <% else %>
+                <%= image_tag @vector.map_image,
+                              class: "max-w-full h-auto mx-auto",
+                              alt: "#{@vector.name} vector map" %>
+              <% end %>
+            <% rescue => e %>
+              <div class="text-center text-gray-500 py-8">
+                <i class="bi bi-exclamation-triangle text-4xl mb-3"></i>
+                <p>Vector map temporarily unavailable</p>
+              </div>
             <% end %>
-          <% rescue => e %>
-            <div class="text-center text-muted py-4">
-              <i class="bi bi-exclamation-triangle fs-1"></i>
-              <p>Vector map temporarily unavailable</p>
-            </div>
-          <% end %>
+          </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+        <!-- Modal footer -->
+        <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+          <button type="button" onclick="document.getElementById('vectorMapModal').classList.add('hidden')" class="px-4 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-100 transition-colors">
+            Close
+          </button>
           <% if authenticated? && (Current.user.admin? || user_has_access_to_vector?(@vector)) %>
             <% begin %>
-              <%= link_to "Download Full Resolution", 
-                          rails_blob_path(@vector.map_image, disposition: "attachment"),
-                          class: "btn btn-primary" %>
+              <%= link_to rails_blob_path(@vector.map_image, disposition: "attachment"),
+                          class: "inline-flex items-center gap-2 px-4 py-2 bg-bio-green text-white font-medium rounded-lg hover:bg-bio-green-dark transition-colors" do %>
+                <i class="bi bi-download"></i>
+                Download Full Resolution
+              <% end %>
             <% rescue => e %>
-              <button class="btn btn-primary" disabled>Download Unavailable</button>
+              <button class="px-4 py-2 bg-gray-100 text-gray-500 font-medium rounded-lg cursor-not-allowed" disabled>Download Unavailable</button>
             <% end %>
           <% end %>
         </div>
       </div>
     </div>
   </div>
+
+  <script>
+  // Close modal on Escape key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      document.getElementById('vectorMapModal').classList.add('hidden');
+    }
+  });
+  </script>
 <% end %>

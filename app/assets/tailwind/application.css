@@ -65,7 +65,7 @@
 /* Base Styles */
 @layer base {
   body {
-    @apply font-sans text-gray-800 antialiased;
+    @apply font-sans text-gray-800 antialiased bg-gray-50;
     letter-spacing: -0.01em;
   }
 

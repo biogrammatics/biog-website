@@ -54,7 +54,7 @@
 
                 <div class="text-center mt-4">
                   <%= link_to protein_pathway_select_path(step_number: @service_package.step_number, selection_type: "diy"),
-                      method: :post,
+                      data: { turbo_method: :post },
                       class: "modern-btn modern-btn-secondary w-100" do %>
                     <i class="bi bi-check-circle"></i> Choose DIY
                   <% end %>
@@ -103,7 +103,7 @@
 
                 <div class="text-center mt-4">
                   <%= link_to protein_pathway_select_path(step_number: @service_package.step_number, selection_type: "service"),
-                      method: :post,
+                      data: { turbo_method: :post },
                       class: "modern-btn modern-btn-primary w-100" do %>
                     <i class="bi bi-check-circle"></i> Choose Service
                   <% end %>

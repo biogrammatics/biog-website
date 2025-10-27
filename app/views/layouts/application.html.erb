@@ -195,76 +195,104 @@
 
     <!-- Navigation and dropdown scripts -->
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
+      (function() {
+        let navigationInitialized = false;
 
-        if (mobileMenuButton && mobileMenu) {
-          mobileMenuButton.addEventListener('click', function() {
-            mobileMenu.classList.toggle('hidden');
+        function initializeNavigation() {
+          // Prevent duplicate initialization
+          if (navigationInitialized) return;
+          navigationInitialized = true;
+
+          // Mobile menu toggle
+          document.addEventListener('click', function(e) {
+            const mobileMenuButton = e.target.closest('#mobile-menu-button');
+            if (mobileMenuButton) {
+              e.stopPropagation();
+              const mobileMenu = document.getElementById('mobile-menu');
+              if (mobileMenu) {
+                mobileMenu.classList.toggle('hidden');
+              }
+            }
+
+            // Dropdown button clicks
+            const dropdownButton = e.target.closest('.dropdown > button');
+            if (dropdownButton) {
+              e.preventDefault();
+              e.stopPropagation();
+
+              const dropdown = dropdownButton.closest('.dropdown');
+              const menu = dropdown.querySelector('.dropdown-menu');
+
+              if (menu) {
+                const isCurrentlyShown = menu.classList.contains('show');
+
+                // Close all dropdowns
+                document.querySelectorAll('.dropdown-menu.show').forEach(m => {
+                  m.classList.remove('show');
+                });
+
+                // Toggle current dropdown
+                if (!isCurrentlyShown) {
+                  menu.classList.add('show');
+                }
+              }
+            }
+
+            // Close dropdowns when clicking outside
+            if (!e.target.closest('.dropdown')) {
+              document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                menu.classList.remove('show');
+              });
+            }
+          });
+
+          // Dropdown hover behavior
+          let hoverTimeout;
+
+          document.addEventListener('mouseenter', function(e) {
+            const dropdown = e.target.closest('.dropdown');
+            if (dropdown) {
+              clearTimeout(hoverTimeout);
+              const menu = dropdown.querySelector('.dropdown-menu');
+              if (menu) {
+                menu.classList.add('show');
+              }
+            }
+          }, true);
+
+          document.addEventListener('mouseleave', function(e) {
+            const dropdown = e.target.closest('.dropdown');
+            if (dropdown) {
+              const menu = dropdown.querySelector('.dropdown-menu');
+              if (menu) {
+                hoverTimeout = setTimeout(function() {
+                  // Only close if mouse is not over dropdown or menu
+                  if (!dropdown.matches(':hover')) {
+                    menu.classList.remove('show');
+                  }
+                }, 150);
+              }
+            }
+          }, true);
+
+          // Handle forms with data-turbo-confirm attribute
+          document.addEventListener('submit', function(e) {
+            const form = e.target;
+            const confirmMessage = form.dataset.turboConfirm;
+            if (confirmMessage && !confirm(confirmMessage)) {
+              e.preventDefault();
+              return false;
+            }
           });
         }
 
-        // Desktop dropdown menus
-        const dropdowns = document.querySelectorAll('.dropdown');
-
-        dropdowns.forEach(dropdown => {
-          const button = dropdown.querySelector('button');
-          const menu = dropdown.querySelector('.dropdown-menu');
-
-          if (button && menu) {
-            // Toggle on click
-            button.addEventListener('click', function(e) {
-              e.stopPropagation();
-
-              // Close other dropdowns
-              document.querySelectorAll('.dropdown-menu.show').forEach(otherMenu => {
-                if (otherMenu !== menu) {
-                  otherMenu.classList.remove('show');
-                }
-              });
-
-              // Toggle current dropdown
-              menu.classList.toggle('show');
-            });
-
-            // Also show on hover for better UX
-            dropdown.addEventListener('mouseenter', function() {
-              menu.classList.add('show');
-            });
-
-            dropdown.addEventListener('mouseleave', function() {
-              menu.classList.remove('show');
-            });
-          }
-        });
-
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function(e) {
-          if (!e.target.closest('.dropdown')) {
-            document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
-              menu.classList.remove('show');
-            });
-          }
-        });
-
-        // Handle forms with data-turbo-confirm attribute
-        document.addEventListener('submit', function(e) {
-          const form = e.target;
-          const confirmMessage = form.dataset.turboConfirm;
-          if (confirmMessage && !confirm(confirmMessage)) {
-            e.preventDefault();
-            return false;
-          }
-        });
-      });
-
-      // Re-initialize dropdowns after Turbo navigation
-      document.addEventListener('turbo:load', function() {
-        const event = new Event('DOMContentLoaded');
-        document.dispatchEvent(event);
-      });
+        // Initialize once
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initializeNavigation);
+        } else {
+          initializeNavigation();
+        }
+      })();
     </script>
   </body>
 </html>

@@ -1,41 +1,86 @@
-<h1>Pichia pastoris Strains</h1>
-<p class="lead">Browse our collection of optimized Pichia pastoris strains for recombinant protein production</p>
+<!-- Hero Section -->
+<div class="bg-gradient-to-br from-gray-50 to-white py-12 border-b border-gray-200">
+  <div class="container-custom">
+    <h1 class="text-4xl font-bold text-charcoal mb-3">Pichia pastoris Strains</h1>
+    <p class="text-lg text-gray-600 max-w-3xl">Browse our collection of optimized Pichia pastoris strains for recombinant protein production</p>
+  </div>
+</div>
 
-<div class="row">
-  <% @pichia_strains.each do |strain| %>
-    <div class="col-md-6 col-lg-4 mb-4">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title"><%= strain.name %></h5>
-          <p class="card-text"><%= truncate(strain.description, length: 100) %></p>
-          
-          <div class="mb-2">
-            <small class="text-muted">
-              <strong>Genotype:</strong> <%= strain.genotype || "N/A" %><br>
-              <strong>Phenotype:</strong> <%= strain.phenotype || "N/A" %><br>
-              <strong>Availability:</strong> 
-              <span class="badge <%= strain.availability == 'In Stock' ? 'bg-success' : 'bg-warning' %>">
-                <%= strain.availability || "Unknown" %>
+<!-- Main Content -->
+<div class="container-custom py-8">
+  <% if @pichia_strains.empty? %>
+    <div class="max-w-2xl mx-auto">
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
+        <i class="bi bi-info-circle text-blue-600 text-4xl mb-3"></i>
+        <p class="text-gray-700">
+          No Pichia strains are currently available. Please check back later.
+        </p>
+      </div>
+    </div>
+  <% else %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% @pichia_strains.each do |strain| %>
+        <div class="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
+          <!-- Strain Icon/Header -->
+          <div class="bg-gradient-to-br from-bio-green/5 to-bio-green/10 p-6 border-b border-gray-100">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-12 h-12 rounded-full bg-bio-green/20 flex items-center justify-center flex-shrink-0">
+                <i class="bi bi-droplet-fill text-2xl text-bio-green"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-charcoal flex-grow">
+                <%= strain.name %>
+              </h3>
+            </div>
+
+            <!-- Availability Badge -->
+            <% if strain.availability.present? %>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <%= strain.availability == 'In Stock' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' %>">
+                <% if strain.availability == 'In Stock' %>
+                  <i class="bi bi-check-circle-fill mr-1"></i>
+                <% else %>
+                  <i class="bi bi-clock mr-1"></i>
+                <% end %>
+                <%= strain.availability %>
               </span>
-            </small>
+            <% end %>
           </div>
-          
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <% if strain.sale_price %>
-                <strong class="text-success">$<%= strain.sale_price %></strong>
+
+          <!-- Card Content -->
+          <div class="p-6 flex flex-col flex-grow">
+            <!-- Description -->
+            <p class="text-gray-600 text-sm mb-4">
+              <%= truncate(strain.description, length: 100) %>
+            </p>
+
+            <!-- Specifications -->
+            <div class="space-y-2 mb-4 text-sm flex-grow">
+              <div class="flex items-start gap-2">
+                <span class="text-gray-500 font-medium min-w-[80px]">Genotype:</span>
+                <span class="text-gray-700 flex-grow"><%= strain.genotype || "N/A" %></span>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="text-gray-500 font-medium min-w-[80px]">Phenotype:</span>
+                <span class="text-gray-700 flex-grow"><%= strain.phenotype || "N/A" %></span>
+              </div>
+            </div>
+
+            <!-- Price and Action -->
+            <div class="flex items-center justify-between pt-4 border-t border-gray-200 mt-auto">
+              <div>
+                <% if strain.sale_price %>
+                  <span class="text-2xl font-bold text-bio-green">${<%= number_with_precision(strain.sale_price, precision: 0) %></span>
+                <% else %>
+                  <span class="text-sm text-gray-500">Contact for pricing</span>
+                <% end %>
+              </div>
+              <%= link_to strain, class: "inline-flex items-center gap-2 px-4 py-2 bg-bio-green text-white text-sm font-medium rounded-lg hover:bg-bio-green-dark transition-colors" do %>
+                Details
+                <i class="bi bi-arrow-right"></i>
               <% end %>
             </div>
-            <%= link_to "View Details", strain, class: "btn btn-sm btn-primary" %>
           </div>
         </div>
-      </div>
+      <% end %>
     </div>
   <% end %>
 </div>
-
-<% if @pichia_strains.empty? %>
-  <div class="alert alert-info" role="alert">
-    No Pichia strains are currently available. Please check back later.
-  </div>
-<% end %>

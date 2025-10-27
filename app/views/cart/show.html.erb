@@ -1,122 +1,214 @@
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-md-8 mx-auto">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="mb-0">Shopping Cart</h3>
+<!-- Hero Section -->
+<div class="bg-gradient-to-br from-gray-50 to-white py-12 border-b border-gray-200">
+  <div class="container-custom">
+    <h1 class="text-4xl font-bold text-charcoal mb-3">Shopping Cart</h1>
+    <p class="text-lg text-gray-600">Review your items before checkout</p>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="container-custom py-8">
+  <% if @cart_items.any? %>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Cart Items (Left Column) -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <!-- Cart Items List -->
+          <div class="divide-y divide-gray-200">
+            <% if authenticated? %>
+              <% @cart_items.each do |cart_item| %>
+                <div class="p-6 hover:bg-gray-50 transition-colors">
+                  <div class="flex gap-4">
+                    <!-- Item Icon -->
+                    <div class="flex-shrink-0">
+                      <div class="w-16 h-16 rounded-lg bg-bio-green/10 flex items-center justify-center">
+                        <i class="bi bi-diagram-3 text-2xl text-bio-green"></i>
+                      </div>
+                    </div>
+
+                    <!-- Item Details -->
+                    <div class="flex-grow">
+                      <h3 class="text-lg font-semibold text-charcoal mb-1"><%= cart_item.item_name %></h3>
+                      <p class="text-sm text-gray-600 mb-3"><%= cart_item.item_description %></p>
+
+                      <div class="flex items-center gap-4 flex-wrap">
+                        <!-- Price -->
+                        <span class="text-lg font-semibold text-bio-green">$<%= cart_item.price %></span>
+
+                        <!-- Quantity Update Form -->
+                        <%= form_with url: update_item_cart_path, method: :patch, local: true, class: "flex items-center gap-2" do |f| %>
+                          <%= f.hidden_field :cart_item_id, value: cart_item.id %>
+                          <div class="flex items-center border border-gray-300 rounded-lg">
+                            <%= f.number_field :quantity, value: cart_item.quantity, min: 1,
+                                class: "w-16 px-3 py-1.5 text-center border-0 focus:ring-0 focus:outline-none" %>
+                          </div>
+                          <%= f.submit "Update", class: "px-3 py-1.5 text-sm font-medium text-bio-green hover:bg-bio-green/10 rounded-lg transition-colors" %>
+                        <% end %>
+
+                        <!-- Remove Button -->
+                        <%= button_to remove_item_cart_path, params: { cart_item_id: cart_item.id }, method: :delete,
+                            class: "px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors inline-flex items-center gap-1",
+                            data: { turbo_confirm: "Are you sure you want to remove #{cart_item.item_name} from your cart?" } do %>
+                          <i class="bi bi-trash"></i>
+                          Remove
+                        <% end %>
+                      </div>
+
+                      <!-- Item Total -->
+                      <div class="mt-3 text-sm text-gray-500">
+                        Subtotal: <span class="font-semibold text-gray-700">$<%= cart_item.total_price %></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <% @cart_items.each do |cart_item| %>
+                <div class="p-6 hover:bg-gray-50 transition-colors">
+                  <div class="flex gap-4">
+                    <!-- Item Icon -->
+                    <div class="flex-shrink-0">
+                      <div class="w-16 h-16 rounded-lg bg-bio-green/10 flex items-center justify-center">
+                        <i class="bi bi-diagram-3 text-2xl text-bio-green"></i>
+                      </div>
+                    </div>
+
+                    <!-- Item Details -->
+                    <div class="flex-grow">
+                      <h3 class="text-lg font-semibold text-charcoal mb-1"><%= cart_item.item.name %></h3>
+                      <p class="text-sm text-gray-600 mb-3"><%= cart_item.item.description %></p>
+
+                      <div class="flex items-center gap-4 flex-wrap">
+                        <!-- Price -->
+                        <span class="text-lg font-semibold text-bio-green">$<%= cart_item.price %></span>
+
+                        <!-- Quantity Update Form -->
+                        <%= form_with url: update_item_cart_path, method: :patch, local: true, class: "flex items-center gap-2" do |f| %>
+                          <%= f.hidden_field :item_key, value: cart_item.session_key %>
+                          <div class="flex items-center border border-gray-300 rounded-lg">
+                            <%= f.number_field :quantity, value: cart_item.quantity, min: 1,
+                                class: "w-16 px-3 py-1.5 text-center border-0 focus:ring-0 focus:outline-none" %>
+                          </div>
+                          <%= f.submit "Update", class: "px-3 py-1.5 text-sm font-medium text-bio-green hover:bg-bio-green/10 rounded-lg transition-colors" %>
+                        <% end %>
+
+                        <!-- Remove Button -->
+                        <%= button_to remove_item_cart_path, params: { item_key: cart_item.session_key }, method: :delete,
+                            class: "px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors inline-flex items-center gap-1",
+                            data: { turbo_confirm: "Are you sure you want to remove #{cart_item.item.name} from your cart?" } do %>
+                          <i class="bi bi-trash"></i>
+                          Remove
+                        <% end %>
+                      </div>
+
+                      <!-- Item Total -->
+                      <div class="mt-3 text-sm text-gray-500">
+                        Subtotal: <span class="font-semibold text-gray-700">$<%= cart_item.total_price %></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
         </div>
-        
-        <div class="card-body">
-          <% if @cart_items.any? %>
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Item</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% if authenticated? %>
-                    <% @cart_items.each do |cart_item| %>
-                      <tr>
-                        <td>
-                          <strong><%= cart_item.item_name %></strong>
-                        </td>
-                        <td>
-                          <%= cart_item.item_description %>
-                        </td>
-                        <td>
-                          $<%= cart_item.price %>
-                        </td>
-                        <td>
-                          <%= form_with url: update_item_cart_path, method: :patch, local: true, class: "d-inline" do |f| %>
-                            <%= f.hidden_field :cart_item_id, value: cart_item.id %>
-                            <%= f.number_field :quantity, value: cart_item.quantity, min: 1, class: "form-control form-control-sm d-inline", style: "width: 80px;" %>
-                            <%= f.submit "Update", class: "btn btn-sm btn-outline-primary ms-2" %>
-                          <% end %>
-                        </td>
-                        <td>
-                          <strong>$<%= cart_item.total_price %></strong>
-                        </td>
-                        <td>
-                          <%= button_to "Remove", remove_item_cart_path, params: { cart_item_id: cart_item.id }, method: :delete,
-                              class: "btn btn-sm btn-outline-danger",
-                              data: { turbo_confirm: "Are you sure you want to remove #{cart_item.item_name} from your cart?" } %>
-                        </td>
-                      </tr>
-                    <% end %>
-                  <% else %>
-                    <% @cart_items.each do |cart_item| %>
-                      <tr>
-                        <td>
-                          <strong><%= cart_item.item.name %></strong>
-                        </td>
-                        <td>
-                          <%= cart_item.item.description %>
-                        </td>
-                        <td>
-                          $<%= cart_item.price %>
-                        </td>
-                        <td>
-                          <%= form_with url: update_item_cart_path, method: :patch, local: true, class: "d-inline" do |f| %>
-                            <%= f.hidden_field :item_key, value: cart_item.session_key %>
-                            <%= f.number_field :quantity, value: cart_item.quantity, min: 1, class: "form-control form-control-sm d-inline", style: "width: 80px;" %>
-                            <%= f.submit "Update", class: "btn btn-sm btn-outline-primary ms-2" %>
-                          <% end %>
-                        </td>
-                        <td>
-                          <strong>$<%= cart_item.total_price %></strong>
-                        </td>
-                        <td>
-                          <%= button_to "Remove", remove_item_cart_path, params: { item_key: cart_item.session_key }, method: :delete,
-                              class: "btn btn-sm btn-outline-danger",
-                              data: { turbo_confirm: "Are you sure you want to remove #{cart_item.item.name} from your cart?" } %>
-                        </td>
-                      </tr>
-                    <% end %>
-                  <% end %>
-                </tbody>
-                <tfoot>
-                  <tr class="table-info">
-                    <th colspan="4" class="text-end">Total:</th>
-                    <th>
-                      <% if authenticated? %>
-                        $<%= @cart.total_price %>
-                      <% else %>
-                        $<%= @cart_items.sum(&:total_price) %>
-                      <% end %>
-                    </th>
-                    <th></th>
-                  </tr>
-                </tfoot>
-              </table>
+
+        <!-- Continue Shopping -->
+        <div class="mt-6">
+          <%= link_to root_path, class: "inline-flex items-center gap-2 text-gray-600 hover:text-bio-green transition-colors" do %>
+            <i class="bi bi-arrow-left"></i>
+            Continue Shopping
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Order Summary (Right Column) -->
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden sticky top-20">
+          <div class="p-6 border-b border-gray-200 bg-gray-50">
+            <h3 class="text-lg font-semibold text-charcoal">Order Summary</h3>
+          </div>
+
+          <div class="p-6 space-y-4">
+            <!-- Subtotal -->
+            <div class="flex justify-between text-gray-600">
+              <span>Subtotal</span>
+              <span class="font-medium">
+                <% if authenticated? %>
+                  $<%= @cart.total_price %>
+                <% else %>
+                  $<%= @cart_items.sum(&:total_price) %>
+                <% end %>
+              </span>
             </div>
-            
-            <div class="d-flex justify-content-between mt-4">
-              <%= link_to "Continue Shopping", root_path, class: "btn btn-outline-secondary" %>
-              <div>
-                <%= button_to "Clear Cart", clear_cart_path, method: :delete,
-                    class: "btn btn-outline-warning me-2",
-                    data: { turbo_confirm: "Are you sure you want to clear your entire cart?" } %>
-                <%= button_to "Proceed to Checkout", checkout_cart_path, method: :post, class: "btn btn-primary" %>
+
+            <!-- Shipping (placeholder) -->
+            <div class="flex justify-between text-gray-600">
+              <span>Shipping</span>
+              <span class="text-sm">Calculated at checkout</span>
+            </div>
+
+            <div class="border-t border-gray-200 pt-4">
+              <div class="flex justify-between text-lg font-semibold text-charcoal">
+                <span>Total</span>
+                <span class="text-bio-green">
+                  <% if authenticated? %>
+                    $<%= @cart.total_price %>
+                  <% else %>
+                    $<%= @cart_items.sum(&:total_price) %>
+                  <% end %>
+                </span>
               </div>
             </div>
-          <% else %>
-            <div class="text-center py-5">
-              <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
-              <h4>Your cart is empty</h4>
-              <p class="text-muted">Add some vectors or strains to get started!</p>
-              <%= link_to "Browse Vectors", vectors_path, class: "btn btn-primary me-2" %>
-              <%= link_to "Browse Strains", pichia_strains_path, class: "btn btn-primary" %>
+
+            <!-- Actions -->
+            <div class="space-y-3 pt-4">
+              <%= button_to "Proceed to Checkout", checkout_cart_path, method: :post,
+                  class: "w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-bio-green text-white font-medium rounded-lg hover:bg-bio-green-dark transition-colors" do %>
+                <i class="bi bi-lock-fill"></i>
+                Secure Checkout
+              <% end %>
+
+              <%= button_to "Clear Cart", clear_cart_path, method: :delete,
+                  class: "w-full inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors",
+                  data: { turbo_confirm: "Are you sure you want to clear your entire cart?" } do %>
+                <i class="bi bi-trash"></i>
+                Clear Cart
+              <% end %>
             </div>
+
+            <!-- Security Badge -->
+            <div class="pt-4 border-t border-gray-200">
+              <div class="flex items-center gap-2 text-sm text-gray-500">
+                <i class="bi bi-shield-check text-bio-green"></i>
+                <span>Secure checkout guaranteed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <!-- Empty Cart State -->
+    <div class="max-w-2xl mx-auto">
+      <div class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+        <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
+          <i class="bi bi-cart text-5xl text-gray-400"></i>
+        </div>
+        <h2 class="text-2xl font-semibold text-charcoal mb-2">Your cart is empty</h2>
+        <p class="text-gray-600 mb-8">Add some vectors or strains to get started!</p>
+
+        <div class="flex gap-4 justify-center flex-wrap">
+          <%= link_to vectors_path, class: "inline-flex items-center gap-2 px-6 py-3 bg-bio-green text-white font-medium rounded-lg hover:bg-bio-green-dark transition-colors" do %>
+            <i class="bi bi-diagram-3"></i>
+            Browse Vectors
+          <% end %>
+          <%= link_to pichia_strains_path, class: "inline-flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" do %>
+            <i class="bi bi-droplet"></i>
+            Browse Strains
           <% end %>
         </div>
       </div>
     </div>
-  </div>
+  <% end %>
 </div>

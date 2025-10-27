@@ -203,8 +203,9 @@
           if (navigationInitialized) return;
           navigationInitialized = true;
 
-          // Mobile menu toggle
+          // Handle all clicks
           document.addEventListener('click', function(e) {
+            // Mobile menu toggle
             const mobileMenuButton = e.target.closest('#mobile-menu-button');
             if (mobileMenuButton) {
               e.stopPropagation();
@@ -212,6 +213,7 @@
               if (mobileMenu) {
                 mobileMenu.classList.toggle('hidden');
               }
+              return;
             }
 
             // Dropdown button clicks
@@ -236,44 +238,21 @@
                   menu.classList.add('show');
                 }
               }
+              return;
             }
 
-            // Close dropdowns when clicking outside
+            // Don't close dropdown if clicking inside the menu
+            if (e.target.closest('.dropdown-menu')) {
+              return;
+            }
+
+            // Close all dropdowns when clicking outside
             if (!e.target.closest('.dropdown')) {
               document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
                 menu.classList.remove('show');
               });
             }
           });
-
-          // Dropdown hover behavior
-          let hoverTimeout;
-
-          document.addEventListener('mouseenter', function(e) {
-            const dropdown = e.target.closest('.dropdown');
-            if (dropdown) {
-              clearTimeout(hoverTimeout);
-              const menu = dropdown.querySelector('.dropdown-menu');
-              if (menu) {
-                menu.classList.add('show');
-              }
-            }
-          }, true);
-
-          document.addEventListener('mouseleave', function(e) {
-            const dropdown = e.target.closest('.dropdown');
-            if (dropdown) {
-              const menu = dropdown.querySelector('.dropdown-menu');
-              if (menu) {
-                hoverTimeout = setTimeout(function() {
-                  // Only close if mouse is not over dropdown or menu
-                  if (!dropdown.matches(':hover')) {
-                    menu.classList.remove('show');
-                  }
-                }, 150);
-              }
-            }
-          }, true);
 
           // Handle forms with data-turbo-confirm attribute
           document.addEventListener('submit', function(e) {

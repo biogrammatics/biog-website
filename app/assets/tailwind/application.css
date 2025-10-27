@@ -120,16 +120,16 @@
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  /* Flowbite-inspired components */
+  /* Dropdown components */
   .dropdown {
     @apply relative inline-block;
   }
 
   .dropdown-menu {
-    @apply absolute hidden bg-white shadow-lg rounded-lg mt-2 py-2 w-48 z-50;
+    @apply absolute hidden bg-white shadow-lg rounded-lg mt-1 py-2 w-48 z-50 border border-gray-200;
   }
 
-  .dropdown:hover .dropdown-menu {
+  .dropdown-menu.show {
     @apply block;
   }
 

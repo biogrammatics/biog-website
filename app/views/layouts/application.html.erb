@@ -193,9 +193,10 @@
 
     <%= render 'shared/cookie_banner' %>
 
-    <!-- Mobile menu toggle script -->
+    <!-- Navigation and dropdown scripts -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
+        // Mobile menu toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
 
@@ -204,6 +205,49 @@
             mobileMenu.classList.toggle('hidden');
           });
         }
+
+        // Desktop dropdown menus
+        const dropdowns = document.querySelectorAll('.dropdown');
+
+        dropdowns.forEach(dropdown => {
+          const button = dropdown.querySelector('button');
+          const menu = dropdown.querySelector('.dropdown-menu');
+
+          if (button && menu) {
+            // Toggle on click
+            button.addEventListener('click', function(e) {
+              e.stopPropagation();
+
+              // Close other dropdowns
+              document.querySelectorAll('.dropdown-menu.show').forEach(otherMenu => {
+                if (otherMenu !== menu) {
+                  otherMenu.classList.remove('show');
+                }
+              });
+
+              // Toggle current dropdown
+              menu.classList.toggle('show');
+            });
+
+            // Also show on hover for better UX
+            dropdown.addEventListener('mouseenter', function() {
+              menu.classList.add('show');
+            });
+
+            dropdown.addEventListener('mouseleave', function() {
+              menu.classList.remove('show');
+            });
+          }
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!e.target.closest('.dropdown')) {
+            document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+              menu.classList.remove('show');
+            });
+          }
+        });
 
         // Handle forms with data-turbo-confirm attribute
         document.addEventListener('submit', function(e) {
@@ -214,6 +258,12 @@
             return false;
           }
         });
+      });
+
+      // Re-initialize dropdowns after Turbo navigation
+      document.addEventListener('turbo:load', function() {
+        const event = new Event('DOMContentLoaded');
+        document.dispatchEvent(event);
       });
     </script>
   </body>

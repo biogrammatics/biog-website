@@ -1,307 +1,323 @@
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-lg-8">
-      <div class="checkout-progress mb-4">
-        <div class="progress" style="height: 6px;">
-          <div class="progress-bar bg-primary" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemax="100"></div>
+<div class="container-custom py-8">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2">
+      <!-- Progress Bar -->
+      <div class="mb-8">
+        <div class="w-full bg-gray-200 rounded-full h-2 mb-3">
+          <div class="bg-bio-green h-2 rounded-full transition-all duration-500" style="width: 33%"></div>
         </div>
-        <div class="d-flex justify-content-between mt-2">
-          <small class="text-primary fw-bold">1. Address</small>
-          <small class="text-muted">2. Payment</small>
-          <small class="text-muted">3. Review</small>
+        <div class="flex justify-between text-sm">
+          <span class="text-bio-green font-semibold">1. Address</span>
+          <span class="text-gray-400">2. Payment</span>
+          <span class="text-gray-400">3. Review & Place Order</span>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-header">
-          <h4 class="mb-0">Shipping & Billing Information</h4>
+      <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h3 class="text-lg font-semibold text-charcoal">Shipping & Billing Information</h3>
         </div>
-        <div class="card-body">
+        <div class="p-6">
           <%= form_with url: address_step_checkout_index_path, method: :post, local: true do |form| %>
             
             <!-- Billing Address Section -->
-            <div class="mb-4">
-              <h5 class="border-bottom pb-2 mb-3">Billing Address</h5>
-              
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <%= form.label "billing_address[first_name]", "First Name", class: "form-label" %>
-                  <%= form.text_field "billing_address[first_name]", 
-                      value: @billing_address.first_name, 
-                      class: "form-control #{'is-invalid' if @billing_address.errors[:first_name].any?}",
+            <div class="mb-6">
+              <div class="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200">
+                <i class="bi bi-credit-card text-bio-green text-xl"></i>
+                <h4 class="text-lg font-semibold text-charcoal">Billing Address</h4>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <%= form.label "billing_address[first_name]", "First Name", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                  <%= form.text_field "billing_address[first_name]",
+                      value: @billing_address.first_name,
+                      class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @billing_address.errors[:first_name].any?}",
                       required: true %>
                   <% if @billing_address.errors[:first_name].any? %>
-                    <div class="invalid-feedback"><%= @billing_address.errors[:first_name].first %></div>
+                    <p class="text-red-600 text-sm mt-1"><%= @billing_address.errors[:first_name].first %></p>
                   <% end %>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <%= form.label "billing_address[last_name]", "Last Name", class: "form-label" %>
-                  <%= form.text_field "billing_address[last_name]", 
-                      value: @billing_address.last_name, 
-                      class: "form-control #{'is-invalid' if @billing_address.errors[:last_name].any?}",
+                <div>
+                  <%= form.label "billing_address[last_name]", "Last Name", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                  <%= form.text_field "billing_address[last_name]",
+                      value: @billing_address.last_name,
+                      class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @billing_address.errors[:last_name].any?}",
                       required: true %>
                   <% if @billing_address.errors[:last_name].any? %>
-                    <div class="invalid-feedback"><%= @billing_address.errors[:last_name].first %></div>
+                    <p class="text-red-600 text-sm mt-1"><%= @billing_address.errors[:last_name].first %></p>
                   <% end %>
                 </div>
               </div>
-              
-              <div class="mb-3">
-                <%= form.label "billing_address[company]", "Company (Optional)", class: "form-label" %>
-                <%= form.text_field "billing_address[company]", 
-                    value: @billing_address.company, 
-                    class: "form-control" %>
+
+
+              <div class="mb-4">
+                <%= form.label "billing_address[company]", "Company (Optional)", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                <%= form.text_field "billing_address[company]",
+                    value: @billing_address.company,
+                    class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors" %>
               </div>
-              
-              <div class="mb-3">
-                <%= form.label "billing_address[address_line_1]", "Address", class: "form-label" %>
-                <%= form.text_field "billing_address[address_line_1]", 
-                    value: @billing_address.address_line_1, 
-                    class: "form-control #{'is-invalid' if @billing_address.errors[:address_line_1].any?}",
+
+              <div class="mb-4">
+                <%= form.label "billing_address[address_line_1]", "Address", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                <%= form.text_field "billing_address[address_line_1]",
+                    value: @billing_address.address_line_1,
+                    class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @billing_address.errors[:address_line_1].any?}",
                     required: true %>
                 <% if @billing_address.errors[:address_line_1].any? %>
-                  <div class="invalid-feedback"><%= @billing_address.errors[:address_line_1].first %></div>
+                  <p class="text-red-600 text-sm mt-1"><%= @billing_address.errors[:address_line_1].first %></p>
                 <% end %>
               </div>
-              
-              <div class="mb-3">
-                <%= form.label "billing_address[address_line_2]", "Address Line 2 (Optional)", class: "form-label" %>
-                <%= form.text_field "billing_address[address_line_2]", 
-                    value: @billing_address.address_line_2, 
-                    class: "form-control" %>
+
+              <div class="mb-4">
+                <%= form.label "billing_address[address_line_2]", "Address Line 2 (Optional)", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                <%= form.text_field "billing_address[address_line_2]",
+                    value: @billing_address.address_line_2,
+                    class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors" %>
               </div>
-              
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <%= form.label "billing_address[city]", "City", class: "form-label" %>
-                  <%= form.text_field "billing_address[city]", 
-                      value: @billing_address.city, 
-                      class: "form-control #{'is-invalid' if @billing_address.errors[:city].any?}",
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                  <%= form.label "billing_address[city]", "City", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                  <%= form.text_field "billing_address[city]",
+                      value: @billing_address.city,
+                      class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @billing_address.errors[:city].any?}",
                       required: true %>
                   <% if @billing_address.errors[:city].any? %>
-                    <div class="invalid-feedback"><%= @billing_address.errors[:city].first %></div>
+                    <p class="text-red-600 text-sm mt-1"><%= @billing_address.errors[:city].first %></p>
                   <% end %>
                 </div>
-                <div class="col-md-4 mb-3" id="billing-state-container">
-                  <%= form.label "billing_address[state]", "State/Province/Region", class: "form-label", id: "billing-state-label" %>
+                <div id="billing-state-container">
+                  <%= form.label "billing_address[state]", "State/Province/Region", class: "block text-sm font-medium text-gray-700 mb-2", id: "billing-state-label" %>
                   <div id="billing-state-select-container">
                     <% if @billing_address.country == "Canada" %>
-                      <%= form.select "billing_address[state]", 
+                      <%= form.select "billing_address[state]",
                           options_for_select(canadian_provinces_for_select, @billing_address.state),
-                          { prompt: "Select Province" }, 
-                          { class: "form-control #{'is-invalid' if @billing_address.errors[:state].any?}", id: "billing_state" } %>
+                          { prompt: "Select Province" },
+                          { class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @billing_address.errors[:state].any?}", id: "billing_state" } %>
                     <% elsif @billing_address.country == "United States" || @billing_address.country.blank? %>
-                      <%= form.select "billing_address[state]", 
+                      <%= form.select "billing_address[state]",
                           options_for_select(us_states_for_select, @billing_address.state),
-                          { prompt: "Select State" }, 
-                          { class: "form-control #{'is-invalid' if @billing_address.errors[:state].any?}", id: "billing_state" } %>
+                          { prompt: "Select State" },
+                          { class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @billing_address.errors[:state].any?}", id: "billing_state" } %>
                     <% else %>
-                      <%= form.text_field "billing_address[state]", 
+                      <%= form.text_field "billing_address[state]",
                           value: @billing_address.state,
                           placeholder: "State/Province/Region",
-                          class: "form-control #{'is-invalid' if @billing_address.errors[:state].any?}",
+                          class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @billing_address.errors[:state].any?}",
                           id: "billing_state" %>
                     <% end %>
                   </div>
                   <% if @billing_address.errors[:state].any? %>
-                    <div class="invalid-feedback d-block"><%= @billing_address.errors[:state].first %></div>
+                    <p class="text-red-600 text-sm mt-1"><%= @billing_address.errors[:state].first %></p>
                   <% end %>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <%= form.label "billing_address[postal_code]", "ZIP/Postal Code", class: "form-label", id: "billing-postal-label" %>
-                  <%= form.text_field "billing_address[postal_code]", 
-                      value: @billing_address.postal_code, 
-                      class: "form-control #{'is-invalid' if @billing_address.errors[:postal_code].any?}",
+                <div>
+                  <%= form.label "billing_address[postal_code]", "ZIP/Postal Code", class: "block text-sm font-medium text-gray-700 mb-2", id: "billing-postal-label" %>
+                  <%= form.text_field "billing_address[postal_code]",
+                      value: @billing_address.postal_code,
+                      class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @billing_address.errors[:postal_code].any?}",
                       required: true %>
                   <% if @billing_address.errors[:postal_code].any? %>
-                    <div class="invalid-feedback"><%= @billing_address.errors[:postal_code].first %></div>
+                    <p class="text-red-600 text-sm mt-1"><%= @billing_address.errors[:postal_code].first %></p>
                   <% end %>
                 </div>
               </div>
-              
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <%= form.label "billing_address[country]", "Country", class: "form-label" %>
-                  <%= form.select "billing_address[country]", 
-                      grouped_options_for_select(countries_for_select, @billing_address.country || "United States"), 
-                      {}, 
-                      { class: "form-control", required: true, id: "billing_country" } %>
+
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <%= form.label "billing_address[country]", "Country", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                  <%= form.select "billing_address[country]",
+                      grouped_options_for_select(countries_for_select, @billing_address.country || "United States"),
+                      {},
+                      { class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors", required: true, id: "billing_country" } %>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <%= form.label "billing_address[phone]", "Phone Number", class: "form-label" %>
-                  <%= form.telephone_field "billing_address[phone]", 
-                      value: @billing_address.phone, 
-                      class: "form-control #{'is-invalid' if @billing_address.errors[:phone].any?}",
+                <div>
+                  <%= form.label "billing_address[phone]", "Phone Number", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                  <%= form.telephone_field "billing_address[phone]",
+                      value: @billing_address.phone,
+                      class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @billing_address.errors[:phone].any?}",
                       placeholder: "+1 (555) 123-4567",
                       required: true %>
                   <% if @billing_address.errors[:phone].any? %>
-                    <div class="invalid-feedback"><%= @billing_address.errors[:phone].first %></div>
+                    <p class="text-red-600 text-sm mt-1"><%= @billing_address.errors[:phone].first %></p>
                   <% end %>
-                  <small class="form-text text-muted">Include country code for international numbers</small>
+                  <p class="text-gray-500 text-xs mt-1">Include country code for international numbers</p>
                 </div>
               </div>
             </div>
-            
+
             <!-- Use Billing for Shipping Checkbox -->
-            <div class="mb-4">
-              <div class="form-check">
-                <%= form.check_box :use_billing_for_shipping, 
-                    { checked: @use_billing_for_shipping, class: "form-check-input", id: "use_billing_for_shipping" } %>
-                <%= form.label :use_billing_for_shipping, "Use billing address for shipping", class: "form-check-label" %>
-              </div>
+            <div class="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <label class="flex items-center gap-3 cursor-pointer">
+                <%= form.check_box :use_billing_for_shipping,
+                    { checked: @use_billing_for_shipping, class: "w-4 h-4 text-bio-green border-gray-300 rounded focus:ring-bio-green", id: "use_billing_for_shipping" } %>
+                <span class="text-sm font-medium text-gray-700">Use billing address for shipping</span>
+              </label>
             </div>
             
             <!-- Shipping Address Section -->
-            <div id="shipping-address-section" class="<%= 'collapse' if @use_billing_for_shipping %>">
-              <h5 class="border-bottom pb-2 mb-3">Shipping Address</h5>
-              
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <%= form.label "shipping_address[first_name]", "First Name", class: "form-label" %>
-                  <%= form.text_field "shipping_address[first_name]", 
-                      value: @shipping_address.first_name, 
-                      class: "form-control #{'is-invalid' if @shipping_address.errors[:first_name].any?}" %>
+            <div id="shipping-address-section" class="<%= 'hidden' if @use_billing_for_shipping %>">
+              <div class="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200">
+                <i class="bi bi-truck text-bio-green text-xl"></i>
+                <h4 class="text-lg font-semibold text-charcoal">Shipping Address</h4>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <%= form.label "shipping_address[first_name]", "First Name", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                  <%= form.text_field "shipping_address[first_name]",
+                      value: @shipping_address.first_name,
+                      class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @shipping_address.errors[:first_name].any?}" %>
                   <% if @shipping_address.errors[:first_name].any? %>
-                    <div class="invalid-feedback"><%= @shipping_address.errors[:first_name].first %></div>
+                    <p class="text-red-600 text-sm mt-1"><%= @shipping_address.errors[:first_name].first %></p>
                   <% end %>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <%= form.label "shipping_address[last_name]", "Last Name", class: "form-label" %>
-                  <%= form.text_field "shipping_address[last_name]", 
-                      value: @shipping_address.last_name, 
-                      class: "form-control #{'is-invalid' if @shipping_address.errors[:last_name].any?}" %>
+                <div>
+                  <%= form.label "shipping_address[last_name]", "Last Name", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                  <%= form.text_field "shipping_address[last_name]",
+                      value: @shipping_address.last_name,
+                      class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @shipping_address.errors[:last_name].any?}" %>
                   <% if @shipping_address.errors[:last_name].any? %>
-                    <div class="invalid-feedback"><%= @shipping_address.errors[:last_name].first %></div>
+                    <p class="text-red-600 text-sm mt-1"><%= @shipping_address.errors[:last_name].first %></p>
                   <% end %>
                 </div>
               </div>
-              
-              <!-- Repeat similar fields for shipping address -->
-              <div class="mb-3">
-                <%= form.label "shipping_address[company]", "Company (Optional)", class: "form-label" %>
-                <%= form.text_field "shipping_address[company]", 
-                    value: @shipping_address.company, 
-                    class: "form-control" %>
+
+              <div class="mb-4">
+                <%= form.label "shipping_address[company]", "Company (Optional)", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                <%= form.text_field "shipping_address[company]",
+                    value: @shipping_address.company,
+                    class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors" %>
               </div>
-              
-              <div class="mb-3">
-                <%= form.label "shipping_address[address_line_1]", "Address", class: "form-label" %>
-                <%= form.text_field "shipping_address[address_line_1]", 
-                    value: @shipping_address.address_line_1, 
-                    class: "form-control #{'is-invalid' if @shipping_address.errors[:address_line_1].any?}" %>
+
+              <div class="mb-4">
+                <%= form.label "shipping_address[address_line_1]", "Address", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                <%= form.text_field "shipping_address[address_line_1]",
+                    value: @shipping_address.address_line_1,
+                    class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @shipping_address.errors[:address_line_1].any?}" %>
                 <% if @shipping_address.errors[:address_line_1].any? %>
-                  <div class="invalid-feedback"><%= @shipping_address.errors[:address_line_1].first %></div>
+                  <p class="text-red-600 text-sm mt-1"><%= @shipping_address.errors[:address_line_1].first %></p>
                 <% end %>
               </div>
-              
-              <div class="mb-3">
-                <%= form.label "shipping_address[address_line_2]", "Address Line 2 (Optional)", class: "form-label" %>
-                <%= form.text_field "shipping_address[address_line_2]", 
-                    value: @shipping_address.address_line_2, 
-                    class: "form-control" %>
+
+              <div class="mb-4">
+                <%= form.label "shipping_address[address_line_2]", "Address Line 2 (Optional)", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                <%= form.text_field "shipping_address[address_line_2]",
+                    value: @shipping_address.address_line_2,
+                    class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors" %>
               </div>
-              
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <%= form.label "shipping_address[city]", "City", class: "form-label" %>
-                  <%= form.text_field "shipping_address[city]", 
-                      value: @shipping_address.city, 
-                      class: "form-control #{'is-invalid' if @shipping_address.errors[:city].any?}" %>
+
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                  <%= form.label "shipping_address[city]", "City", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                  <%= form.text_field "shipping_address[city]",
+                      value: @shipping_address.city,
+                      class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @shipping_address.errors[:city].any?}" %>
                   <% if @shipping_address.errors[:city].any? %>
-                    <div class="invalid-feedback"><%= @shipping_address.errors[:city].first %></div>
+                    <p class="text-red-600 text-sm mt-1"><%= @shipping_address.errors[:city].first %></p>
                   <% end %>
                 </div>
-                <div class="col-md-4 mb-3" id="shipping-state-container">
-                  <%= form.label "shipping_address[state]", "State/Province/Region", class: "form-label", id: "shipping-state-label" %>
+                <div id="shipping-state-container">
+                  <%= form.label "shipping_address[state]", "State/Province/Region", class: "block text-sm font-medium text-gray-700 mb-2", id: "shipping-state-label" %>
                   <div id="shipping-state-select-container">
                     <% if @shipping_address.country == "Canada" %>
-                      <%= form.select "shipping_address[state]", 
+                      <%= form.select "shipping_address[state]",
                           options_for_select(canadian_provinces_for_select, @shipping_address.state),
-                          { prompt: "Select Province" }, 
-                          { class: "form-control #{'is-invalid' if @shipping_address.errors[:state].any?}", id: "shipping_state" } %>
+                          { prompt: "Select Province" },
+                          { class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @shipping_address.errors[:state].any?}", id: "shipping_state" } %>
                     <% elsif @shipping_address.country == "United States" || @shipping_address.country.blank? %>
-                      <%= form.select "shipping_address[state]", 
+                      <%= form.select "shipping_address[state]",
                           options_for_select(us_states_for_select, @shipping_address.state),
-                          { prompt: "Select State" }, 
-                          { class: "form-control #{'is-invalid' if @shipping_address.errors[:state].any?}", id: "shipping_state" } %>
+                          { prompt: "Select State" },
+                          { class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @shipping_address.errors[:state].any?}", id: "shipping_state" } %>
                     <% else %>
-                      <%= form.text_field "shipping_address[state]", 
+                      <%= form.text_field "shipping_address[state]",
                           value: @shipping_address.state,
                           placeholder: "State/Province/Region",
-                          class: "form-control #{'is-invalid' if @shipping_address.errors[:state].any?}",
+                          class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @shipping_address.errors[:state].any?}",
                           id: "shipping_state" %>
                     <% end %>
                   </div>
                   <% if @shipping_address.errors[:state].any? %>
-                    <div class="invalid-feedback d-block"><%= @shipping_address.errors[:state].first %></div>
+                    <p class="text-red-600 text-sm mt-1"><%= @shipping_address.errors[:state].first %></p>
                   <% end %>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <%= form.label "shipping_address[postal_code]", "ZIP/Postal Code", class: "form-label", id: "shipping-postal-label" %>
-                  <%= form.text_field "shipping_address[postal_code]", 
-                      value: @shipping_address.postal_code, 
-                      class: "form-control #{'is-invalid' if @shipping_address.errors[:postal_code].any?}" %>
+                <div>
+                  <%= form.label "shipping_address[postal_code]", "ZIP/Postal Code", class: "block text-sm font-medium text-gray-700 mb-2", id: "shipping-postal-label" %>
+                  <%= form.text_field "shipping_address[postal_code]",
+                      value: @shipping_address.postal_code,
+                      class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @shipping_address.errors[:postal_code].any?}" %>
                   <% if @shipping_address.errors[:postal_code].any? %>
-                    <div class="invalid-feedback"><%= @shipping_address.errors[:postal_code].first %></div>
+                    <p class="text-red-600 text-sm mt-1"><%= @shipping_address.errors[:postal_code].first %></p>
                   <% end %>
                 </div>
               </div>
-              
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <%= form.label "shipping_address[country]", "Country", class: "form-label" %>
-                  <%= form.select "shipping_address[country]", 
-                      grouped_options_for_select(countries_for_select, @shipping_address.country || "United States"), 
-                      {}, 
-                      { class: "form-control", id: "shipping_country" } %>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <%= form.label "shipping_address[country]", "Country", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                  <%= form.select "shipping_address[country]",
+                      grouped_options_for_select(countries_for_select, @shipping_address.country || "United States"),
+                      {},
+                      { class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors", id: "shipping_country" } %>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <%= form.label "shipping_address[phone]", "Phone Number", class: "form-label" %>
-                  <%= form.telephone_field "shipping_address[phone]", 
-                      value: @shipping_address.phone, 
-                      class: "form-control #{'is-invalid' if @shipping_address.errors[:phone].any?}",
+                <div>
+                  <%= form.label "shipping_address[phone]", "Phone Number", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                  <%= form.telephone_field "shipping_address[phone]",
+                      value: @shipping_address.phone,
+                      class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors #{'border-red-500' if @shipping_address.errors[:phone].any?}",
                       placeholder: "+1 (555) 123-4567" %>
                   <% if @shipping_address.errors[:phone].any? %>
-                    <div class="invalid-feedback"><%= @shipping_address.errors[:phone].first %></div>
+                    <p class="text-red-600 text-sm mt-1"><%= @shipping_address.errors[:phone].first %></p>
                   <% end %>
-                  <small class="form-text text-muted">Include country code for international numbers</small>
+                  <p class="text-gray-500 text-xs mt-1">Include country code for international numbers</p>
                 </div>
               </div>
             </div>
-            
-            <div class="d-flex justify-content-between mt-4">
-              <%= link_to "Back to Cart", cart_path, class: "btn btn-outline-secondary" %>
-              <%= form.submit "Continue to Payment", class: "btn btn-primary" %>
+
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-between items-center mt-6 pt-6 border-t border-gray-200">
+              <%= link_to cart_path, class: "inline-flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors w-full sm:w-auto justify-center" do %>
+                <i class="bi bi-arrow-left"></i>
+                Back to Cart
+              <% end %>
+              <%= form.submit "Continue to Payment", class: "inline-flex items-center gap-2 px-8 py-3 bg-bio-green text-white font-semibold rounded-lg hover:bg-bio-green-dark transition-colors shadow-md hover:shadow-lg w-full sm:w-auto justify-center" %>
             </div>
           <% end %>
         </div>
       </div>
     </div>
-    
-    <div class="col-lg-4">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="mb-0">Order Summary</h5>
+
+    <!-- Order Summary Sidebar -->
+    <div class="lg:col-span-1">
+      <div class="bg-white rounded-xl border border-gray-200 overflow-hidden sticky top-20">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h3 class="text-lg font-semibold text-charcoal">Order Summary</h3>
         </div>
-        <div class="card-body">
-          <% @cart.cart_items.each do |cart_item| %>
-            <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
-              <div class="flex-grow-1">
-                <h6 class="mb-0"><%= cart_item.item_name %></h6>
-                <small class="text-muted">Qty: <%= cart_item.quantity %></small>
+        <div class="p-6">
+          <div class="space-y-3">
+            <% @cart.cart_items.each do |cart_item| %>
+              <div class="flex justify-between items-start gap-4 pb-3 border-b border-gray-200 last:border-b-0 last:pb-0">
+                <div class="flex-grow min-w-0">
+                  <h6 class="font-medium text-charcoal mb-1 truncate"><%= cart_item.item_name %></h6>
+                  <p class="text-xs text-gray-500">Qty: <%= cart_item.quantity %></p>
+                </div>
+                <div class="flex-shrink-0 text-right">
+                  <span class="font-semibold text-charcoal">$<%= cart_item.total_price %></span>
+                </div>
               </div>
-              <div class="text-end">
-                <span class="fw-bold">$<%= cart_item.total_price %></span>
-              </div>
+            <% end %>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-gray-300">
+            <div class="flex justify-between items-center mb-2">
+              <span class="font-semibold text-charcoal">Subtotal:</span>
+              <span class="font-bold text-bio-green">$<%= @cart.total_price %></span>
             </div>
-          <% end %>
-          
-          <div class="border-top pt-2 mt-3">
-            <div class="d-flex justify-content-between">
-              <span class="fw-bold">Subtotal:</span>
-              <span class="fw-bold">$<%= @cart.total_price %></span>
-            </div>
-            <small class="text-muted">Shipping and tax calculated at next step</small>
+            <p class="text-xs text-gray-500">Shipping and tax calculated at next step</p>
           </div>
         </div>
       </div>
@@ -313,28 +329,28 @@
 document.addEventListener('DOMContentLoaded', function() {
   const checkbox = document.getElementById('use_billing_for_shipping');
   const shippingSection = document.getElementById('shipping-address-section');
-  
+
   // State/Province data
   const usStates = <%= us_states_for_select.to_json.html_safe %>;
   const canadianProvinces = <%= canadian_provinces_for_select.to_json.html_safe %>;
-  
+
   // Function to update state/province field based on country
   function updateStateField(countrySelectId, stateContainerId, stateLabelId, stateSelectContainerId, addressPrefix) {
     const countrySelect = document.getElementById(countrySelectId);
     const stateContainer = document.getElementById(stateContainerId);
     const stateLabel = document.getElementById(stateLabelId);
     const stateSelectContainer = document.getElementById(stateSelectContainerId);
-    
+
     if (!countrySelect || !stateContainer) return;
-    
+
     countrySelect.addEventListener('change', function() {
       const country = this.value;
       let newField = '';
       let labelText = 'State/Province/Region';
-      
+
       if (country === 'United States') {
         labelText = 'State';
-        newField = '<select name="' + addressPrefix + '[state]" id="' + addressPrefix.replace('_address', '_state') + '" class="form-control">';
+        newField = '<select name="' + addressPrefix + '[state]" id="' + addressPrefix.replace('_address', '_state') + '" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors">';
         newField += '<option value="">Select State</option>';
         usStates.forEach(function(state) {
           newField += '<option value="' + state[1] + '">' + state[0] + '</option>';
@@ -342,7 +358,7 @@ document.addEventListener('DOMContentLoaded', function() {
         newField += '</select>';
       } else if (country === 'Canada') {
         labelText = 'Province';
-        newField = '<select name="' + addressPrefix + '[state]" id="' + addressPrefix.replace('_address', '_state') + '" class="form-control">';
+        newField = '<select name="' + addressPrefix + '[state]" id="' + addressPrefix.replace('_address', '_state') + '" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors">';
         newField += '<option value="">Select Province</option>';
         canadianProvinces.forEach(function(province) {
           newField += '<option value="' + province[1] + '">' + province[0] + '</option>';
@@ -350,12 +366,12 @@ document.addEventListener('DOMContentLoaded', function() {
         newField += '</select>';
       } else {
         labelText = 'State/Province/Region';
-        newField = '<input type="text" name="' + addressPrefix + '[state]" id="' + addressPrefix.replace('_address', '_state') + '" class="form-control" placeholder="State/Province/Region">';
+        newField = '<input type="text" name="' + addressPrefix + '[state]" id="' + addressPrefix.replace('_address', '_state') + '" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors" placeholder="State/Province/Region">';
       }
-      
+
       stateLabel.textContent = labelText;
       stateSelectContainer.innerHTML = newField;
-      
+
       // Update postal code label
       const postalLabel = document.getElementById(addressPrefix.replace('_address', '-postal-label'));
       if (postalLabel) {
@@ -369,16 +385,16 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
-  
+
   // Initialize for billing and shipping addresses
   updateStateField('billing_country', 'billing-state-container', 'billing-state-label', 'billing-state-select-container', 'billing_address');
   updateStateField('shipping_country', 'shipping-state-container', 'shipping-state-label', 'shipping-state-select-container', 'shipping_address');
-  
+
   checkbox.addEventListener('change', function() {
     if (this.checked) {
-      shippingSection.classList.add('collapse');
+      shippingSection.classList.add('hidden');
     } else {
-      shippingSection.classList.remove('collapse');
+      shippingSection.classList.remove('hidden');
     }
   });
 });

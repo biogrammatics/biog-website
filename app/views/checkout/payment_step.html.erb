@@ -1,126 +1,146 @@
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-lg-8">
-      <div class="checkout-progress mb-4">
-        <div class="progress" style="height: 6px;">
-          <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemax="100"></div>
+<div class="container-custom py-8">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2">
+      <!-- Progress Bar -->
+      <div class="mb-8">
+        <div class="w-full bg-gray-200 rounded-full h-2 mb-3">
+          <div class="bg-bio-green h-2 rounded-full transition-all duration-500" style="width: 66%"></div>
         </div>
-        <div class="d-flex justify-content-between mt-2">
-          <small class="text-success">✓ Address</small>
-          <small class="text-primary fw-bold">2. Payment</small>
-          <small class="text-muted">3. Review</small>
+        <div class="flex justify-between text-sm">
+          <span class="text-green-600 font-medium"><i class="bi bi-check-circle-fill"></i> Address</span>
+          <span class="text-bio-green font-semibold">2. Payment</span>
+          <span class="text-gray-400">3. Review & Place Order</span>
         </div>
       </div>
 
-      <div class="card mb-4">
-        <div class="card-header">
-          <h4 class="mb-0">Payment Information</h4>
+      <div class="bg-white rounded-xl border border-gray-200 overflow-hidden mb-6">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h3 class="text-lg font-semibold text-charcoal">Payment Information</h3>
         </div>
-        <div class="card-body">
-          <div class="alert alert-info">
-            <i class="fas fa-info-circle me-2"></i>
-            <strong>Payment Processing</strong>
-            <p class="mb-0">For this demo, payment processing is simulated. In production, this would integrate with a payment processor like Stripe, PayPal, or similar.</p>
+        <div class="p-6">
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <div class="flex gap-3">
+              <div class="flex-shrink-0">
+                <i class="bi bi-info-circle text-blue-600 text-xl"></i>
+              </div>
+              <div>
+                <strong class="text-blue-900 block mb-1">Payment Processing</strong>
+                <p class="text-blue-800 text-sm mb-0">For this demo, payment processing is simulated. In production, this would integrate with a payment processor like Stripe, PayPal, or similar.</p>
+              </div>
+            </div>
           </div>
 
           <%= form_with url: payment_step_checkout_index_path, method: :post, local: true do |form| %>
-            <div class="row">
-              <div class="col-md-12">
-                <h6 class="border-bottom pb-2 mb-3">Payment Method</h6>
-                <div class="form-check mb-3">
-                  <input class="form-check-input" type="radio" name="payment_method" id="credit_card" value="credit_card" checked>
-                  <label class="form-check-label" for="credit_card">
-                    <i class="fab fa-cc-visa me-1"></i>
-                    <i class="fab fa-cc-mastercard me-1"></i>
-                    <i class="fab fa-cc-amex me-1"></i>
-                    Credit Card
-                  </label>
-                </div>
-                <div class="form-check mb-3">
-                  <input class="form-check-input" type="radio" name="payment_method" id="paypal" value="paypal">
-                  <label class="form-check-label" for="paypal">
-                    <i class="fab fa-paypal me-1"></i>
-                    PayPal
-                  </label>
-                </div>
+            <div class="mb-6">
+              <div class="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200">
+                <i class="bi bi-credit-card text-bio-green text-xl"></i>
+                <h4 class="text-lg font-semibold text-charcoal">Payment Method</h4>
+              </div>
+
+              <div class="space-y-3">
+                <label class="flex items-center gap-3 p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors has-[:checked]:border-bio-green has-[:checked]:bg-bio-green/5">
+                  <input class="w-4 h-4 text-bio-green border-gray-300 focus:ring-bio-green" type="radio" name="payment_method" id="credit_card" value="credit_card" checked>
+                  <div class="flex items-center gap-2 flex-grow">
+                    <i class="bi bi-credit-card-2-front text-xl text-gray-600"></i>
+                    <span class="font-medium text-charcoal">Credit Card</span>
+                  </div>
+                </label>
+
+                <label class="flex items-center gap-3 p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors has-[:checked]:border-bio-green has-[:checked]:bg-bio-green/5">
+                  <input class="w-4 h-4 text-bio-green border-gray-300 focus:ring-bio-green" type="radio" name="payment_method" id="paypal" value="paypal">
+                  <div class="flex items-center gap-2 flex-grow">
+                    <i class="bi bi-paypal text-xl text-gray-600"></i>
+                    <span class="font-medium text-charcoal">PayPal</span>
+                  </div>
+                </label>
               </div>
             </div>
 
-            <div id="credit-card-form" class="mt-4">
-              <h6 class="border-bottom pb-2 mb-3">Card Information</h6>
-              <div class="row">
-                <div class="col-md-12 mb-3">
-                  <label class="form-label">Card Number</label>
-                  <input type="text" class="form-control" placeholder="1234 5678 9012 3456" disabled>
-                  <small class="text-muted">This is a demo - no real payment processing</small>
-                </div>
+            <div id="credit-card-form" class="mb-6">
+              <div class="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200">
+                <i class="bi bi-lock-fill text-bio-green text-xl"></i>
+                <h4 class="text-lg font-semibold text-charcoal">Card Information</h4>
               </div>
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Expiry Month</label>
-                  <select class="form-control" disabled>
+
+              <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Card Number</label>
+                <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500" placeholder="1234 5678 9012 3456" disabled>
+                <p class="text-gray-500 text-xs mt-1">This is a demo - no real payment processing</p>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Expiry Month</label>
+                  <select class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500" disabled>
                     <option>01</option>
                     <option>02</option>
                     <option>12</option>
                   </select>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Expiry Year</label>
-                  <select class="form-control" disabled>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Expiry Year</label>
+                  <select class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500" disabled>
                     <option>2024</option>
                     <option>2025</option>
                     <option>2026</option>
                   </select>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">CVV</label>
-                  <input type="text" class="form-control" placeholder="123" disabled>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">CVV</label>
+                  <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500" placeholder="123" disabled>
                 </div>
               </div>
             </div>
 
-            <div class="d-flex justify-content-between mt-4">
-              <%= link_to "Back to Address", address_step_checkout_index_path, class: "btn btn-outline-secondary" %>
-              <%= form.submit "Continue to Review", class: "btn btn-primary" %>
+            <div class="flex flex-col sm:flex-row gap-4 justify-between items-center mt-6 pt-6 border-t border-gray-200">
+              <%= link_to address_step_checkout_index_path, class: "inline-flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors w-full sm:w-auto justify-center" do %>
+                <i class="bi bi-arrow-left"></i>
+                Back to Address
+              <% end %>
+              <%= form.submit "Continue to Review", class: "inline-flex items-center gap-2 px-8 py-3 bg-bio-green text-white font-semibold rounded-lg hover:bg-bio-green-dark transition-colors shadow-md hover:shadow-lg w-full sm:w-auto justify-center" %>
             </div>
           <% end %>
         </div>
       </div>
     </div>
 
-    <div class="col-lg-4">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="mb-0">Order Summary</h5>
+    <!-- Order Summary Sidebar -->
+    <div class="lg:col-span-1">
+      <div class="bg-white rounded-xl border border-gray-200 overflow-hidden sticky top-20">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h3 class="text-lg font-semibold text-charcoal">Order Summary</h3>
         </div>
-        <div class="card-body">
-          <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
-            <span>Subtotal:</span>
-            <span>$<%= sprintf("%.2f", @order_summary[:subtotal]) %></span>
+        <div class="p-6 space-y-4">
+          <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+            <span class="text-gray-600">Subtotal:</span>
+            <span class="font-medium text-charcoal">$<%= sprintf("%.2f", @order_summary[:subtotal]) %></span>
           </div>
-          <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
-            <span>Shipping:</span>
+          <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+            <span class="text-gray-600">Shipping:</span>
             <span>
               <% if @order_summary[:shipping_cost] == 0 %>
-                <span class="text-success">FREE</span>
+                <span class="font-semibold text-green-600">FREE</span>
               <% else %>
-                $<%= sprintf("%.2f", @order_summary[:shipping_cost]) %>
+                <span class="font-medium text-charcoal">$<%= sprintf("%.2f", @order_summary[:shipping_cost]) %></span>
               <% end %>
             </span>
           </div>
-          <div class="d-flex justify-content-between border-bottom pb-2 mb-3">
-            <span>Tax (<%= sprintf("%.1f%%", @order_summary[:tax_rate] * 100) %>):</span>
-            <span>$<%= sprintf("%.2f", @order_summary[:tax_amount]) %></span>
+          <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+            <span class="text-gray-600">Tax (<%= sprintf("%.1f%%", @order_summary[:tax_rate] * 100) %>):</span>
+            <span class="font-medium text-charcoal">$<%= sprintf("%.2f", @order_summary[:tax_amount]) %></span>
           </div>
-          <div class="d-flex justify-content-between">
-            <strong>Total:</strong>
-            <strong class="text-primary">$<%= sprintf("%.2f", @order_summary[:total]) %></strong>
+          <div class="flex justify-between items-center pt-2">
+            <strong class="text-lg text-charcoal">Total:</strong>
+            <strong class="text-2xl text-bio-green">$<%= sprintf("%.2f", @order_summary[:total]) %></strong>
           </div>
 
-          <div class="mt-3 pt-3 border-top">
-            <h6>Shipping To:</h6>
-            <address class="small">
-              <strong><%= @shipping_address.display_name %></strong><br>
+          <div class="mt-4 pt-4 border-t border-gray-200">
+            <h6 class="font-semibold text-charcoal mb-3 flex items-center gap-2">
+              <i class="bi bi-truck text-bio-green"></i>
+              Shipping To:
+            </h6>
+            <address class="not-italic text-sm text-gray-700 leading-relaxed">
+              <strong class="block mb-1 text-charcoal"><%= @shipping_address.display_name %></strong>
               <%= @shipping_address.address_line_1 %><br>
               <% if @shipping_address.address_line_2.present? %>
                 <%= @shipping_address.address_line_2 %><br>

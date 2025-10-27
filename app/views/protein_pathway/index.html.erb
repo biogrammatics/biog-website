@@ -1,123 +1,151 @@
 <!-- Hero Section -->
-<section class="modern-hero">
-  <div class="modern-container">
-    <div class="modern-hero-content">
-      <h1 class="modern-hero-title">
+<div class="bg-gradient-to-br from-gray-50 to-white py-16 border-b border-gray-200">
+  <div class="container-custom">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-5xl font-bold text-charcoal mb-4">
         Your Path to Protein
       </h1>
-      <p class="modern-hero-subtitle">
+      <p class="text-xl text-gray-600 mb-6">
         Navigate your protein expression journey with expert guidance at every step
       </p>
-      <div class="modern-hero-tagline">
-        <p class="modern-body-lg">
-          Whether you're a DIY researcher or need full-service support, we'll help you choose the right approach for each stage of your project. Get a customized quote based on your specific needs.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- How It Works Section -->
-<section class="modern-section">
-  <div class="modern-container">
-    <div class="modern-section-header">
-      <h2 class="modern-section-title">How It Works</h2>
-      <p class="modern-section-subtitle">
-        Six key steps to protein expression success
+      <p class="text-lg text-gray-700 max-w-3xl mx-auto">
+        Whether you're a DIY researcher or need full-service support, we'll help you choose the right approach for each stage of your project. Get a customized quote based on your specific needs.
       </p>
     </div>
+  </div>
+</div>
 
-    <div class="modern-grid modern-grid-3">
-      <% @service_packages.each do |package| %>
-        <div class="modern-card">
-          <div class="modern-card-icon">
-            <div class="step-number"><%= package.step_number %></div>
+<!-- How It Works Section -->
+<div class="container-custom py-12">
+  <div class="text-center mb-12">
+    <h2 class="text-3xl font-bold text-charcoal mb-3">How It Works</h2>
+    <p class="text-lg text-gray-600">
+      Six key steps to protein expression success
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    <% @service_packages.each do |package| %>
+      <div class="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col">
+        <div class="p-6 flex flex-col flex-grow">
+          <div class="flex items-center justify-center mb-4">
+            <div class="w-16 h-16 rounded-full bg-bio-green text-white flex items-center justify-center text-2xl font-bold shadow-md">
+              <%= package.step_number %>
+            </div>
           </div>
-          <h3 class="modern-card-title"><%= package.name %></h3>
-          <p class="modern-card-description">
-            <%= truncate(package.description, length: 150) %>
+          <h3 class="text-xl font-semibold text-charcoal mb-3 text-center"><%= package.name %></h3>
+          <p class="text-gray-600 text-sm mb-4 flex-grow">
+            <%= package.description %>
           </p>
-          <div class="mt-auto">
-            <p class="modern-caption text-muted">
-              Estimated: <%= number_to_currency(package.estimated_price) %> · <%= package.estimated_turnaround %>
+          <div class="text-center pt-3 border-t border-gray-100">
+            <p class="text-sm text-gray-500">
+              <span class="font-semibold text-bio-green"><%= number_to_currency(package.estimated_price) %></span>
+              <span class="text-gray-400 mx-1">•</span>
+              <span><%= package.estimated_turnaround %></span>
             </p>
           </div>
         </div>
-      <% end %>
-    </div>
-
-    <div class="modern-text-center mt-5">
-      <div class="alert alert-info d-inline-block">
-        <i class="bi bi-info-circle"></i>
-        <strong>Full Service Value: <%= number_to_currency(@total_value) %></strong>
-        <p class="mb-0 mt-2">Mix and match DIY and service options to fit your budget and timeline</p>
       </div>
+    <% end %>
+  </div>
+
+  <div class="text-center">
+    <div class="inline-block bg-blue-50 border border-blue-200 rounded-lg px-6 py-4">
+      <div class="flex items-center gap-2 mb-2">
+        <i class="bi bi-info-circle text-blue-600"></i>
+        <strong class="text-charcoal">Full Service Value: <%= number_to_currency(@total_value) %></strong>
+      </div>
+      <p class="text-sm text-gray-600 mb-0">Mix and match DIY and service options to fit your budget and timeline</p>
     </div>
   </div>
-</section>
+</div>
 
 <!-- Choose Your Path Section -->
-<section class="modern-section" style="background: var(--modern-gray-50);">
-  <div class="modern-container">
-    <div class="modern-section-header">
-      <h2 class="modern-section-title">Choose Your Approach</h2>
-      <p class="modern-section-subtitle">
+<div class="bg-gray-50 py-12 border-t border-gray-200">
+  <div class="container-custom">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-charcoal mb-3">Choose Your Approach</h2>
+      <p class="text-lg text-gray-600">
         For each step, you'll choose between DIY or full-service options
       </p>
     </div>
 
-    <div class="modern-grid modern-grid-2 mb-4">
-      <div class="modern-card">
-        <div class="modern-card-icon">
-          <i class="bi bi-person-workspace"></i>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 max-w-5xl mx-auto">
+      <!-- DIY Card -->
+      <div class="bg-white rounded-xl border-2 border-gray-200 overflow-hidden hover:shadow-lg transition-all">
+        <div class="p-8">
+          <div class="text-center mb-6">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+              <i class="bi bi-person-workspace text-3xl text-bio-green"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-charcoal">Do It Yourself</h3>
+          </div>
+          <p class="text-gray-600 text-center mb-6">
+            Purchase reagents and tools to complete each step in your own lab
+          </p>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-2 text-gray-700">
+              <i class="bi bi-check-circle-fill text-bio-green"></i>
+              <span>Lower cost option</span>
+            </li>
+            <li class="flex items-center gap-2 text-gray-700">
+              <i class="bi bi-check-circle-fill text-bio-green"></i>
+              <span>Full control over process</span>
+            </li>
+            <li class="flex items-center gap-2 text-gray-700">
+              <i class="bi bi-check-circle-fill text-bio-green"></i>
+              <span>Requires lab resources</span>
+            </li>
+            <li class="flex items-center gap-2 text-gray-700">
+              <i class="bi bi-check-circle-fill text-bio-green"></i>
+              <span>Longer timeline</span>
+            </li>
+          </ul>
         </div>
-        <h3 class="modern-card-title">Do It Yourself</h3>
-        <p class="modern-card-description">
-          Purchase reagents and tools to complete each step in your own lab
-        </p>
-        <ul class="modern-card-features">
-          <li>Lower cost option</li>
-          <li>Full control over process</li>
-          <li>Requires lab resources</li>
-          <li>Longer timeline</li>
-        </ul>
       </div>
 
-      <div class="modern-card">
-        <div class="modern-card-icon">
-          <i class="bi bi-gear-wide-connected"></i>
+      <!-- Service Card -->
+      <div class="bg-gradient-to-br from-green-50 to-white rounded-xl border-2 border-bio-green overflow-hidden hover:shadow-xl transition-all relative">
+        <div class="absolute top-0 right-6 transform -translate-y-1/2">
+          <span class="inline-block px-4 py-1 bg-bio-green text-white text-sm font-bold rounded-full shadow-md">
+            Recommended
+          </span>
         </div>
-        <h3 class="modern-card-title">Do It With Us</h3>
-        <p class="modern-card-description">
-          Let our experts handle the technical work while you focus on your research
-        </p>
-        <ul class="modern-card-features">
-          <li>Faster results</li>
-          <li>Expert execution</li>
-          <li>Guaranteed quality</li>
-          <li>Risk-free outcomes</li>
-        </ul>
+        <div class="p-8 pt-10">
+          <div class="text-center mb-6">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-bio-green/10 flex items-center justify-center">
+              <i class="bi bi-gear-wide-connected text-3xl text-bio-green"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-charcoal">Do It With Us</h3>
+          </div>
+          <p class="text-gray-600 text-center mb-6">
+            Let our experts handle the technical work while you focus on your research
+          </p>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-2 text-gray-700">
+              <i class="bi bi-check-circle-fill text-bio-green"></i>
+              <span>Faster results</span>
+            </li>
+            <li class="flex items-center gap-2 text-gray-700">
+              <i class="bi bi-check-circle-fill text-bio-green"></i>
+              <span>Expert execution</span>
+            </li>
+            <li class="flex items-center gap-2 text-gray-700">
+              <i class="bi bi-check-circle-fill text-bio-green"></i>
+              <span>Guaranteed quality</span>
+            </li>
+            <li class="flex items-center gap-2 text-gray-700">
+              <i class="bi bi-check-circle-fill text-bio-green"></i>
+              <span>Risk-free outcomes</span>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
-    <div class="modern-text-center">
-      <%= link_to "Start Building Your Path", protein_pathway_step_path(step: 1), class: "modern-btn modern-btn-primary modern-btn-lg" %>
-      <p class="modern-caption mt-3">Takes 5-10 minutes · No obligation · Instant quote</p>
+    <div class="text-center">
+      <%= link_to "Start Building Your Path", protein_pathway_step_path(step: 1), class: "inline-flex items-center gap-2 px-8 py-4 bg-bio-green text-white text-lg font-semibold rounded-lg hover:bg-bio-green-dark transition-colors shadow-lg hover:shadow-xl" %>
+      <p class="text-sm text-gray-500 mt-4">Takes 5-10 minutes · No obligation · Instant quote</p>
     </div>
   </div>
-</section>
-
-<style>
-.step-number {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: var(--modern-accent);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-</style>
+</div>

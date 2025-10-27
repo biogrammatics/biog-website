@@ -1,65 +1,65 @@
 <!-- Success Message -->
-<section class="modern-section">
-  <div class="modern-container">
-    <div class="row">
-      <div class="col-lg-6 mx-auto text-center">
-        <div class="success-icon mb-4">
-          <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
-        </div>
+<div class="container-custom py-16">
+  <div class="max-w-2xl mx-auto text-center">
+    <div class="mb-6 animate-bounce">
+      <i class="bi bi-check-circle-fill text-bio-green" style="font-size: 6rem;"></i>
+    </div>
 
-        <h1 class="modern-h1 mb-3">Thank You!</h1>
-        <p class="modern-body-lg mb-4">
-          We've received your quote request and will send you a detailed proposal within 24 hours.
-        </p>
+    <h1 class="text-4xl font-bold text-charcoal mb-4">Thank You!</h1>
+    <p class="text-xl text-gray-600 mb-8">
+      We've received your quote request and will send you a detailed proposal within 24 hours.
+    </p>
 
-        <div class="alert alert-info d-inline-block">
-          <div class="d-flex align-items-start">
-            <i class="bi bi-info-circle me-2 mt-1"></i>
-            <div class="text-start">
-              <strong>What happens next?</strong>
-              <ol class="mb-0 mt-2 ps-3">
-                <li>Our team will review your project requirements</li>
-                <li>We'll prepare a detailed quote with exact pricing and timeline</li>
-                <li>You'll receive the quote via email within 24 business hours</li>
-                <li>We'll schedule a call to discuss your project if needed</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-5">
-          <h3 class="h5 mb-3">While you wait...</h3>
-          <div class="d-flex gap-3 justify-content-center flex-wrap">
-            <%= link_to "Browse Vectors", vectors_path, class: "modern-btn modern-btn-accent" %>
-            <%= link_to "View Strains", pichia_strains_path, class: "modern-btn modern-btn-secondary" %>
-            <%= link_to "Return Home", root_path, class: "modern-btn modern-btn-secondary" %>
-          </div>
-        </div>
-
-        <div class="mt-5 pt-4 border-top">
-          <p class="modern-caption text-muted">
-            <strong>Questions?</strong> Contact us at
-            <a href="mailto:info@biogrammatics.com">info@biogrammatics.com</a>
-          </p>
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 text-left inline-block max-w-lg">
+      <div class="flex items-start gap-3">
+        <i class="bi bi-info-circle text-blue-600 text-xl flex-shrink-0 mt-0.5"></i>
+        <div>
+          <strong class="text-gray-900 block mb-3">What happens next?</strong>
+          <ol class="space-y-2 text-gray-700">
+            <li class="flex items-start gap-2">
+              <span class="font-semibold text-bio-green flex-shrink-0">1.</span>
+              <span>Our team will review your project requirements</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="font-semibold text-bio-green flex-shrink-0">2.</span>
+              <span>We'll prepare a detailed quote with exact pricing and timeline</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="font-semibold text-bio-green flex-shrink-0">3.</span>
+              <span>You'll receive the quote via email within 24 business hours</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="font-semibold text-bio-green flex-shrink-0">4.</span>
+              <span>We'll schedule a call to discuss your project if needed</span>
+            </li>
+          </ol>
         </div>
       </div>
     </div>
+
+    <div class="mt-8">
+      <h3 class="text-lg font-semibold text-charcoal mb-4">While you wait...</h3>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <%= link_to vectors_path, class: "inline-flex items-center justify-center gap-2 px-6 py-3 bg-bio-green text-white font-semibold rounded-lg hover:bg-bio-green-dark transition-colors shadow-md hover:shadow-lg" do %>
+          <i class="bi bi-diagram-3"></i>
+          Browse Vectors
+        <% end %>
+        <%= link_to pichia_strains_path, class: "inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" do %>
+          <i class="bi bi-droplet-fill"></i>
+          View Strains
+        <% end %>
+        <%= link_to root_path, class: "inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" do %>
+          <i class="bi bi-house"></i>
+          Return Home
+        <% end %>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-gray-200">
+      <p class="text-sm text-gray-500">
+        <strong class="text-gray-700">Questions?</strong> Contact us at
+        <a href="mailto:info@biogrammatics.com" class="text-bio-green hover:underline font-medium">info@biogrammatics.com</a>
+      </p>
+    </div>
   </div>
-</section>
-
-<style>
-.success-icon {
-  animation: scaleIn 0.5s ease-out;
-}
-
-@keyframes scaleIn {
-  from {
-    transform: scale(0);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-</style>
+</div>

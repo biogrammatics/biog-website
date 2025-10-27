@@ -190,14 +190,14 @@
                     <div>
                       <% if @vector_type == 'subscription' %>
                         <% if vector.subscription_price %>
-                          <span class="text-2xl font-bold text-bio-green">${<%= number_with_precision(vector.subscription_price, precision: 0) %></span>
+                          <span class="text-2xl font-bold text-bio-green">$<%= number_with_precision(vector.subscription_price, precision: 0) %></span>
                           <span class="text-xs text-gray-500 block">per subscription</span>
                         <% else %>
                           <span class="text-sm text-gray-500">Contact for pricing</span>
                         <% end %>
                       <% else %>
                         <% if vector.sale_price %>
-                          <span class="text-2xl font-bold text-bio-green">${<%= number_with_precision(vector.sale_price, precision: 0) %></span>
+                          <span class="text-2xl font-bold text-bio-green">$<%= number_with_precision(vector.sale_price, precision: 0) %></span>
                         <% else %>
                           <span class="text-sm text-gray-500">Contact for pricing</span>
                         <% end %>

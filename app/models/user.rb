@@ -15,10 +15,10 @@ class User < ApplicationRecord
   validates :phone_number, format: { with: /\A\d{10,15}\z/ }, allow_blank: true
   validates :otp_delivery_method, inclusion: { in: %w[totp sms] }
 
-  # Note: Consider enabling encryption for 2FA fields in production
-  # encrypts :otp_secret, deterministic: false
-  # encrypts :otp_backup_codes, deterministic: false
-  # encrypts :otp_code, deterministic: false
+  # Encrypt sensitive 2FA fields for security
+  encrypts :otp_secret, deterministic: false
+  encrypts :otp_backup_codes, deterministic: false
+  encrypts :otp_code, deterministic: false
 
   # Note: 2FA requirement for admins is enforced during authentication flow
 

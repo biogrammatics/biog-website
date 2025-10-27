@@ -17,14 +17,8 @@ class CookiesController < ApplicationController
       same_site: :lax
     }
 
-    # Clear analytics/marketing cookies if rejected
-    if consent_params[:analytics] != "true"
-      clear_analytics_cookies
-    end
-
-    if consent_params[:marketing] != "true"
-      clear_marketing_cookies
-    end
+    # Note: Analytics and marketing cookie clearing will be implemented when
+    # third-party tracking is added to the application
 
     respond_to do |format|
       format.json { render json: { status: "success" } }
@@ -38,18 +32,5 @@ class CookiesController < ApplicationController
 
   def privacy
     # Render privacy policy page
-  end
-
-  private
-
-  def clear_analytics_cookies
-    # Clear any analytics cookies if we add them in future
-    # cookies.delete(:_ga)
-    # cookies.delete(:_gid)
-  end
-
-  def clear_marketing_cookies
-    # Clear any marketing cookies if we add them in future
-    # cookies.delete(:_fbp)
   end
 end

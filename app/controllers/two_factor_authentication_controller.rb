@@ -20,40 +20,25 @@ class TwoFactorAuthenticationController < ApplicationController
 
   def enable_totp
     @user = Current.user
+    service = TotpSetupService.new(@user)
 
-    # Generate new secret if not present
-    unless @user.otp_secret.present?
-      @user.setup_otp_secret
-      @user.save!
-    end
-
-    @qr_code = @user.generate_qr_code
-    @secret = @user.otp_plain_secret || @user.otp_secret
+    service.ensure_secret
+    @qr_code = service.generate_qr_code
+    @secret = service.plain_secret
   end
 
   def confirm_totp
     @user = Current.user
-    code = params[:otp_code]
+    service = TotpSetupService.new(@user)
 
-    if @user.validate_totp_code(code)
-      @user.update!(
-        otp_delivery_method: "totp",
-        two_factor_enabled: true,
-        two_factor_confirmed_at: Time.current,
-        otp_required_for_login: true
-      )
-
-      # Generate backup codes
-      backup_codes = @user.generate_otp_backup_codes
-      @user.save!
-
+    if service.confirm(params[:otp_code])
       flash[:notice] = "Two-factor authentication has been enabled successfully!"
       session[:show_backup_codes] = true
       redirect_to backup_codes_path
     else
-      flash.now[:alert] = "Invalid code. Please try again."
-      @qr_code = @user.generate_qr_code
-      @secret = @user.otp_secret
+      flash.now[:alert] = service.errors.join(", ")
+      @qr_code = service.generate_qr_code
+      @secret = service.plain_secret
       render :enable_totp, status: :unprocessable_entity
     end
   end
@@ -64,26 +49,13 @@ class TwoFactorAuthenticationController < ApplicationController
 
   def verify_phone
     @user = Current.user
-    phone = params[:phone_number]
+    service = SmsSetupService.new(@user)
 
-    if phone.present?
-      @user.phone_number = phone
-
-      # Generate and send verification code
-      code = rand(100000..999999).to_s
-      @user.otp_code = code
-      @user.otp_code_sent_at = Time.current
-      @user.save!
-
-      if TwilioService.new.send_phone_verification(@user.phone_number, code)
-        flash[:notice] = "Verification code sent to #{phone}"
-        redirect_to confirm_phone_path
-      else
-        flash[:alert] = "Failed to send verification code. Please check the phone number."
-        redirect_to enable_sms_path
-      end
+    if service.send_verification_code(params[:phone_number])
+      flash[:notice] = "Verification code sent to #{params[:phone_number]}"
+      redirect_to confirm_phone_path
     else
-      flash[:alert] = "Please enter a valid phone number"
+      flash[:alert] = service.errors.join(", ")
       redirect_to enable_sms_path
     end
   end
@@ -94,49 +66,38 @@ class TwoFactorAuthenticationController < ApplicationController
 
   def verify_phone_code
     @user = Current.user
-    code = params[:otp_code]
+    service = SmsSetupService.new(@user)
 
-    if @user.validate_sms_code(code)
-      @user.update!(
-        phone_verified: true,
-        otp_delivery_method: "sms",
-        two_factor_enabled: true,
-        two_factor_confirmed_at: Time.current,
-        otp_required_for_login: true
-      )
-
-      # Generate backup codes
-      backup_codes = @user.generate_otp_backup_codes
-      @user.save!
-
+    if service.verify_and_enable(params[:otp_code])
       flash[:notice] = "Two-factor authentication via SMS has been enabled successfully!"
       session[:show_backup_codes] = true
       redirect_to backup_codes_path
     else
-      flash.now[:alert] = "Invalid or expired code. Please try again."
+      flash.now[:alert] = service.errors.join(", ")
       render :confirm_phone, status: :unprocessable_entity
     end
   end
 
   def backup_codes
     @user = Current.user
+    service = BackupCodeService.new(@user)
 
-    # Only show codes once after setup
-    if session[:show_backup_codes]
-      @backup_codes = JSON.parse(@user.otp_backup_codes)
-      session.delete(:show_backup_codes)
-    else
-      redirect_to account_path
-    end
+    @backup_codes = service.get_codes_for_display(session)
+    redirect_to account_path unless @backup_codes
   end
 
   def regenerate_backup_codes
     @user = Current.user
-    @backup_codes = @user.generate_otp_backup_codes
-    @user.save!
+    service = BackupCodeService.new(@user)
 
-    flash[:notice] = "New backup codes have been generated. Please save them securely."
-    render :backup_codes
+    @backup_codes = service.regenerate
+    if @backup_codes
+      flash[:notice] = "New backup codes have been generated. Please save them securely."
+      render :backup_codes
+    else
+      flash[:alert] = service.errors.join(", ")
+      redirect_to account_path
+    end
   end
 
   def disable

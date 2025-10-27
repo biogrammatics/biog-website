@@ -126,6 +126,9 @@ class FastaParserService
   end
 
   def validate_sequences
+    # Use the same amino acid constant as the concern
+    valid_acids = Protein::AMINO_ACIDS
+
     @proteins.each_with_index do |protein_data, index|
       sequence = protein_data[:amino_acid_sequence]
 
@@ -135,7 +138,6 @@ class FastaParserService
       end
 
       # Check for valid amino acids
-      valid_acids = %w[A R N D C E Q G H I L K M F P S T W Y V *]
       invalid_chars = sequence.chars.uniq - valid_acids
       if invalid_chars.any?
         @errors << "Protein #{index + 1} (#{protein_data[:name]}): contains invalid amino acid codes: #{invalid_chars.join(', ')}"

@@ -12,33 +12,55 @@ class SessionCartService
     session[:cart] ||= {}
   end
 
-  # Get cart items as objects
+  # Get cart items as objects (optimized to avoid N+1 queries)
   def cart_items
+    # Group cart keys by item type for batch loading
+    vector_ids = []
+    strain_ids = []
+
+    cart.each_key do |key|
+      item_type, item_id = key.split("_")
+      case item_type
+      when "Vector"
+        vector_ids << item_id.to_i
+      when "PichiaStrain"
+        strain_ids << item_id.to_i
+      end
+    end
+
+    # Batch load all items
+    vectors = Vector.where(id: vector_ids).index_by(&:id)
+    strains = PichiaStrain.where(id: strain_ids).index_by(&:id)
+
+    # Build cart items array
     items = []
     cart.each do |key, item_data|
       item_type, item_id = key.split("_")
-      begin
-        item = case item_type
-        when "Vector"
-                 Vector.find(item_id)
-        when "PichiaStrain"
-                 PichiaStrain.find(item_id)
-        else
-                 next
-        end
 
-        items << OpenStruct.new(
-          item: item,
-          quantity: item_data["quantity"],
-          price: item_data["price"],
-          total_price: item_data["quantity"] * item_data["price"],
-          session_key: key
-        )
-      rescue ActiveRecord::RecordNotFound
-        # Item no longer exists, remove from session
-        remove_item(key)
+      item = case item_type
+      when "Vector"
+        vectors[item_id.to_i]
+      when "PichiaStrain"
+        strains[item_id.to_i]
+      else
+        next
       end
+
+      # Skip if item no longer exists
+      unless item
+        remove_item(key)
+        next
+      end
+
+      items << OpenStruct.new(
+        item: item,
+        quantity: item_data["quantity"],
+        price: item_data["price"],
+        total_price: item_data["quantity"] * item_data["price"],
+        session_key: key
+      )
     end
+
     items
   end
 

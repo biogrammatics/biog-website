@@ -1,4 +1,5 @@
 class ProteinPathwayController < ApplicationController
+  allow_unauthenticated_access
   before_action :load_service_packages, only: [ :index, :step, :review ]
   before_action :set_current_step, only: [ :step ]
 

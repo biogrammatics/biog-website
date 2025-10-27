@@ -8,6 +8,7 @@ class ServicePackage < ApplicationRecord
 
   scope :active, -> { where(active: true) }
   scope :ordered, -> { order(:position, :step_number) }
+  scope :by_step, -> { order(:step_number) }
   scope :for_step, ->(step) { where(step_number: step) }
 
   # Generate slug from name before validation

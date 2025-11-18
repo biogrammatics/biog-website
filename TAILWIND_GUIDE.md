@@ -146,9 +146,9 @@ All have proper letter-spacing and line-height built in!
 <!-- Ghost button (minimal) -->
 <%= link_to "Cancel", path, class: "btn-ghost" %>
 
-<!-- Size variants -->
-<%= link_to "Small", path, class: "btn-primary btn-sm" %>
-<%= link_to "Large", path, class: "btn-primary btn-lg" %>
+<!-- Note: Size variants (btn-sm, btn-lg) should be used with Tailwind utilities -->
+<!-- For custom sizing, use Tailwind classes directly: -->
+<%= link_to "Custom", path, class: "btn-primary text-sm px-4 py-2" %>
 ```
 
 ### Cards

@@ -1,74 +1,77 @@
-<div class="table-responsive">
-  <table class="table table-hover mb-0">
-    <thead class="table-light">
+<div class="overflow-x-auto">
+  <table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-50">
       <tr>
-        <th>Project</th>
-        <th>Customer</th>
-        <th>Type</th>
-        <th>Status</th>
-        <th>Services</th>
-        <th>Cost</th>
-        <th>Submitted</th>
-        <th>Actions</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Project</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Services</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cost</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Submitted</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="bg-white divide-y divide-gray-200">
       <% projects.each do |project| %>
-        <tr>
-          <td>
-            <%= link_to project.project_name, admin_custom_project_path(project), class: "fw-bold text-decoration-none" %>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 whitespace-nowrap">
+            <%= link_to project.project_name, admin_custom_project_path(project), class: "font-semibold text-blue-600 hover:text-blue-900" %>
           </td>
-          <td>
-            <%= project.user.full_name.presence || project.user.email_address %>
-            <br>
-            <small class="text-muted"><%= project.user.email_address %></small>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-gray-900"><%= project.user.full_name.presence || project.user.email_address %></div>
+            <div class="text-xs text-gray-500"><%= project.user.email_address %></div>
           </td>
-          <td>
+          <td class="px-6 py-4 whitespace-nowrap">
             <% if project.project_type.present? %>
-              <span class="badge bg-info"><%= project.project_type.humanize %></span>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-cyan-100 text-cyan-800"><%= project.project_type.humanize %></span>
             <% else %>
-              <span class="text-muted">Not specified</span>
+              <span class="text-gray-500 text-sm">Not specified</span>
             <% end %>
           </td>
-          <td>
+          <td class="px-6 py-4 whitespace-nowrap">
             <% case project.status %>
             <% when 'pending' %>
-              <span class="badge bg-warning text-dark"><%= project.display_status %></span>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"><%= project.display_status %></span>
             <% when 'in_progress' %>
-              <span class="badge bg-primary"><%= project.display_status %></span>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"><%= project.display_status %></span>
             <% when 'completed' %>
-              <span class="badge bg-success"><%= project.display_status %></span>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"><%= project.display_status %></span>
             <% when 'cancelled' %>
-              <span class="badge bg-danger"><%= project.display_status %></span>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800"><%= project.display_status %></span>
             <% else %>
-              <span class="badge bg-secondary"><%= project.display_status %></span>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800"><%= project.display_status %></span>
             <% end %>
           </td>
-          <td>
+          <td class="px-6 py-4 text-sm text-gray-900">
             <% if project.total_services.any? %>
               <% project.total_services.each do |service| %>
-                <small class="d-block text-success"><i class="bi bi-check"></i> <%= service %></small>
+                <div class="text-green-600 text-xs mb-1">
+                  <svg class="inline w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <%= service %>
+                </div>
               <% end %>
             <% else %>
-              <span class="text-muted">None specified</span>
+              <span class="text-gray-500 text-sm">None specified</span>
             <% end %>
           </td>
-          <td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm">
             <% if project.estimated_cost.present? %>
-              <strong>$<%= number_with_precision(project.estimated_cost, precision: 2) %></strong>
+              <span class="font-semibold text-gray-900">$<%= number_with_precision(project.estimated_cost, precision: 2) %></span>
             <% else %>
-              <span class="text-muted">TBD</span>
+              <span class="text-gray-500">TBD</span>
             <% end %>
           </td>
-          <td>
-            <%= project.created_at.strftime("%b %d, %Y") %>
-            <br>
-            <small class="text-muted"><%= time_ago_in_words(project.created_at) %> ago</small>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-gray-900"><%= project.created_at.strftime("%b %d, %Y") %></div>
+            <div class="text-xs text-gray-500"><%= time_ago_in_words(project.created_at) %> ago</div>
           </td>
-          <td>
-            <div class="btn-group-vertical" role="group">
-              <%= link_to "View", admin_custom_project_path(project), class: "btn btn-sm btn-outline-primary mb-1" %>
-              <%= link_to "Edit", edit_admin_custom_project_path(project), class: "btn btn-sm btn-outline-secondary" %>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+            <div class="flex flex-col space-y-1">
+              <%= link_to "View", admin_custom_project_path(project), class: "text-blue-600 hover:text-blue-900" %>
+              <%= link_to "Edit", edit_admin_custom_project_path(project), class: "text-gray-600 hover:text-gray-900" %>
             </div>
           </td>
         </tr>

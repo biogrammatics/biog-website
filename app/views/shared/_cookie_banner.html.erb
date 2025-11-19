@@ -1,23 +1,24 @@
 <% if show_cookie_banner? %>
-  <div id="cookieBanner" class="cookie-banner position-fixed bottom-0 start-0 end-0 bg-white border-top shadow-lg p-3" style="z-index: 1050;">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-8">
-          <h5 class="mb-2">Cookie Settings</h5>
-          <p class="mb-2">
-            We use cookies to enhance your browsing experience and analyze site traffic. 
-            By clicking "Accept All", you consent to our use of cookies. 
-            <%= link_to "Learn more", cookies_policy_path, target: "_blank", class: "text-decoration-underline" %>
+  <!-- Cookie Banner -->
+  <div id="cookieBanner" class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300 shadow-lg p-4 z-50">
+    <div class="container-custom">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
+        <div class="lg:col-span-8">
+          <h5 class="text-lg font-semibold text-charcoal mb-2">Cookie Settings</h5>
+          <p class="text-gray-700 mb-2">
+            We use cookies to enhance your browsing experience and analyze site traffic.
+            By clicking "Accept All", you consent to our use of cookies.
+            <%= link_to "Learn more", cookies_policy_path, target: "_blank", class: "text-bio-green hover:text-bio-green-dark font-medium underline" %>
           </p>
         </div>
-        <div class="col-lg-4 text-lg-end">
-          <button type="button" class="btn btn-sm btn-outline-secondary me-2" onclick="manageCookies()">
+        <div class="lg:col-span-4 flex flex-col sm:flex-row gap-2 lg:justify-end">
+          <button type="button" class="inline-flex items-center justify-center px-4 py-2 text-sm border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" onclick="manageCookies()">
             Manage Cookies
           </button>
-          <button type="button" class="btn btn-sm btn-outline-secondary me-2" onclick="rejectAll()">
+          <button type="button" class="inline-flex items-center justify-center px-4 py-2 text-sm border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" onclick="rejectAll()">
             Reject All
           </button>
-          <button type="button" class="btn btn-sm btn-primary" onclick="acceptAll()">
+          <button type="button" class="inline-flex items-center justify-center px-4 py-2 text-sm bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" onclick="acceptAll()">
             Accept All
           </button>
         </div>
@@ -26,68 +27,94 @@
   </div>
 
   <!-- Cookie Preferences Modal -->
-  <div class="modal fade" id="cookieModal" tabindex="-1" aria-labelledby="cookieModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="cookieModalLabel">Cookie Preferences</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p class="text-muted mb-4">
-            We use different types of cookies to optimize your experience. Click on the categories below to learn more 
-            and change your preferences. Note that blocking some types of cookies may impact your experience.
-          </p>
+  <div id="cookieModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" onclick="closeCookieModalOnBackdrop(event)">
+    <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+        <h5 class="text-xl font-semibold text-charcoal">Cookie Preferences</h5>
+        <button type="button" class="text-gray-400 hover:text-gray-600 transition-colors" onclick="closeCookieModal()" aria-label="Close">
+          <i class="bi bi-x-lg text-xl"></i>
+        </button>
+      </div>
 
-          <div class="mb-3">
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="essentialCookies" checked disabled>
-              <label class="form-check-label" for="essentialCookies">
-                <strong>Essential Cookies</strong>
-                <span class="badge bg-secondary ms-2">Always Active</span>
+      <!-- Modal Body -->
+      <div class="p-6">
+        <p class="text-gray-600 mb-6">
+          We use different types of cookies to optimize your experience. Click on the categories below to learn more
+          and change your preferences. Note that blocking some types of cookies may impact your experience.
+        </p>
+
+        <!-- Essential Cookies -->
+        <div class="mb-6">
+          <div class="flex items-start gap-3">
+            <div class="flex items-center h-6">
+              <input type="checkbox" id="essentialCookies" checked disabled class="h-4 w-4 text-bio-green border-gray-300 rounded focus:ring-bio-green disabled:opacity-50">
+            </div>
+            <div class="flex-grow">
+              <label for="essentialCookies" class="block">
+                <span class="text-charcoal font-semibold">Essential Cookies</span>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-500 text-white ml-2">Always Active</span>
               </label>
-              <p class="text-muted small mt-1">
-                These cookies are necessary for the website to function and cannot be switched off. 
+              <p class="text-gray-600 text-sm mt-1">
+                These cookies are necessary for the website to function and cannot be switched off.
                 They are usually set in response to actions you take, like signing in or filling in forms.
               </p>
             </div>
           </div>
+        </div>
 
-          <div class="mb-3">
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="analyticsCookies">
-              <label class="form-check-label" for="analyticsCookies">
-                <strong>Analytics Cookies</strong>
+        <!-- Analytics Cookies -->
+        <div class="mb-6">
+          <div class="flex items-start gap-3">
+            <div class="flex items-center h-6">
+              <input type="checkbox" id="analyticsCookies" class="h-4 w-4 text-bio-green border-gray-300 rounded focus:ring-bio-green">
+            </div>
+            <div class="flex-grow">
+              <label for="analyticsCookies" class="block">
+                <span class="text-charcoal font-semibold">Analytics Cookies</span>
               </label>
-              <p class="text-muted small mt-1">
-                These cookies help us understand how visitors interact with our website by collecting 
+              <p class="text-gray-600 text-sm mt-1">
+                These cookies help us understand how visitors interact with our website by collecting
                 and reporting information anonymously. This helps us improve our service.
               </p>
             </div>
           </div>
+        </div>
 
-          <div class="mb-3">
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="marketingCookies">
-              <label class="form-check-label" for="marketingCookies">
-                <strong>Marketing Cookies</strong>
+        <!-- Marketing Cookies -->
+        <div class="mb-6">
+          <div class="flex items-start gap-3">
+            <div class="flex items-center h-6">
+              <input type="checkbox" id="marketingCookies" class="h-4 w-4 text-bio-green border-gray-300 rounded focus:ring-bio-green">
+            </div>
+            <div class="flex-grow">
+              <label for="marketingCookies" class="block">
+                <span class="text-charcoal font-semibold">Marketing Cookies</span>
               </label>
-              <p class="text-muted small mt-1">
-                These cookies are used to track visitors across websites to display ads that are 
+              <p class="text-gray-600 text-sm mt-1">
+                These cookies are used to track visitors across websites to display ads that are
                 relevant and engaging for individual users.
               </p>
             </div>
           </div>
+        </div>
 
-          <div class="alert alert-info small">
-            <i class="bi bi-info-circle me-2"></i>
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start gap-3">
+          <i class="bi bi-info-circle text-blue-600 text-xl flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-700 text-sm">
             You can change your preferences at any time by clicking the "Cookie Settings" link in the footer.
-          </div>
+          </p>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" onclick="savePreferences()">Save Preferences</button>
-        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="flex flex-col sm:flex-row gap-3 px-6 py-4 border-t border-gray-200">
+        <button type="button" class="inline-flex items-center justify-center px-6 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" onclick="closeCookieModal()">
+          Cancel
+        </button>
+        <button type="button" class="inline-flex items-center justify-center px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" onclick="savePreferences()">
+          Save Preferences
+        </button>
       </div>
     </div>
   </div>
@@ -102,15 +129,32 @@
     }
 
     function manageCookies() {
-      const modal = new bootstrap.Modal(document.getElementById('cookieModal'));
-      modal.show();
+      const modal = document.getElementById('cookieModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeCookieModal() {
+      const modal = document.getElementById('cookieModal');
+      if (modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function closeCookieModalOnBackdrop(event) {
+      if (event.target.id === 'cookieModal') {
+        closeCookieModal();
+      }
     }
 
     function savePreferences() {
       const analytics = document.getElementById('analyticsCookies').checked;
       const marketing = document.getElementById('marketingCookies').checked;
       updateConsent(true, analytics, marketing);
-      bootstrap.Modal.getInstance(document.getElementById('cookieModal')).hide();
+      closeCookieModal();
     }
 
     function updateConsent(essential, analytics, marketing) {
@@ -129,22 +173,24 @@
       .then(response => response.json())
       .then(data => {
         if (data.status === 'success') {
-          document.getElementById('cookieBanner').style.display = 'none';
+          const banner = document.getElementById('cookieBanner');
+          if (banner) {
+            banner.style.display = 'none';
+          }
           // Reload page to apply new cookie settings
           window.location.reload();
         }
+      })
+      .catch(error => {
+        console.error('Error updating cookie consent:', error);
       });
     }
-  </script>
 
-  <style>
-    .cookie-banner {
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-    }
-    @media (max-width: 991px) {
-      .cookie-banner .col-lg-4 {
-        margin-top: 1rem;
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeCookieModal();
       }
-    }
-  </style>
+    });
+  </script>
 <% end %>

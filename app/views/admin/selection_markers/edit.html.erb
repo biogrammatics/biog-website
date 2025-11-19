@@ -1,60 +1,67 @@
-<div class="row justify-content-center">
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-header">
-        <h2>Edit Selection Marker</h2>
-      </div>
-      <div class="card-body">
-        <%= form_with model: [:admin, @selection_marker], local: true do |form| %>
-          <% if @selection_marker.errors.any? %>
-            <div class="alert alert-danger">
-              <h6 class="mb-2">Please fix the following errors:</h6>
-              <ul class="mb-0">
-                <% @selection_marker.errors.full_messages.each do |message| %>
-                  <li><%= message %></li>
-                <% end %>
-              </ul>
+<div class="max-w-2xl mx-auto">
+  <div class="bg-white shadow-sm rounded-lg">
+    <div class="px-6 py-4 border-b border-gray-200">
+      <h2 class="text-xl font-semibold text-gray-900">Edit Selection Marker</h2>
+    </div>
+    <div class="px-6 py-6">
+      <%= form_with model: [:admin, @selection_marker], local: true do |form| %>
+        <% if @selection_marker.errors.any? %>
+          <div class="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-red-800 mb-2">Please fix the following errors:</h3>
+                <ul class="list-disc list-inside text-sm text-red-700">
+                  <% @selection_marker.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
             </div>
-          <% end %>
-
-          <div class="mb-3">
-            <%= form.label :name, "Marker Name", class: "form-label" %>
-            <%= form.text_field :name, class: "form-control", required: true %>
-            <div class="form-text">Short identifier for the selection marker</div>
-          </div>
-
-          <div class="mb-3">
-            <%= form.label :resistance, "Resistance", class: "form-label" %>
-            <%= form.text_field :resistance, class: "form-control" %>
-            <div class="form-text">Full name of the antibiotic resistance (optional)</div>
-          </div>
-
-          <div class="mb-4">
-            <%= form.label :concentration, "Working Concentration", class: "form-label" %>
-            <%= form.text_field :concentration, class: "form-control" %>
-            <div class="form-text">Typical working concentration for selection (optional)</div>
-          </div>
-
-          <% if @selection_marker.vectors.any? %>
-            <div class="alert alert-info">
-              <h6>This marker is used by <%= @selection_marker.vectors.count %> vector(s):</h6>
-              <ul class="mb-0">
-                <% @selection_marker.vectors.limit(5).each do |vector| %>
-                  <li><%= vector.name %></li>
-                <% end %>
-                <% if @selection_marker.vectors.count > 5 %>
-                  <li>...and <%= @selection_marker.vectors.count - 5 %> more</li>
-                <% end %>
-              </ul>
-            </div>
-          <% end %>
-
-          <div class="d-flex justify-content-between">
-            <%= link_to "Cancel", admin_selection_markers_path, class: "btn btn-secondary" %>
-            <%= form.submit "Update Selection Marker", class: "btn btn-primary" %>
           </div>
         <% end %>
-      </div>
+
+        <div class="mb-4">
+          <%= form.label :name, "Marker Name", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= form.text_field :name, class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm", required: true %>
+          <p class="mt-1 text-sm text-gray-500">Short identifier for the selection marker</p>
+        </div>
+
+        <div class="mb-4">
+          <%= form.label :resistance, "Resistance", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= form.text_field :resistance, class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+          <p class="mt-1 text-sm text-gray-500">Full name of the antibiotic resistance (optional)</p>
+        </div>
+
+        <div class="mb-6">
+          <%= form.label :concentration, "Working Concentration", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= form.text_field :concentration, class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+          <p class="mt-1 text-sm text-gray-500">Typical working concentration for selection (optional)</p>
+        </div>
+
+        <% if @selection_marker.vectors.any? %>
+          <div class="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6">
+            <h6 class="text-sm font-medium text-blue-900 mb-2">This marker is used by <%= @selection_marker.vectors.count %> vector(s):</h6>
+            <ul class="list-disc list-inside text-sm text-blue-700">
+              <% @selection_marker.vectors.limit(5).each do |vector| %>
+                <li><%= vector.name %></li>
+              <% end %>
+              <% if @selection_marker.vectors.count > 5 %>
+                <li>...and <%= @selection_marker.vectors.count - 5 %> more</li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="flex justify-between items-center">
+          <%= link_to "Cancel", admin_selection_markers_path, class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+          <%= form.submit "Update Selection Marker", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

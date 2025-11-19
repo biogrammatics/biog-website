@@ -1,77 +1,83 @@
-<div class="row justify-content-center">
-  <div class="col-md-8">
-    <div class="card">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h2>Promoter Details</h2>
-        <div>
-          <%= link_to "Edit", edit_admin_promoter_path(@promoter), class: "btn btn-primary btn-sm" %>
-          <%= link_to "Back to Promoters", admin_promoters_path, class: "btn btn-secondary btn-sm" %>
-        </div>
+<div class="max-w-4xl mx-auto">
+  <div class="bg-white shadow-sm rounded-lg">
+    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+      <h2 class="text-xl font-semibold text-gray-900">Promoter Details</h2>
+      <div class="flex space-x-2">
+        <%= link_to "Edit", edit_admin_promoter_path(@promoter), class: "inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+        <%= link_to "Back to Promoters", admin_promoters_path, class: "inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
       </div>
-      <div class="card-body">
-        <dl class="row">
-          <dt class="col-sm-3">Name</dt>
-          <dd class="col-sm-9"><%= @promoter.name %></dd>
+    </div>
+    <div class="px-6 py-6">
+      <dl class="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-3">
+        <div class="sm:col-span-1">
+          <dt class="text-sm font-medium text-gray-500">Name</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @promoter.name %></dd>
+        </div>
 
-          <dt class="col-sm-3">Full Name</dt>
-          <dd class="col-sm-9"><%= @promoter.full_name.presence || "-" %></dd>
+        <div class="sm:col-span-2">
+          <dt class="text-sm font-medium text-gray-500">Full Name</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @promoter.full_name.presence || "-" %></dd>
+        </div>
 
-          <dt class="col-sm-3">Type</dt>
-          <dd class="col-sm-9">
+        <div class="sm:col-span-1">
+          <dt class="text-sm font-medium text-gray-500">Type</dt>
+          <dd class="mt-1">
             <% if @promoter.inducible %>
-              <span class="badge bg-warning">Inducible</span>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Inducible</span>
             <% else %>
-              <span class="badge bg-info">Constitutive</span>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Constitutive</span>
             <% end %>
           </dd>
+        </div>
 
-          <dt class="col-sm-3">Strength</dt>
-          <dd class="col-sm-9"><%= @promoter.strength.presence || "-" %></dd>
-        </dl>
+        <div class="sm:col-span-2">
+          <dt class="text-sm font-medium text-gray-500">Strength</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @promoter.strength.presence || "-" %></dd>
+        </div>
+      </dl>
 
-        <hr class="my-4">
+      <div class="border-t border-gray-200 my-6"></div>
 
-        <h5>Vectors Using This Promoter</h5>
-        <% if @promoter.vectors.any? %>
-          <div class="table-responsive">
-            <table class="table table-sm">
-              <thead>
+      <h5 class="text-base font-medium text-gray-900 mb-4">Vectors Using This Promoter</h5>
+      <% if @promoter.vectors.any? %>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vector Name</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% @promoter.vectors.includes(:product_status).each do |vector| %>
                 <tr>
-                  <th>Vector Name</th>
-                  <th>Category</th>
-                  <th>Status</th>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 hover:text-blue-900"><%= link_to vector.name, admin_vector_path(vector) %></td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= vector.category %></td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <% if vector.product_status&.is_available? %>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>
+                    <% else %>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Inactive</span>
+                    <% end %>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                <% @promoter.vectors.includes(:product_status).each do |vector| %>
-                  <tr>
-                    <td><%= link_to vector.name, admin_vector_path(vector), class: "text-decoration-none" %></td>
-                    <td><%= vector.category %></td>
-                    <td>
-                      <% if vector.product_status&.is_available? %>
-                        <span class="badge bg-success">Active</span>
-                      <% else %>
-                        <span class="badge bg-secondary">Inactive</span>
-                      <% end %>
-                    </td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
-        <% else %>
-          <p class="text-muted">No vectors are currently using this promoter.</p>
-        <% end %>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <p class="text-gray-500">No vectors are currently using this promoter.</p>
+      <% end %>
 
-        <% unless @promoter.vectors.any? %>
-          <hr class="my-4">
-          <div class="d-flex justify-content-end">
-            <%= button_to "Delete Promoter", admin_promoter_path(@promoter), method: :delete, 
-                data: { turbo_confirm: "Are you sure you want to delete this promoter?" }, 
-                class: "btn btn-danger" %>
-          </div>
-        <% end %>
-      </div>
+      <% unless @promoter.vectors.any? %>
+        <div class="border-t border-gray-200 my-6"></div>
+        <div class="flex justify-end">
+          <%= button_to "Delete Promoter", admin_promoter_path(@promoter), method: :delete,
+              data: { turbo_confirm: "Are you sure you want to delete this promoter?" },
+              class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

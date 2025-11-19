@@ -1,24 +1,26 @@
-<div class="container mt-4">
+<div class="container-custom py-8">
   <!-- Breadcrumb -->
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><%= link_to "Home", root_path %></li>
-      <li class="breadcrumb-item"><%= link_to "Services", services_custom_projects_path %></li>
-      <li class="breadcrumb-item active" aria-current="page">Enhanced Protein Expression</li>
+  <nav class="mb-6">
+    <ol class="flex items-center gap-2 text-sm text-gray-600">
+      <li><%= link_to "Home", root_path, class: "hover:text-gray-900" %></li>
+      <li><i class="bi bi-chevron-right text-xs"></i></li>
+      <li><%= link_to "Services", services_custom_projects_path, class: "hover:text-gray-900" %></li>
+      <li><i class="bi bi-chevron-right text-xs"></i></li>
+      <li class="text-gray-900 font-medium">Enhanced Protein Expression</li>
     </ol>
   </nav>
 
-  <div class="row">
-    <div class="col-lg-8">
-      <h1 class="mb-4">
-        <i class="fas fa-dna me-2 text-primary"></i>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2">
+      <h1 class="flex items-center text-3xl font-bold mb-6">
+        <i class="bi bi-dna mr-3 text-blue-600"></i>
         Enhanced Strain Construction Service
       </h1>
 
-      <div class="alert alert-info">
-        <h5 class="alert-heading">Complete Strain Construction Workflow</h5>
-        <p class="mb-2">We'll construct custom Pichia strains with your genes integrated into the genome:</p>
-        <ul class="mb-0">
+      <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6">
+        <h5 class="text-lg font-semibold mb-3">Complete Strain Construction Workflow</h5>
+        <p class="mb-3">We'll construct custom Pichia strains with your genes integrated into the genome:</p>
+        <ul class="list-disc list-inside space-y-1">
           <li>Proprietary Pichia codon optimization algorithm</li>
           <li>DNA synthesis and vector cloning (methanol-inducible or constitutive)</li>
           <li>Transformation into your chosen strain (default: BG11)</li>
@@ -29,25 +31,25 @@
       </div>
 
       <% unless authenticated? %>
-        <div class="alert alert-warning">
-          <h5 class="alert-heading">Account Required</h5>
-          <p>To submit a protein expression request, you'll need to create an account or sign in. This helps us manage your project and keep you updated on progress.</p>
-          <hr>
-          <div class="d-flex gap-2">
-            <%= link_to "Sign In", new_session_path, class: "btn btn-primary" %>
-            <%= link_to "Create Account", new_session_path, class: "btn btn-outline-primary" %>
+        <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-6">
+          <h5 class="text-lg font-semibold mb-3">Account Required</h5>
+          <p class="mb-4">To submit a protein expression request, you'll need to create an account or sign in. This helps us manage your project and keep you updated on progress.</p>
+          <div class="border-t border-yellow-200 my-4"></div>
+          <div class="flex gap-3">
+            <%= link_to "Sign In", new_session_path, class: "inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" %>
+            <%= link_to "Create Account", new_session_path, class: "inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 font-medium rounded-lg hover:bg-blue-50 transition-colors" %>
           </div>
         </div>
-        <hr>
-        <h5>Preview Request Form</h5>
-        <p class="text-muted">You can review the request form below, then sign in to submit your request.</p>
+        <div class="border-t border-gray-200 my-6"></div>
+        <h5 class="text-lg font-semibold mb-2">Preview Request Form</h5>
+        <p class="text-gray-600 mb-6">You can review the request form below, then sign in to submit your request.</p>
       <% end %>
 
       <%= form_with model: @form, url: authenticated? ? enhanced_protein_expression_custom_projects_path : "#", local: true, multipart: true do |form| %>
         <% if @form.errors.any? %>
-          <div class="alert alert-danger">
-            <h4><%= pluralize(@form.errors.count, "error") %> prohibited this request from being saved:</h4>
-            <ul class="mb-0">
+          <div class="bg-red-50 border border-red-200 rounded-xl p-6 mb-6">
+            <h4 class="text-lg font-semibold mb-3"><%= pluralize(@form.errors.count, "error") %> prohibited this request from being saved:</h4>
+            <ul class="list-disc list-inside space-y-1">
               <% @form.errors.full_messages.each do |message| %>
                 <li><%= message %></li>
               <% end %>
@@ -56,70 +58,70 @@
         <% end %>
 
         <!-- Project Details -->
-        <div class="card mb-4">
-          <div class="card-header">
-            <h5 class="mb-0">Project Details</h5>
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden mb-6">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h5 class="text-lg font-semibold">Project Details</h5>
           </div>
-          <div class="card-body">
-            <div class="mb-3">
-              <%= form.label :project_name, "Project Name", class: "form-label" %>
-              <%= form.text_field :project_name, class: "form-control", placeholder: "e.g., Multi-protein expression project" %>
-              <small class="form-text text-muted">Give your project a descriptive name for tracking</small>
+          <div class="p-6">
+            <div class="mb-4">
+              <%= form.label :project_name, "Project Name", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= form.text_field :project_name, class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors", placeholder: "e.g., Multi-protein expression project" %>
+              <small class="text-sm text-gray-600">Give your project a descriptive name for tracking</small>
             </div>
 
-            <div class="mb-3">
-              <%= form.label :notes, "Project Notes (Optional)", class: "form-label" %>
-              <%= form.text_area :notes, rows: 3, class: "form-control",
+            <div class="mb-4">
+              <%= form.label :notes, "Project Notes (Optional)", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= form.text_area :notes, rows: 3, class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors",
                   placeholder: "Any special requirements, timeline constraints, or questions?" %>
             </div>
           </div>
         </div>
 
         <!-- Input Method Selection -->
-        <div class="card mb-4">
-          <div class="card-header">
-            <h5 class="mb-0">Protein Input Method</h5>
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden mb-6">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h5 class="text-lg font-semibold">Protein Input Method</h5>
           </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-check">
-                  <%= form.radio_button :input_method, "manual", class: "form-check-input", id: "input_manual", checked: true %>
-                  <%= form.label :input_method, "Manual Entry", class: "form-check-label", for: "input_manual" %>
-                  <small class="d-block text-muted">Enter protein sequences manually with modification tools</small>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <div class="flex items-start">
+                  <%= form.radio_button :input_method, "manual", class: "mt-1 mr-2", id: "input_manual", checked: true %>
+                  <%= form.label :input_method, "Manual Entry", class: "font-medium", for: "input_manual" %>
                 </div>
+                <small class="block text-gray-600 ml-6">Enter protein sequences manually with modification tools</small>
               </div>
-              <div class="col-md-6">
-                <div class="form-check">
-                  <%= form.radio_button :input_method, "fasta", class: "form-check-input", id: "input_fasta" %>
-                  <%= form.label :input_method, "FASTA File Upload", class: "form-check-label", for: "input_fasta" %>
-                  <small class="d-block text-muted">Upload a FASTA file with multiple sequences</small>
+              <div>
+                <div class="flex items-start">
+                  <%= form.radio_button :input_method, "fasta", class: "mt-1 mr-2", id: "input_fasta" %>
+                  <%= form.label :input_method, "FASTA File Upload", class: "font-medium", for: "input_fasta" %>
                 </div>
+                <small class="block text-gray-600 ml-6">Upload a FASTA file with multiple sequences</small>
               </div>
             </div>
           </div>
         </div>
 
         <!-- FASTA Upload Section -->
-        <div id="fasta-upload-section" class="card mb-4" style="display: none;">
-          <div class="card-header">
-            <h5 class="mb-0">
-              <i class="fas fa-upload me-2"></i>
+        <div id="fasta-upload-section" class="bg-white rounded-xl border border-gray-200 overflow-hidden mb-6" style="display: none;">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h5 class="text-lg font-semibold flex items-center">
+              <i class="bi bi-upload mr-2"></i>
               FASTA File Upload
             </h5>
           </div>
-          <div class="card-body">
-            <div class="mb-3">
-              <%= form.label :fasta_file, "Select FASTA File", class: "form-label" %>
-              <%= form.file_field :fasta_file, class: "form-control", accept: ".fasta,.fas,.txt,.fa" %>
-              <small class="form-text text-muted">
+          <div class="p-6">
+            <div class="mb-4">
+              <%= form.label :fasta_file, "Select FASTA File", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= form.file_field :fasta_file, class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors", accept: ".fasta,.fas,.txt,.fa" %>
+              <small class="text-sm text-gray-600">
                 Supported formats: .fasta, .fas, .fa, .txt
               </small>
             </div>
 
-            <div class="alert alert-info">
-              <h6 class="alert-heading">FASTA Format Requirements:</h6>
-              <ul class="mb-0">
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-4">
+              <h6 class="font-semibold mb-2">FASTA Format Requirements:</h6>
+              <ul class="list-disc list-inside space-y-1">
                 <li>Each protein must start with a header line beginning with ">"</li>
                 <li>Header format: >ProteinName [description] or >ProteinName description</li>
                 <li>Amino acid sequences using single-letter codes (ARNDCEQGHILKMFPSTWYV)</li>
@@ -127,25 +129,23 @@
               </ul>
             </div>
 
-            <div class="card bg-light">
-              <div class="card-body">
-                <h6>Example FASTA format:</h6>
-                <pre><code>>Insulin [Human insulin hormone]
+            <div class="bg-gray-50 rounded-xl border border-gray-200 p-6">
+              <h6 class="font-semibold mb-2">Example FASTA format:</h6>
+              <pre class="text-sm"><code>>Insulin [Human insulin hormone]
 MALWMRLLPLLALLALWGPDPAAAFVNQHLCGSHLVEALYLVCGERGFFYTPKTRREAEDLQVGQVELGGGPGAGSLQPLALEGSLQKRGIVEQCCTSICSLYQLENYCN*
 
 >Lysozyme [Chicken egg white lysozyme]
 MKALIVLGLVLLSVTVQGKVFERCELARTLKRLGMDGYRGISLANWMCLAKWESGYNTRATNYNAGDRSTDYGIFQINSRYWCNDGKTPGAVNACHLSCSALLQDNIADAVACAKRVVRDPQGIRAWVAWRNRCQNRDVRQYVQGCGV*</code></pre>
-              </div>
             </div>
           </div>
         </div>
 
         <!-- Manual Protein Entry Section -->
-        <div id="manual-entry-section" class="mb-4">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5>Protein Sequences</h5>
-            <button type="button" id="add-protein-btn" class="btn btn-outline-primary btn-sm">
-              <i class="fas fa-plus me-1"></i>Add Another Protein
+        <div id="manual-entry-section" class="mb-6">
+          <div class="flex justify-content-between items-center mb-4">
+            <h5 class="text-lg font-semibold">Protein Sequences</h5>
+            <button type="button" id="add-protein-btn" class="inline-flex items-center px-4 py-2 border-2 border-blue-600 text-blue-600 font-medium rounded-lg hover:bg-blue-50 transition-colors text-sm">
+              <i class="bi bi-plus-lg mr-2"></i>Add Another Protein
             </button>
           </div>
 
@@ -155,77 +155,89 @@ MKALIVLGLVLLSVTVQGKVFERCELARTLKRLGMDGYRGISLANWMCLAKWESGYNTRATNYNAGDRSTDYGIFQINSR
         </div>
 
         <!-- Optional Services -->
-        <div class="card mb-4">
-          <div class="card-header">
-            <h5 class="mb-0">Optional Add-On Services</h5>
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden mb-6">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h5 class="text-lg font-semibold">Optional Add-On Services</h5>
           </div>
-          <div class="card-body">
-            <div class="form-check mb-3">
-              <input type="checkbox" class="form-check-input" id="copy_number_determination"
-                     name="enhanced_protein_expression_form[copy_number_determination]" value="1">
-              <label class="form-check-label" for="copy_number_determination">
-                <strong>Copy Number Determination</strong> <span class="badge bg-info">+$350</span>
-                <br>
-                <small class="text-muted">qPCR assay development and analysis to determine gene copy number in your strains</small>
-              </label>
+          <div class="p-6">
+            <div class="mb-4">
+              <div class="flex items-start">
+                <input type="checkbox" class="mt-1 mr-3" id="copy_number_determination"
+                       name="enhanced_protein_expression_form[copy_number_determination]" value="1">
+                <label class="flex-1" for="copy_number_determination">
+                  <div class="flex items-center gap-2 mb-1">
+                    <strong>Copy Number Determination</strong>
+                    <span class="inline-flex items-center px-2 py-1 rounded-md bg-blue-100 text-blue-700 text-xs font-medium">+$350</span>
+                  </div>
+                  <small class="text-gray-600">qPCR assay development and analysis to determine gene copy number in your strains</small>
+                </label>
+              </div>
             </div>
 
-            <div class="form-check mb-3">
-              <input type="checkbox" class="form-check-input" id="glycerol_stocks"
-                     name="enhanced_protein_expression_form[glycerol_stocks]" value="1">
-              <label class="form-check-label" for="glycerol_stocks">
-                <strong>Glycerol Stock Generation & Shipping</strong> <span class="badge bg-info">+$200</span>
-                <br>
-                <small class="text-muted">Receive glycerol stocks instead of (or in addition to) plates. Includes dry ice shipping.</small>
-              </label>
+            <div class="mb-4">
+              <div class="flex items-start">
+                <input type="checkbox" class="mt-1 mr-3" id="glycerol_stocks"
+                       name="enhanced_protein_expression_form[glycerol_stocks]" value="1">
+                <label class="flex-1" for="glycerol_stocks">
+                  <div class="flex items-center gap-2 mb-1">
+                    <strong>Glycerol Stock Generation & Shipping</strong>
+                    <span class="inline-flex items-center px-2 py-1 rounded-md bg-blue-100 text-blue-700 text-xs font-medium">+$200</span>
+                  </div>
+                  <small class="text-gray-600">Receive glycerol stocks instead of (or in addition to) plates. Includes dry ice shipping.</small>
+                </label>
+              </div>
             </div>
 
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="strain_selection"
-                     name="enhanced_protein_expression_form[custom_strain_selection]" value="1">
-              <label class="form-check-label" for="strain_selection">
-                <strong>Custom Strain Selection</strong> <span class="badge bg-info">Contact for pricing</span>
-                <br>
-                <small class="text-muted">Use a specific Pichia strain other than BG11 (e.g., protease-deficient, glycosylation-modified)</small>
-              </label>
+            <div>
+              <div class="flex items-start">
+                <input type="checkbox" class="mt-1 mr-3" id="strain_selection"
+                       name="enhanced_protein_expression_form[custom_strain_selection]" value="1">
+                <label class="flex-1" for="strain_selection">
+                  <div class="flex items-center gap-2 mb-1">
+                    <strong>Custom Strain Selection</strong>
+                    <span class="inline-flex items-center px-2 py-1 rounded-md bg-blue-100 text-blue-700 text-xs font-medium">Contact for pricing</span>
+                  </div>
+                  <small class="text-gray-600">Use a specific Pichia strain other than BG11 (e.g., protease-deficient, glycosylation-modified)</small>
+                </label>
+              </div>
             </div>
 
-            <div class="mt-3" id="custom-strain-input" style="display: none;">
-              <label class="form-label">Specify desired strain:</label>
-              <input type="text" class="form-control" name="enhanced_protein_expression_form[custom_strain_name]"
+            <div class="mt-4" id="custom-strain-input" style="display: none;">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Specify desired strain:</label>
+              <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors" name="enhanced_protein_expression_form[custom_strain_name]"
                      placeholder="e.g., SMD1168, GS115, KM71H">
             </div>
           </div>
         </div>
 
         <!-- Vector Selection -->
-        <div class="card mb-4">
-          <div class="card-header">
-            <h5 class="mb-0">Expression Vector Selection</h5>
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden mb-6">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h5 class="text-lg font-semibold">Expression Vector Selection</h5>
           </div>
-          <div class="card-body">
-            <p class="text-muted">Choose between methanol-inducible (AOX1 promoter) or constitutive expression (GAP promoter).</p>
+          <div class="p-6">
+            <p class="text-gray-600 mb-4">Choose between methanol-inducible (AOX1 promoter) or constitutive expression (GAP promoter).</p>
 
             <% @expression_vectors.each do |vector| %>
-              <div class="form-check mb-3">
-                <%= form.radio_button :selected_vector_id, vector.id, class: "form-check-input", id: "vector_#{vector.id}" %>
-                <%= form.label :selected_vector_id, class: "form-check-label w-100", for: "vector_#{vector.id}" do %>
-                  <div class="card">
-                    <div class="card-body py-3">
-                      <div class="d-flex justify-content-between align-items-start">
-                        <div class="flex-grow-1">
-                          <h6 class="mb-1"><%= vector.display_name %></h6>
-                          <p class="text-muted mb-2"><%= vector.description %></p>
+              <div class="mb-4">
+                <div class="flex items-start">
+                  <%= form.radio_button :selected_vector_id, vector.id, class: "mt-1 mr-3", id: "vector_#{vector.id}" %>
+                  <%= form.label :selected_vector_id, class: "flex-1 cursor-pointer", for: "vector_#{vector.id}" do %>
+                    <div class="bg-white rounded-xl border border-gray-200 p-4 hover:border-bio-green transition-colors">
+                      <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                          <h6 class="font-semibold mb-1"><%= vector.display_name %></h6>
+                          <p class="text-gray-600 mb-3"><%= vector.description %></p>
 
-                          <div class="row">
-                            <div class="col-sm-6">
-                              <small>
+                          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                              <small class="text-sm text-gray-700">
                                 <strong>Backbone:</strong> <%= vector.backbone %><br>
                                 <strong>Cloning Sites:</strong> <%= vector.cloning_sites %>
                               </small>
                             </div>
-                            <div class="col-sm-6">
-                              <small>
+                            <div>
+                              <small class="text-sm text-gray-700">
                                 <% if vector.feature_list.any? %>
                                   <strong>Features:</strong> <%= vector.feature_list.join(', ') %>
                                 <% end %>
@@ -233,32 +245,34 @@ MKALIVLGLVLLSVTVQGKVFERCELARTLKRLGMDGYRGISLANWMCLAKWESGYNTRATNYNAGDRSTDYGIFQINSR
                             </div>
                           </div>
                         </div>
-                        <div class="text-end ms-3">
-                          <h6 class="text-primary mb-0"><%= vector.formatted_price %></h6>
-                          <small class="text-muted">per vector</small>
+                        <div class="text-right ml-4">
+                          <h6 class="text-blue-600 font-semibold"><%= vector.formatted_price %></h6>
+                          <small class="text-gray-600">per vector</small>
                         </div>
                       </div>
                     </div>
-                  </div>
-                <% end %>
+                  <% end %>
+                </div>
               </div>
             <% end %>
           </div>
         </div>
 
         <!-- Next Steps -->
-        <div class="alert alert-success">
-          <h5 class="alert-heading"><i class="fas fa-lightbulb me-2"></i>What You'll Receive</h5>
-          <p class="mb-3">Your complete strain construction package includes:</p>
-          <ul class="mb-3">
+        <div class="bg-green-50 border border-green-200 rounded-xl p-6 mb-6">
+          <h5 class="text-lg font-semibold flex items-center mb-3">
+            <i class="bi bi-lightbulb mr-2"></i>What You'll Receive
+          </h5>
+          <p class="mb-4">Your complete strain construction package includes:</p>
+          <ul class="list-disc list-inside space-y-2 mb-4">
             <li><strong>Plate with Single Colony Isolates:</strong> Verified transformants ready for culture</li>
             <li><strong>Drug Marker Verification:</strong> Confirmed genomic integration</li>
             <li><strong>Strain Documentation:</strong> Complete construct information and sequences</li>
             <li><strong>Optional:</strong> Copy number data and/or glycerol stocks if selected</li>
           </ul>
 
-          <h6>Timeline:</h6>
-          <ol class="mb-0">
+          <h6 class="font-semibold mb-2">Timeline:</h6>
+          <ol class="list-decimal list-inside space-y-1">
             <li>Sequence optimization & review (24-48 hours)</li>
             <li>DNA synthesis & cloning (5-7 days)</li>
             <li>Transformation & colony isolation (3-5 days)</li>
@@ -268,59 +282,59 @@ MKALIVLGLVLLSVTVQGKVFERCELARTLKRLGMDGYRGISLANWMCLAKWESGYNTRATNYNAGDRSTDYGIFQINSR
         </div>
 
         <!-- Submit Buttons -->
-        <div class="d-grid gap-2 d-md-block mb-5">
+        <div class="flex flex-col sm:flex-row gap-3 mb-8">
           <% if authenticated? %>
-            <%= form.submit "Submit Enhanced Protein Expression Request", class: "btn btn-success btn-lg" %>
-            <%= link_to "Cancel", custom_projects_path, class: "btn btn-outline-secondary btn-lg" %>
+            <%= form.submit "Submit Enhanced Protein Expression Request", class: "inline-flex items-center justify-center px-6 py-3 bg-bio-green text-white font-medium rounded-lg hover:bg-bio-green-dark transition-colors" %>
+            <%= link_to "Cancel", custom_projects_path, class: "inline-flex items-center justify-center px-6 py-3 border-2 border-gray-400 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" %>
           <% else %>
-            <%= link_to "Sign In to Submit Request", new_session_path, class: "btn btn-success btn-lg" %>
-            <%= link_to "Back to Services", services_custom_projects_path, class: "btn btn-outline-secondary btn-lg" %>
+            <%= link_to "Sign In to Submit Request", new_session_path, class: "inline-flex items-center justify-center px-6 py-3 bg-bio-green text-white font-medium rounded-lg hover:bg-bio-green-dark transition-colors" %>
+            <%= link_to "Back to Services", services_custom_projects_path, class: "inline-flex items-center justify-center px-6 py-3 border-2 border-gray-400 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" %>
           <% end %>
         </div>
       <% end %>
     </div>
 
     <!-- Sidebar -->
-    <div class="col-lg-4">
-      <div class="card position-sticky" style="top: 20px;">
-        <div class="card-header">
-          <h6 class="mb-0">Enhanced Service Features</h6>
+    <div class="lg:col-span-1">
+      <div class="bg-white rounded-xl border border-gray-200 overflow-hidden sticky top-5">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h6 class="font-semibold">Enhanced Service Features</h6>
         </div>
-        <div class="card-body">
-          <div class="mb-3">
-            <h6 class="text-primary">✓ Multi-Protein Support</h6>
-            <small class="text-muted">Submit multiple proteins in a single request for batch processing</small>
+        <div class="p-6">
+          <div class="mb-4">
+            <h6 class="text-blue-600 font-semibold mb-1">✓ Multi-Protein Support</h6>
+            <small class="text-gray-600">Submit multiple proteins in a single request for batch processing</small>
           </div>
 
-          <div class="mb-3">
-            <h6 class="text-primary">✓ FASTA File Upload</h6>
-            <small class="text-muted">Upload sequences directly from bioinformatics tools</small>
+          <div class="mb-4">
+            <h6 class="text-blue-600 font-semibold mb-1">✓ FASTA File Upload</h6>
+            <small class="text-gray-600">Upload sequences directly from bioinformatics tools</small>
           </div>
 
-          <div class="mb-3">
-            <h6 class="text-primary">✓ Secretion Signals</h6>
-            <small class="text-muted">Choose from optimized secretion signals for protein export</small>
+          <div class="mb-4">
+            <h6 class="text-blue-600 font-semibold mb-1">✓ Secretion Signals</h6>
+            <small class="text-gray-600">Choose from optimized secretion signals for protein export</small>
           </div>
 
-          <div class="mb-3">
-            <h6 class="text-primary">✓ Purification Tags</h6>
-            <small class="text-muted">Add His-tags, FLAG, GST, and other purification tags</small>
+          <div class="mb-4">
+            <h6 class="text-blue-600 font-semibold mb-1">✓ Purification Tags</h6>
+            <small class="text-gray-600">Add His-tags, FLAG, GST, and other purification tags</small>
           </div>
 
-          <hr>
+          <div class="border-t border-gray-200 my-4"></div>
 
-          <div class="text-center">
-            <h6 class="text-success">Starting at $750</h6>
-            <small class="text-muted">Per protein + vector costs</small>
+          <div class="text-center mb-4">
+            <h6 class="text-bio-green font-semibold">Starting at $750</h6>
+            <small class="text-gray-600">Per protein + vector costs</small>
           </div>
 
-          <hr>
+          <div class="border-t border-gray-200 my-4"></div>
 
           <div>
-            <h6>Need Help?</h6>
-            <small class="text-muted">
+            <h6 class="font-semibold mb-2">Need Help?</h6>
+            <small class="text-gray-600">
               Questions about sequence requirements or modifications?
-              <%= link_to "Contact our team", "#", class: "text-primary" %> for guidance.
+              <%= link_to "Contact our team", "#", class: "text-blue-600 hover:text-blue-700" %> for guidance.
             </small>
           </div>
         </div>
@@ -331,14 +345,14 @@ MKALIVLGLVLLSVTVQGKVFERCELARTLKRLGMDGYRGISLANWMCLAKWESGYNTRATNYNAGDRSTDYGIFQINSR
 
 <!-- Protein Form Template -->
 <template id="protein-form-template">
-  <div class="protein-form card mb-3">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <h6 class="mb-0">Protein <span class="protein-number">1</span></h6>
-      <button type="button" class="btn btn-outline-danger btn-sm remove-protein-btn">
-        <i class="fas fa-times"></i>
+  <div class="protein-form bg-white rounded-xl border border-gray-200 overflow-hidden mb-4">
+    <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+      <h6 class="font-semibold">Protein <span class="protein-number">1</span></h6>
+      <button type="button" class="inline-flex items-center px-3 py-1 border-2 border-red-600 text-red-600 font-medium rounded-lg hover:bg-red-50 transition-colors text-sm remove-protein-btn">
+        <i class="bi bi-x-lg"></i>
       </button>
     </div>
-    <div class="card-body">
+    <div class="p-6">
       <!-- Protein details will be inserted here -->
     </div>
   </div>
@@ -442,7 +456,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function createProteinForm(number) {
     const div = document.createElement('div');
-    div.className = 'protein-form card mb-3';
+    div.className = 'protein-form bg-white rounded-xl border border-gray-200 overflow-hidden mb-4';
 
     // Build secretion signal options
     let secretionSignalOptions = '<option value="">None</option>';
@@ -463,60 +477,60 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     div.innerHTML =
-      '<div class="card-header d-flex justify-content-between align-items-center">' +
-        '<h6 class="mb-0">Protein ' + number + '</h6>' +
-        '<button type="button" class="btn btn-outline-danger btn-sm remove-protein-btn">' +
-          '<i class="fas fa-times"></i>' +
+      '<div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">' +
+        '<h6 class="font-semibold">Protein ' + number + '</h6>' +
+        '<button type="button" class="inline-flex items-center px-3 py-1 border-2 border-red-600 text-red-600 font-medium rounded-lg hover:bg-red-50 transition-colors text-sm remove-protein-btn">' +
+          '<i class="bi bi-x-lg"></i>' +
         '</button>' +
       '</div>' +
-      '<div class="card-body">' +
-        '<div class="row">' +
-          '<div class="col-md-6">' +
-            '<div class="mb-3">' +
-              '<label class="form-label">Protein Name</label>' +
+      '<div class="p-6">' +
+        '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">' +
+          '<div>' +
+            '<div class="mb-4">' +
+              '<label class="block text-sm font-medium text-gray-700 mb-2">Protein Name</label>' +
               '<input type="text" name="enhanced_protein_expression_form[proteins_attributes][' + (number-1) + '][name]"' +
-                     ' class="form-control" placeholder="e.g., Human Insulin">' +
+                     ' class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors" placeholder="e.g., Human Insulin">' +
             '</div>' +
           '</div>' +
-          '<div class="col-md-6">' +
-            '<div class="mb-3">' +
-              '<label class="form-label">Description (Optional)</label>' +
+          '<div>' +
+            '<div class="mb-4">' +
+              '<label class="block text-sm font-medium text-gray-700 mb-2">Description (Optional)</label>' +
               '<input type="text" name="enhanced_protein_expression_form[proteins_attributes][' + (number-1) + '][description]"' +
-                     ' class="form-control" placeholder="Brief description">' +
+                     ' class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors" placeholder="Brief description">' +
             '</div>' +
           '</div>' +
         '</div>' +
-        '<div class="mb-3">' +
-          '<label class="form-label">Amino Acid Sequence</label>' +
+        '<div class="mb-4">' +
+          '<label class="block text-sm font-medium text-gray-700 mb-2">Amino Acid Sequence</label>' +
           '<textarea name="enhanced_protein_expression_form[proteins_attributes][' + (number-1) + '][amino_acid_sequence]"' +
-                    ' rows="4" class="form-control font-monospace sequence-input"' +
+                    ' rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors font-mono sequence-input"' +
                     ' placeholder="MATLYGDSGLWQNILDQLSSLLNQAEGLQAAGGSALQY*"></textarea>' +
-          '<small class="form-text text-muted">Single-letter amino acid codes (A-Z, *)</small>' +
+          '<small class="text-sm text-gray-600">Single-letter amino acid codes (A-Z, *)</small>' +
         '</div>' +
-        '<div class="row">' +
-          '<div class="col-md-4">' +
-            '<div class="mb-3">' +
-              '<label class="form-label">Secretion Signal</label>' +
+        '<div class="grid grid-cols-1 md:grid-cols-3 gap-4">' +
+          '<div>' +
+            '<div class="mb-4">' +
+              '<label class="block text-sm font-medium text-gray-700 mb-2">Secretion Signal</label>' +
               '<select name="enhanced_protein_expression_form[proteins_attributes][' + (number-1) + '][secretion_signal]"' +
-                      ' class="form-select">' +
+                      ' class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors">' +
                 secretionSignalOptions +
               '</select>' +
             '</div>' +
           '</div>' +
-          '<div class="col-md-4">' +
-            '<div class="mb-3">' +
-              '<label class="form-label">N-Terminal Tag</label>' +
+          '<div>' +
+            '<div class="mb-4">' +
+              '<label class="block text-sm font-medium text-gray-700 mb-2">N-Terminal Tag</label>' +
               '<select name="enhanced_protein_expression_form[proteins_attributes][' + (number-1) + '][n_terminal_tag]"' +
-                      ' class="form-select">' +
+                      ' class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors">' +
                 nTerminalOptions +
               '</select>' +
             '</div>' +
           '</div>' +
-          '<div class="col-md-4">' +
-            '<div class="mb-3">' +
-              '<label class="form-label">C-Terminal Tag</label>' +
+          '<div>' +
+            '<div class="mb-4">' +
+              '<label class="block text-sm font-medium text-gray-700 mb-2">C-Terminal Tag</label>' +
               '<select name="enhanced_protein_expression_form[proteins_attributes][' + (number-1) + '][c_terminal_tag]"' +
-                      ' class="form-select">' +
+                      ' class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors">' +
                 cTerminalOptions +
               '</select>' +
             '</div>' +

@@ -1,269 +1,296 @@
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-12">
-      <!-- Header Section -->
-      <div class="text-center mb-5">
-        <h1 class="display-5 fw-bold text-primary mb-3">
-          <i class="fas fa-cogs me-3"></i>
-          Choose Your Service
-        </h1>
-        <p class="lead text-muted">
-          Select the custom service that best fits your protein expression needs
+<!-- Hero Section -->
+<div class="bg-gradient-to-br from-gray-50 to-white py-12 border-b border-gray-200">
+  <div class="container-custom text-center">
+    <h1 class="text-4xl font-bold text-charcoal mb-3">
+      <i class="bi bi-gear-wide-connected text-bio-green"></i>
+      Choose Your Service
+    </h1>
+    <p class="text-lg text-gray-600">
+      Select the custom service that best fits your protein expression needs
+    </p>
+  </div>
+</div>
+
+<!-- Service Cards -->
+<div class="container-custom py-12">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+    <!-- Enhanced Strain Construction Service -->
+    <div class="bg-white rounded-xl border-2 border-bio-green overflow-hidden hover:shadow-xl transition-all flex flex-col">
+      <div class="bg-bio-green text-white p-6">
+        <div class="flex items-start gap-3">
+          <i class="bi bi-star-fill text-3xl flex-shrink-0"></i>
+          <div>
+            <h3 class="text-xl font-bold mb-1">Enhanced Strain Construction</h3>
+            <p class="text-sm opacity-90">NEW: FASTA upload + modification tools</p>
+          </div>
+        </div>
+      </div>
+      <div class="p-6 flex-grow flex flex-col">
+        <h4 class="text-bio-green font-semibold mb-3">Perfect for:</h4>
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-start gap-2 text-gray-700">
+            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <span>Multiple gene constructs in one request</span>
+          </li>
+          <li class="flex items-start gap-2 text-gray-700">
+            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <span>FASTA file batch upload</span>
+          </li>
+          <li class="flex items-start gap-2 text-gray-700">
+            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <span>Secretion signal addition</span>
+          </li>
+          <li class="flex items-start gap-2 text-gray-700">
+            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <span>Purification tag insertion</span>
+          </li>
+        </ul>
+
+        <div class="bg-gray-50 rounded-lg p-4 mb-4">
+          <h5 class="font-semibold text-charcoal mb-3">Service Includes:</h5>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="space-y-1">
+              <p class="text-sm text-gray-700">✓ Codon optimization</p>
+              <p class="text-sm text-gray-700">✓ DNA synthesis</p>
+              <p class="text-sm text-gray-700">✓ Vector cloning</p>
+            </div>
+            <div class="space-y-1">
+              <p class="text-sm text-gray-700">✓ Strain transformation</p>
+              <p class="text-sm text-gray-700">✓ Colony isolation</p>
+              <p class="text-sm text-gray-700">✓ Drug marker verification</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-gray-50 rounded-lg p-4 mb-6">
+          <h5 class="font-semibold text-charcoal mb-2">Optional Add-ons:</h5>
+          <p class="text-sm text-gray-700">• Copy number determination (qPCR)</p>
+          <p class="text-sm text-gray-700">• Glycerol stock generation & shipping</p>
+        </div>
+
+        <div class="text-center mb-6 mt-auto">
+          <span class="inline-block px-4 py-2 bg-bio-green text-white text-lg font-bold rounded-lg mb-2">Starting at $750</span>
+          <p class="text-sm text-gray-500">Per construct + vector costs</p>
+        </div>
+      </div>
+      <div class="p-6 pt-0">
+        <%= link_to enhanced_protein_expression_custom_projects_path,
+            class: "inline-flex items-center justify-center gap-2 px-6 py-3 bg-bio-green text-white font-semibold rounded-lg hover:bg-bio-green-dark transition-colors shadow-md hover:shadow-lg w-full" do %>
+          Start Enhanced Request
+        <% end %>
+        <p class="text-center text-sm text-gray-500 mt-3">
+          <i class="bi bi-clock"></i> Delivers: Plate with single colony isolates
         </p>
       </div>
+    </div>
 
-      <!-- Service Cards -->
-      <div class="row g-4 mb-5">
-        <!-- Enhanced Strain Construction Service -->
-        <div class="col-lg-4">
-          <div class="card h-100 border-success shadow-sm">
-            <div class="card-header bg-success text-white">
-              <div class="d-flex align-items-center">
-                <i class="fas fa-star fa-2x me-3"></i>
-                <div>
-                  <h4 class="mb-0">Enhanced Strain Construction</h4>
-                  <small class="opacity-75">NEW: FASTA upload + modification tools</small>
-                </div>
-              </div>
-            </div>
-            <div class="card-body">
-              <h6 class="text-success mb-3">Perfect for:</h6>
-              <ul class="list-unstyled mb-4">
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Multiple gene constructs in one request</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>FASTA file batch upload</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Secretion signal addition</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Purification tag insertion</li>
-              </ul>
-
-              <div class="bg-light p-3 rounded mb-4">
-                <h6 class="fw-bold mb-2">Service Includes:</h6>
-                <div class="row">
-                  <div class="col-6">
-                    <small class="d-block">✓ Codon optimization</small>
-                    <small class="d-block">✓ DNA synthesis</small>
-                    <small class="d-block">✓ Vector cloning</small>
-                  </div>
-                  <div class="col-6">
-                    <small class="d-block">✓ Strain transformation</small>
-                    <small class="d-block">✓ Colony isolation</small>
-                    <small class="d-block">✓ Drug marker verification</small>
-                  </div>
-                </div>
-              </div>
-
-              <div class="bg-light p-3 rounded mb-3">
-                <h6 class="fw-bold mb-2">Optional Add-ons:</h6>
-                <small class="d-block">• Copy number determination (qPCR)</small>
-                <small class="d-block">• Glycerol stock generation & shipping</small>
-              </div>
-
-              <div class="text-center mb-3">
-                <span class="badge bg-success fs-6 px-3 py-2">Starting at $750</span>
-                <br>
-                <small class="text-muted">Per construct + vector costs</small>
-              </div>
-            </div>
-            <div class="card-footer bg-transparent">
-              <%= link_to "Start Enhanced Request",
-                  enhanced_protein_expression_custom_projects_path,
-                  class: "btn btn-success btn-lg w-100" %>
-              <small class="d-block text-center text-muted mt-2">
-                <i class="fas fa-clock me-1"></i>Delivers: Plate with single colony isolates
-              </small>
-            </div>
-          </div>
-        </div>
-
-        <!-- Standard Strain Construction Service -->
-        <div class="col-lg-4">
-          <div class="card h-100 border-primary shadow-sm">
-            <div class="card-header bg-primary text-white">
-              <div class="d-flex align-items-center">
-                <i class="fas fa-dna fa-2x me-3"></i>
-                <div>
-                  <h4 class="mb-0">Standard Strain Construction</h4>
-                  <small class="opacity-75">Single gene, manual entry</small>
-                </div>
-              </div>
-            </div>
-            <div class="card-body">
-              <h6 class="text-primary mb-3">Perfect for:</h6>
-              <ul class="list-unstyled mb-4">
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Single gene integration projects</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Simple protein sequence to strain conversion</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Standard workflow projects</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Default BG11 strain transformation</li>
-              </ul>
-
-              <div class="bg-light p-3 rounded mb-4">
-                <h6 class="fw-bold mb-2">Service Includes:</h6>
-                <div class="row">
-                  <div class="col-6">
-                    <small class="d-block">✓ Sequence analysis</small>
-                    <small class="d-block">✓ Codon optimization</small>
-                    <small class="d-block">✓ DNA synthesis</small>
-                  </div>
-                  <div class="col-6">
-                    <small class="d-block">✓ Vector cloning</small>
-                    <small class="d-block">✓ Strain transformation</small>
-                    <small class="d-block">✓ Quality verification</small>
-                  </div>
-                </div>
-              </div>
-
-              <div class="text-center mb-3">
-                <span class="badge bg-success fs-6 px-3 py-2">Starting at $750</span>
-                <br>
-                <small class="text-muted">Final pricing depends on complexity</small>
-              </div>
-            </div>
-            <div class="card-footer bg-transparent">
-              <%= link_to "Start Standard Request",
-                  protein_expression_custom_projects_path,
-                  class: "btn btn-primary btn-lg w-100" %>
-              <small class="d-block text-center text-muted mt-2">
-                <i class="fas fa-clock me-1"></i>Typical turnaround: 2-3 weeks
-              </small>
-            </div>
-          </div>
-        </div>
-
-        <!-- General Custom Projects -->
-        <div class="col-lg-6">
-          <div class="card h-100 border-info shadow-sm">
-            <div class="card-header bg-info text-white">
-              <div class="d-flex align-items-center">
-                <i class="fas fa-project-diagram fa-2x me-3"></i>
-                <div>
-                  <h4 class="mb-0">Custom Project</h4>
-                  <small class="opacity-75">Tailored solutions for complex needs</small>
-                </div>
-              </div>
-            </div>
-            <div class="card-body">
-              <h6 class="text-info mb-3">Perfect for:</h6>
-              <ul class="list-unstyled mb-4">
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Complex multi-step projects</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Expression optimization studies</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Custom strain development</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Consultation and troubleshooting</li>
-              </ul>
-
-              <div class="bg-light p-3 rounded mb-4">
-                <h6 class="fw-bold mb-2">Service Options:</h6>
-                <div class="row">
-                  <div class="col-12">
-                    <small class="d-block">• Strain Generation Only</small>
-                    <small class="d-block">• Strain + Expression Testing</small>
-                    <small class="d-block">• Full Service (Design to Delivery)</small>
-                    <small class="d-block">• Expert Consultation</small>
-                  </div>
-                </div>
-              </div>
-
-              <div class="text-center mb-3">
-                <span class="badge bg-info fs-6 px-3 py-2">Custom Pricing</span>
-                <br>
-                <small class="text-muted">Quote provided within 24-48 hours</small>
-              </div>
-            </div>
-            <div class="card-footer bg-transparent">
-              <%= link_to "Start Custom Project",
-                  new_custom_project_path,
-                  class: "btn btn-info btn-lg w-100" %>
-              <small class="d-block text-center text-muted mt-2">
-                <i class="fas fa-clock me-1"></i>Timeline varies by project scope
-              </small>
-            </div>
+    <!-- Standard Strain Construction Service -->
+    <div class="bg-white rounded-xl border-2 border-blue-600 overflow-hidden hover:shadow-xl transition-all flex flex-col">
+      <div class="bg-blue-600 text-white p-6">
+        <div class="flex items-start gap-3">
+          <i class="bi bi-diagram-3-fill text-3xl flex-shrink-0"></i>
+          <div>
+            <h3 class="text-xl font-bold mb-1">Standard Strain Construction</h3>
+            <p class="text-sm opacity-90">Single gene, manual entry</p>
           </div>
         </div>
       </div>
+      <div class="p-6 flex-grow flex flex-col">
+        <h4 class="text-blue-600 font-semibold mb-3">Perfect for:</h4>
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-start gap-2 text-gray-700">
+            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <span>Single gene integration projects</span>
+          </li>
+          <li class="flex items-start gap-2 text-gray-700">
+            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <span>Simple protein sequence to strain conversion</span>
+          </li>
+          <li class="flex items-start gap-2 text-gray-700">
+            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <span>Standard workflow projects</span>
+          </li>
+          <li class="flex items-start gap-2 text-gray-700">
+            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <span>Default BG11 strain transformation</span>
+          </li>
+        </ul>
 
-      <!-- Comparison Section -->
-      <div class="row justify-content-center mb-5">
-        <div class="col-lg-10">
-          <div class="card">
-            <div class="card-header text-center">
-              <h5 class="mb-0">Service Comparison</h5>
+        <div class="bg-gray-50 rounded-lg p-4 mb-6">
+          <h5 class="font-semibold text-charcoal mb-3">Service Includes:</h5>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="space-y-1">
+              <p class="text-sm text-gray-700">✓ Sequence analysis</p>
+              <p class="text-sm text-gray-700">✓ Codon optimization</p>
+              <p class="text-sm text-gray-700">✓ DNA synthesis</p>
             </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th class="text-center">Protein Expression</th>
-                      <th class="text-center">Custom Project</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><strong>Best for</strong></td>
-                      <td class="text-center">Known amino acid sequences</td>
-                      <td class="text-center">Complex or undefined requirements</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Input required</strong></td>
-                      <td class="text-center">Amino acid sequence</td>
-                      <td class="text-center">Project description</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Pricing</strong></td>
-                      <td class="text-center">Fixed starting price</td>
-                      <td class="text-center">Custom quote</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Timeline</strong></td>
-                      <td class="text-center">2-3 weeks standard</td>
-                      <td class="text-center">Varies by scope</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Process</strong></td>
-                      <td class="text-center">Streamlined workflow</td>
-                      <td class="text-center">Consultation-based</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            <div class="space-y-1">
+              <p class="text-sm text-gray-700">✓ Vector cloning</p>
+              <p class="text-sm text-gray-700">✓ Strain transformation</p>
+              <p class="text-sm text-gray-700">✓ Quality verification</p>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Help Section -->
-      <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <div class="alert alert-light border">
-            <div class="text-center">
-              <h5 class="alert-heading">
-                <i class="fas fa-question-circle me-2"></i>
-                Not sure which service you need?
-              </h5>
-              <p class="mb-3">
-                Our team is here to help you choose the right solution for your protein expression needs.
-              </p>
-              <div class="d-flex justify-content-center gap-3">
-                <a href="mailto:info@biogrammatics.com" class="btn btn-outline-primary">
-                  <i class="fas fa-envelope me-1"></i>
-                  Email Us
-                </a>
-                <a href="tel:+1234567890" class="btn btn-outline-primary">
-                  <i class="fas fa-phone me-1"></i>
-                  Call Us
-                </a>
-              </div>
-            </div>
-          </div>
+        <div class="text-center mb-6 mt-auto">
+          <span class="inline-block px-4 py-2 bg-bio-green text-white text-lg font-bold rounded-lg mb-2">Starting at $750</span>
+          <p class="text-sm text-gray-500">Final pricing depends on complexity</p>
         </div>
       </div>
-
-      <!-- Navigation -->
-      <div class="text-center mt-4 mb-5">
-        <%= link_to "← Back to Home", root_path, class: "btn btn-outline-secondary" %>
-        <% if authenticated? %>
-          <%= link_to "View My Projects", custom_projects_path, class: "btn btn-outline-secondary ms-2" %>
+      <div class="p-6 pt-0">
+        <%= link_to protein_expression_custom_projects_path,
+            class: "inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg w-full" do %>
+          Start Standard Request
         <% end %>
+        <p class="text-center text-sm text-gray-500 mt-3">
+          <i class="bi bi-clock"></i> Typical turnaround: 2-3 weeks
+        </p>
       </div>
     </div>
+
+    <!-- General Custom Projects -->
+    <div class="bg-white rounded-xl border-2 border-cyan-600 overflow-hidden hover:shadow-xl transition-all flex flex-col">
+      <div class="bg-cyan-600 text-white p-6">
+        <div class="flex items-start gap-3">
+          <i class="bi bi-diagram-2-fill text-3xl flex-shrink-0"></i>
+          <div>
+            <h3 class="text-xl font-bold mb-1">Custom Project</h3>
+            <p class="text-sm opacity-90">Tailored solutions for complex needs</p>
+          </div>
+        </div>
+      </div>
+      <div class="p-6 flex-grow flex flex-col">
+        <h4 class="text-cyan-600 font-semibold mb-3">Perfect for:</h4>
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-start gap-2 text-gray-700">
+            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <span>Complex multi-step projects</span>
+          </li>
+          <li class="flex items-start gap-2 text-gray-700">
+            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <span>Expression optimization studies</span>
+          </li>
+          <li class="flex items-start gap-2 text-gray-700">
+            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <span>Custom strain development</span>
+          </li>
+          <li class="flex items-start gap-2 text-gray-700">
+            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <span>Consultation and troubleshooting</span>
+          </li>
+        </ul>
+
+        <div class="bg-gray-50 rounded-lg p-4 mb-6">
+          <h5 class="font-semibold text-charcoal mb-3">Service Options:</h5>
+          <div class="space-y-1">
+            <p class="text-sm text-gray-700">• Strain Generation Only</p>
+            <p class="text-sm text-gray-700">• Strain + Expression Testing</p>
+            <p class="text-sm text-gray-700">• Full Service (Design to Delivery)</p>
+            <p class="text-sm text-gray-700">• Expert Consultation</p>
+          </div>
+        </div>
+
+        <div class="text-center mb-6 mt-auto">
+          <span class="inline-block px-4 py-2 bg-cyan-600 text-white text-lg font-bold rounded-lg mb-2">Custom Pricing</span>
+          <p class="text-sm text-gray-500">Quote provided within 24-48 hours</p>
+        </div>
+      </div>
+      <div class="p-6 pt-0">
+        <%= link_to new_custom_project_path,
+            class: "inline-flex items-center justify-center gap-2 px-6 py-3 bg-cyan-600 text-white font-semibold rounded-lg hover:bg-cyan-700 transition-colors shadow-md hover:shadow-lg w-full" do %>
+          Start Custom Project
+        <% end %>
+        <p class="text-center text-sm text-gray-500 mt-3">
+          <i class="bi bi-clock"></i> Timeline varies by project scope
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison Section -->
+  <div class="max-w-5xl mx-auto mb-12">
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 text-center">
+        <h3 class="text-xl font-semibold text-charcoal">Service Comparison</h3>
+      </div>
+      <div class="p-6">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-gray-200">
+                <th class="text-left py-3 px-4 font-semibold text-charcoal"></th>
+                <th class="text-center py-3 px-4 font-semibold text-charcoal">Protein Expression</th>
+                <th class="text-center py-3 px-4 font-semibold text-charcoal">Custom Project</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-100 hover:bg-gray-50">
+                <td class="py-3 px-4 font-medium text-gray-900">Best for</td>
+                <td class="py-3 px-4 text-center text-gray-700">Known amino acid sequences</td>
+                <td class="py-3 px-4 text-center text-gray-700">Complex or undefined requirements</td>
+              </tr>
+              <tr class="border-b border-gray-100 hover:bg-gray-50">
+                <td class="py-3 px-4 font-medium text-gray-900">Input required</td>
+                <td class="py-3 px-4 text-center text-gray-700">Amino acid sequence</td>
+                <td class="py-3 px-4 text-center text-gray-700">Project description</td>
+              </tr>
+              <tr class="border-b border-gray-100 hover:bg-gray-50">
+                <td class="py-3 px-4 font-medium text-gray-900">Pricing</td>
+                <td class="py-3 px-4 text-center text-gray-700">Fixed starting price</td>
+                <td class="py-3 px-4 text-center text-gray-700">Custom quote</td>
+              </tr>
+              <tr class="border-b border-gray-100 hover:bg-gray-50">
+                <td class="py-3 px-4 font-medium text-gray-900">Timeline</td>
+                <td class="py-3 px-4 text-center text-gray-700">2-3 weeks standard</td>
+                <td class="py-3 px-4 text-center text-gray-700">Varies by scope</td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="py-3 px-4 font-medium text-gray-900">Process</td>
+                <td class="py-3 px-4 text-center text-gray-700">Streamlined workflow</td>
+                <td class="py-3 px-4 text-center text-gray-700">Consultation-based</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help Section -->
+  <div class="max-w-4xl mx-auto mb-12">
+    <div class="bg-blue-50 border border-blue-200 rounded-xl p-8">
+      <div class="text-center">
+        <h3 class="text-xl font-semibold text-charcoal mb-3 flex items-center justify-center gap-2">
+          <i class="bi bi-question-circle text-blue-600"></i>
+          Not sure which service you need?
+        </h3>
+        <p class="text-gray-700 mb-6">
+          Our team is here to help you choose the right solution for your protein expression needs.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-3">
+          <a href="mailto:info@biogrammatics.com" class="inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-blue-600 text-blue-600 font-medium rounded-lg hover:bg-blue-600 hover:text-white transition-colors">
+            <i class="bi bi-envelope"></i>
+            Email Us
+          </a>
+          <a href="tel:+1234567890" class="inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-blue-600 text-blue-600 font-medium rounded-lg hover:bg-blue-600 hover:text-white transition-colors">
+            <i class="bi bi-telephone"></i>
+            Call Us
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="text-center">
+    <%= link_to root_path, class: "inline-flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" do %>
+      <i class="bi bi-arrow-left"></i>
+      Back to Home
+    <% end %>
+    <% if authenticated? %>
+      <%= link_to custom_projects_path, class: "inline-flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors ml-3" do %>
+        View My Projects
+      <% end %>
+    <% end %>
   </div>
 </div>

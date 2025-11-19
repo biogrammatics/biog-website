@@ -1,59 +1,59 @@
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <h1>User Management</h1>
-  <%= link_to "New User", new_admin_user_path, class: "btn btn-primary" %>
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold text-gray-900">User Management</h1>
+  <%= link_to "New User", new_admin_user_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
 </div>
 
-<div class="card">
-  <div class="card-body">
+<div class="bg-white shadow-sm rounded-lg">
+  <div class="p-6">
     <% if @users.any? %>
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
             <tr>
-              <th>ID</th>
-              <th>Email</th>
-              <th>Name</th>
-              <th>Role</th>
-              <th>Twist Username</th>
-              <th>Last Login</th>
-              <th>Created</th>
-              <th>Actions</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Twist Username</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Login</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="bg-white divide-y divide-gray-200">
             <% @users.each do |user| %>
-              <tr>
-                <td><%= user.id %></td>
-                <td><%= user.email_address %></td>
-                <td><%= user.full_name.presence || "-" %></td>
-                <td>
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.id %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.email_address %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.full_name.presence || "-" %></td>
+                <td class="px-6 py-4 whitespace-nowrap">
                   <% if user.admin? %>
-                    <span class="badge bg-danger">Admin</span>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Admin</span>
                   <% else %>
-                    <span class="badge bg-success">Customer</span>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Customer</span>
                   <% end %>
                 </td>
-                <td><%= user.twist_username.presence || "-" %></td>
-                <td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.twist_username.presence || "-" %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">
                   <% if user.last_login_at %>
-                    <span title="<%= user.last_login_at.strftime("%B %d, %Y at %I:%M %p") %>">
+                    <span title="<%= user.last_login_at.strftime("%B %d, %Y at %I:%M %p") %>" class="text-gray-900">
                       <%= time_ago_in_words(user.last_login_at) %> ago
                     </span>
                     <br>
-                    <small class="text-muted"><%= user.login_count %> logins</small>
+                    <span class="text-gray-500"><%= user.login_count %> logins</span>
                   <% else %>
-                    <span class="text-muted">Never</span>
+                    <span class="text-gray-500">Never</span>
                   <% end %>
                 </td>
-                <td><%= user.created_at.strftime("%b %d, %Y") %></td>
-                <td>
-                  <div class="btn-group btn-group-sm" role="group">
-                    <%= link_to "View", admin_user_path(user), class: "btn btn-outline-primary" %>
-                    <%= link_to "Edit", edit_admin_user_path(user), class: "btn btn-outline-secondary" %>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.created_at.strftime("%b %d, %Y") %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <div class="flex space-x-2">
+                    <%= link_to "View", admin_user_path(user), class: "text-blue-600 hover:text-blue-900" %>
+                    <%= link_to "Edit", edit_admin_user_path(user), class: "text-gray-600 hover:text-gray-900" %>
                     <% if user != Current.user %>
-                      <%= button_to "Delete", admin_user_path(user), method: :delete, 
-                          data: { turbo_confirm: "Are you sure you want to delete this user?" }, 
-                          class: "btn btn-outline-danger" %>
+                      <%= button_to "Delete", admin_user_path(user), method: :delete,
+                          data: { turbo_confirm: "Are you sure you want to delete this user?" },
+                          class: "text-red-600 hover:text-red-900" %>
                     <% end %>
                   </div>
                 </td>
@@ -63,7 +63,7 @@
         </table>
       </div>
     <% else %>
-      <p class="text-muted text-center py-4">No users found.</p>
+      <p class="text-gray-500 text-center py-8">No users found.</p>
     <% end %>
   </div>
 </div>

@@ -1,100 +1,119 @@
-<div class="container">
+<div class="container-custom py-8">
   <!-- Breadcrumb -->
-  <nav aria-label="breadcrumb" class="mt-3">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><%= link_to "Home", root_path %></li>
-      <li class="breadcrumb-item active" aria-current="page">My Projects</li>
+  <nav aria-label="breadcrumb" class="mb-6">
+    <ol class="flex items-center gap-2 text-sm text-gray-600">
+      <li><%= link_to "Home", root_path, class: "hover:text-bio-green transition-colors" %></li>
+      <li><i class="bi bi-chevron-right text-gray-400"></i></li>
+      <li class="text-gray-900 font-medium">My Projects</li>
     </ol>
   </nav>
 
-  <div class="row">
-    <div class="col-12">
-      <h1>My Custom Projects</h1>
-      <p class="lead">Manage your custom Pichia pastoris projects</p>
-      
-      <div class="mb-4">
-        <div class="btn-group">
-          <%= link_to "Browse All Services", services_custom_projects_path, class: "btn btn-info" %>
-          <%= link_to "Start General Project", new_custom_project_path, class: "btn btn-success" %>
-          <%= link_to protein_expression_custom_projects_path, class: "btn btn-primary" do %>
-            <i class="fas fa-dna me-1"></i>
-            Protein Expression
-          <% end %>
-        </div>
-        <%= link_to "Back to Home", root_path, class: "btn btn-outline-secondary ms-2" %>
-      </div>
-      
-      <% if @custom_projects.any? %>
-        <div class="table-responsive">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Project Name</th>
-                <th>Type</th>
-                <th>Services</th>
-                <th>Status</th>
-                <th>Created</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @custom_projects.each do |project| %>
-                <tr>
-                  <td>
-                    <%= link_to project.project_name, custom_project_path(project), class: "text-decoration-none" %>
-                  </td>
-                  <td>
-                    <% if project.project_type.present? %>
-                      <span class="badge bg-info"><%= project.project_type.humanize %></span>
-                    <% else %>
-                      <span class="text-muted">Not specified</span>
-                    <% end %>
-                  </td>
-                  <td>
-                    <% if project.total_services.any? %>
-                      <% project.total_services.each do |service| %>
-                        <small class="d-block"><i class="bi bi-check-circle text-success"></i> <%= service %></small>
-                      <% end %>
-                    <% else %>
-                      <span class="text-muted">No services selected</span>
-                    <% end %>
-                  </td>
-                  <td>
-                    <% case project.status %>
-                    <% when 'pending' %>
-                      <span class="badge bg-warning text-dark"><%= project.display_status %></span>
-                    <% when 'in_progress' %>
-                      <span class="badge bg-primary"><%= project.display_status %></span>
-                    <% when 'awaiting_approval' %>
-                      <span class="badge bg-info"><%= project.display_status %></span>
-                    <% when 'sequence_approved' %>
-                      <span class="badge bg-success"><%= project.display_status %></span>
-                    <% when 'completed' %>
-                      <span class="badge bg-success"><%= project.display_status %></span>
-                    <% when 'cancelled' %>
-                      <span class="badge bg-danger"><%= project.display_status %></span>
-                    <% else %>
-                      <span class="badge bg-secondary"><%= project.display_status %></span>
-                    <% end %>
-                  </td>
-                  <td><%= project.created_at.strftime("%b %d, %Y") %></td>
-                  <td>
-                    <%= link_to "View", custom_project_path(project), class: "btn btn-sm btn-outline-primary" %>
-                    <%= link_to "Edit", edit_custom_project_path(project), class: "btn btn-sm btn-outline-secondary" %>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-      <% else %>
-        <div class="alert alert-info">
-          <h4 class="alert-heading">No projects yet</h4>
-          <p>You haven't started any custom projects. Ready to begin?</p>
-          <hr>
-          <%= link_to "Start Your First Project", new_custom_project_path, class: "btn btn-success" %>
-        </div>
-      <% end %>
-    </div>
+  <div class="mb-8">
+    <h1 class="text-4xl font-bold text-charcoal mb-3">My Custom Projects</h1>
+    <p class="text-lg text-gray-600">Manage your custom Pichia pastoris projects</p>
   </div>
+
+  <div class="flex flex-wrap gap-3 mb-8">
+    <%= link_to services_custom_projects_path, class: "inline-flex items-center gap-2 px-6 py-3 bg-cyan-600 text-white font-medium rounded-lg hover:bg-cyan-700 transition-colors" do %>
+      Browse All Services
+    <% end %>
+    <%= link_to new_custom_project_path, class: "inline-flex items-center gap-2 px-6 py-3 bg-bio-green text-white font-medium rounded-lg hover:bg-bio-green-dark transition-colors" do %>
+      Start General Project
+    <% end %>
+    <%= link_to protein_expression_custom_projects_path, class: "inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" do %>
+      <i class="bi bi-diagram-3"></i>
+      Protein Expression
+    <% end %>
+    <%= link_to root_path, class: "inline-flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" do %>
+      <i class="bi bi-arrow-left"></i>
+      Back to Home
+    <% end %>
+  </div>
+
+  <% if @custom_projects.any? %>
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-gray-200 bg-gray-50">
+              <th class="text-left py-3 px-4 font-semibold text-charcoal">Project Name</th>
+              <th class="text-left py-3 px-4 font-semibold text-charcoal">Type</th>
+              <th class="text-left py-3 px-4 font-semibold text-charcoal">Services</th>
+              <th class="text-left py-3 px-4 font-semibold text-charcoal">Status</th>
+              <th class="text-left py-3 px-4 font-semibold text-charcoal">Created</th>
+              <th class="text-left py-3 px-4 font-semibold text-charcoal">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @custom_projects.each do |project| %>
+              <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                <td class="py-3 px-4">
+                  <%= link_to project.project_name, custom_project_path(project), class: "text-bio-green hover:text-bio-green-dark font-medium transition-colors" %>
+                </td>
+                <td class="py-3 px-4">
+                  <% if project.project_type.present? %>
+                    <span class="inline-flex items-center px-2 py-1 rounded-md bg-cyan-100 text-cyan-700 text-xs font-medium"><%= project.project_type.humanize %></span>
+                  <% else %>
+                    <span class="text-gray-500 text-sm">Not specified</span>
+                  <% end %>
+                </td>
+                <td class="py-3 px-4">
+                  <% if project.total_services.any? %>
+                    <div class="space-y-1">
+                      <% project.total_services.each do |service| %>
+                        <div class="text-sm text-gray-700">
+                          <i class="bi bi-check-circle text-bio-green"></i> <%= service %>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% else %>
+                    <span class="text-gray-500 text-sm">No services selected</span>
+                  <% end %>
+                </td>
+                <td class="py-3 px-4">
+                  <% case project.status %>
+                  <% when 'pending' %>
+                    <span class="inline-flex items-center px-2 py-1 rounded-md bg-yellow-100 text-yellow-700 text-xs font-medium"><%= project.display_status %></span>
+                  <% when 'in_progress' %>
+                    <span class="inline-flex items-center px-2 py-1 rounded-md bg-blue-100 text-blue-700 text-xs font-medium"><%= project.display_status %></span>
+                  <% when 'awaiting_approval' %>
+                    <span class="inline-flex items-center px-2 py-1 rounded-md bg-cyan-100 text-cyan-700 text-xs font-medium"><%= project.display_status %></span>
+                  <% when 'sequence_approved' %>
+                    <span class="inline-flex items-center px-2 py-1 rounded-md bg-green-100 text-green-700 text-xs font-medium"><%= project.display_status %></span>
+                  <% when 'completed' %>
+                    <span class="inline-flex items-center px-2 py-1 rounded-md bg-green-100 text-green-700 text-xs font-medium"><%= project.display_status %></span>
+                  <% when 'cancelled' %>
+                    <span class="inline-flex items-center px-2 py-1 rounded-md bg-red-100 text-red-700 text-xs font-medium"><%= project.display_status %></span>
+                  <% else %>
+                    <span class="inline-flex items-center px-2 py-1 rounded-md bg-gray-100 text-gray-700 text-xs font-medium"><%= project.display_status %></span>
+                  <% end %>
+                </td>
+                <td class="py-3 px-4 text-gray-700"><%= project.created_at.strftime("%b %d, %Y") %></td>
+                <td class="py-3 px-4">
+                  <div class="flex gap-2">
+                    <%= link_to custom_project_path(project), class: "inline-flex items-center px-3 py-1 border border-blue-600 text-blue-600 text-sm font-medium rounded hover:bg-blue-50 transition-colors" do %>
+                      View
+                    <% end %>
+                    <%= link_to edit_custom_project_path(project), class: "inline-flex items-center px-3 py-1 border border-gray-300 text-gray-700 text-sm font-medium rounded hover:bg-gray-50 transition-colors" do %>
+                      Edit
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% else %>
+    <div class="bg-blue-50 border border-blue-200 rounded-xl p-8">
+      <h4 class="text-xl font-semibold text-charcoal mb-3">No projects yet</h4>
+      <p class="text-gray-700 mb-6">You haven't started any custom projects. Ready to begin?</p>
+      <div class="border-t border-blue-200 pt-6">
+        <%= link_to new_custom_project_path, class: "inline-flex items-center gap-2 px-6 py-3 bg-bio-green text-white font-semibold rounded-lg hover:bg-bio-green-dark transition-colors shadow-md hover:shadow-lg" do %>
+          Start Your First Project
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 </div>

@@ -1,55 +1,53 @@
-<div class="container mt-4">
+<div class="container-custom py-8">
   <!-- Breadcrumb -->
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><%= link_to "Home", root_path %></li>
-      <li class="breadcrumb-item"><%= link_to "Services", services_custom_projects_path %></li>
-      <li class="breadcrumb-item active" aria-current="page">Protein Expression</li>
+  <nav aria-label="breadcrumb" class="mb-6">
+    <ol class="flex items-center gap-2 text-sm text-gray-600">
+      <li><%= link_to "Home", root_path, class: "hover:text-bio-green transition-colors" %></li>
+      <li><i class="bi bi-chevron-right text-gray-400"></i></li>
+      <li><%= link_to "Services", services_custom_projects_path, class: "hover:text-bio-green transition-colors" %></li>
+      <li><i class="bi bi-chevron-right text-gray-400"></i></li>
+      <li class="text-gray-900 font-medium">Protein Expression</li>
     </ol>
   </nav>
 
-  <div class="row">
-    <div class="col-lg-8">
-      <h1 class="mb-4">
-        <i class="fas fa-dna me-2 text-primary"></i>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Main Form -->
+    <div class="lg:col-span-2">
+      <h1 class="text-4xl font-bold text-charcoal mb-6 flex items-center gap-3">
+        <i class="bi bi-diagram-3 text-blue-600"></i>
         Protein Expression Strain Request
       </h1>
-      
-      <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
-          <h5 class="mb-0">How It Works</h5>
-        </div>
-        <div class="card-body">
-          <ol class="mb-0">
-            <li><strong>Provide Your Protein Sequence:</strong> Submit the amino acid sequence of your protein (starting with M, ending with *)</li>
-            <li><strong>Choose Your Vector:</strong> Select from our catalog of expression vectors</li>
-            <li><strong>We Optimize:</strong> Our proprietary codon optimization generates the optimal DNA sequence</li>
-            <li><strong>You Approve:</strong> Review and approve the generated DNA sequence</li>
-            <li><strong>We Deliver:</strong> Synthesize, clone, and deliver your custom Pichia strain</li>
-          </ol>
-        </div>
+
+      <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-8">
+        <h5 class="text-lg font-semibold text-charcoal mb-3">How It Works</h5>
+        <ol class="space-y-2 text-gray-700 list-decimal list-inside">
+          <li><strong>Provide Your Protein Sequence:</strong> Submit the amino acid sequence of your protein (starting with M, ending with *)</li>
+          <li><strong>Choose Your Vector:</strong> Select from our catalog of expression vectors</li>
+          <li><strong>We Optimize:</strong> Our proprietary codon optimization generates the optimal DNA sequence</li>
+          <li><strong>You Approve:</strong> Review and approve the generated DNA sequence</li>
+          <li><strong>We Deliver:</strong> Synthesize, clone, and deliver your custom Pichia strain</li>
+        </ol>
       </div>
 
       <% unless authenticated? %>
-        <div class="alert alert-info">
-          <h5 class="alert-heading">Account Required</h5>
-          <p>To submit a protein expression request, you'll need to create an account or sign in. This helps us manage your project and keep you updated on progress.</p>
-          <hr>
-          <div class="d-flex gap-2">
-            <%= link_to "Sign In", new_session_path, class: "btn btn-primary" %>
-            <%= link_to "Create Account", new_session_path, class: "btn btn-outline-primary" %>
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6">
+          <h5 class="text-lg font-semibold text-charcoal mb-2">Account Required</h5>
+          <p class="text-gray-700 mb-4">To submit a protein expression request, you'll need to create an account or sign in. This helps us manage your project and keep you updated on progress.</p>
+          <div class="border-t border-blue-200 pt-4 flex gap-3">
+            <%= link_to "Sign In", new_session_path, class: "inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" %>
+            <%= link_to "Create Account", new_session_path, class: "inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 font-medium rounded-lg hover:bg-blue-50 transition-colors" %>
           </div>
         </div>
-        <hr>
-        <h5>Preview Request Form</h5>
-        <p class="text-muted">You can review the request form below, then sign in to submit your request.</p>
+        <hr class="my-6 border-gray-200">
+        <h5 class="text-lg font-semibold text-charcoal mb-2">Preview Request Form</h5>
+        <p class="text-gray-500 mb-6">You can review the request form below, then sign in to submit your request.</p>
       <% end %>
 
-      <%= form_with model: @form, url: authenticated? ? protein_expression_custom_projects_path : "#", local: true do |form| %>
+      <%= form_with model: @form, url: authenticated? ? protein_expression_custom_projects_path : "#", local: true, class: "space-y-6" do |form| %>
         <% if @form.errors.any? %>
-          <div class="alert alert-danger">
-            <h4><%= pluralize(@form.errors.count, "error") %> prohibited this request from being saved:</h4>
-            <ul class="mb-0">
+          <div class="bg-red-50 border border-red-200 rounded-xl p-6">
+            <h4 class="text-lg font-semibold text-red-900 mb-3"><%= pluralize(@form.errors.count, "error") %> prohibited this request from being saved:</h4>
+            <ul class="list-disc list-inside space-y-1 text-red-700">
               <% @form.errors.full_messages.each do |message| %>
                 <li><%= message %></li>
               <% end %>
@@ -58,144 +56,140 @@
         <% end %>
 
         <!-- Project Details -->
-        <div class="card mb-4">
-          <div class="card-header">
-            <h5 class="mb-0">Project Details</h5>
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h5 class="text-lg font-semibold text-charcoal">Project Details</h5>
           </div>
-          <div class="card-body">
-            <div class="mb-3">
-              <%= form.label :project_name, "Project Name", class: "form-label" %>
-              <%= form.text_field :project_name, class: "form-control", placeholder: "e.g., Human insulin expression in Pichia" %>
-              <small class="form-text text-muted">Give your project a descriptive name for tracking</small>
-            </div>
-            
-            <div class="mb-3">
-              <%= form.label :protein_name, "Protein Name", class: "form-label" %>
-              <%= form.text_field :protein_name, class: "form-control", placeholder: "e.g., Human Insulin" %>
-              <small class="form-text text-muted">The name of the protein you want to express</small>
+          <div class="p-6 space-y-4">
+            <div>
+              <%= form.label :project_name, "Project Name", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= form.text_field :project_name, class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors", placeholder: "e.g., Human insulin expression in Pichia" %>
+              <p class="mt-1 text-sm text-gray-500">Give your project a descriptive name for tracking</p>
             </div>
 
-            <div class="mb-3">
-              <%= form.label :protein_description, "Protein Description (Optional)", class: "form-label" %>
-              <%= form.text_area :protein_description, rows: 3, class: "form-control", 
+            <div>
+              <%= form.label :protein_name, "Protein Name", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= form.text_field :protein_name, class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors", placeholder: "e.g., Human Insulin" %>
+              <p class="mt-1 text-sm text-gray-500">The name of the protein you want to express</p>
+            </div>
+
+            <div>
+              <%= form.label :protein_description, "Protein Description (Optional)", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= form.text_area :protein_description, rows: 3, class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors",
                   placeholder: "Describe the protein function, origin, special requirements..." %>
-              <small class="form-text text-muted">Any additional information about your protein</small>
+              <p class="mt-1 text-sm text-gray-500">Any additional information about your protein</p>
             </div>
           </div>
         </div>
 
         <!-- Amino Acid Sequence -->
-        <div class="card mb-4">
-          <div class="card-header">
-            <h5 class="mb-0">Amino Acid Sequence</h5>
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h5 class="text-lg font-semibold text-charcoal">Amino Acid Sequence</h5>
           </div>
-          <div class="card-body">
-            <div class="alert alert-info">
-              <strong>Sequence Requirements:</strong>
-              <ul class="mb-0">
+          <div class="p-6 space-y-4">
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <strong class="text-gray-900">Sequence Requirements:</strong>
+              <ul class="mt-2 space-y-1 text-sm text-gray-700 list-disc list-inside">
                 <li>Use single-letter amino acid code (A, R, N, D, C, E, Q, G, H, I, L, K, M, F, P, S, T, W, Y, V)</li>
                 <li>Must start with methionine (M)</li>
                 <li>Must end with stop codon (*)</li>
                 <li>Whitespace and line breaks will be ignored</li>
               </ul>
             </div>
-            
-            <div class="mb-3">
-              <%= form.label :amino_acid_sequence, "Amino Acid Sequence", class: "form-label" %>
-              <%= form.text_area :amino_acid_sequence, rows: 8, class: "form-control font-monospace", 
-                  placeholder: "MATLYGDSGLWQNILDQLSSLLNQAEGLQAAGGSALQY*", 
-                  style: "font-size: 0.9rem; line-height: 1.4;" %>
-              <small class="form-text text-muted">Paste your complete amino acid sequence here</small>
+
+            <div>
+              <%= form.label :amino_acid_sequence, "Amino Acid Sequence", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= form.text_area :amino_acid_sequence, rows: 8, class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors font-mono text-sm",
+                  placeholder: "MATLYGDSGLWQNILDQLSSLLNQAEGLQAAGGSALQY*" %>
+              <p class="mt-1 text-sm text-gray-500">Paste your complete amino acid sequence here</p>
             </div>
 
             <% if @form.amino_acid_sequence.present? %>
-              <div class="card bg-light">
-                <div class="card-body py-2">
-                  <small>
-                    <strong>Sequence Length:</strong> <%= @form.sequence_length %> amino acids |
-                    <strong>Starts with M:</strong> <%= @form.starts_with_methionine? ? '✓ Yes' : '✗ No' %> |
-                    <strong>Ends with *:</strong> <%= @form.ends_with_stop_codon? ? '✓ Yes' : '✗ No' %>
-                    <% if @form.sequence_length > 0 %>
-                      | <strong>Estimated MW:</strong> ~<%= number_with_delimiter(@form.estimated_molecular_weight) %> Da
-                    <% end %>
-                  </small>
-                </div>
+              <div class="bg-gray-50 rounded-lg p-4">
+                <p class="text-sm text-gray-700">
+                  <strong>Sequence Length:</strong> <%= @form.sequence_length %> amino acids |
+                  <strong>Starts with M:</strong> <%= @form.starts_with_methionine? ? '✓ Yes' : '✗ No' %> |
+                  <strong>Ends with *:</strong> <%= @form.ends_with_stop_codon? ? '✓ Yes' : '✗ No' %>
+                  <% if @form.sequence_length > 0 %>
+                    | <strong>Estimated MW:</strong> ~<%= number_with_delimiter(@form.estimated_molecular_weight) %> Da
+                  <% end %>
+                </p>
               </div>
             <% end %>
           </div>
         </div>
 
         <!-- Vector Selection -->
-        <div class="card mb-4">
-          <div class="card-header">
-            <h5 class="mb-0">Expression Vector Selection</h5>
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h5 class="text-lg font-semibold text-charcoal">Expression Vector Selection</h5>
           </div>
-          <div class="card-body">
-            <p class="text-muted">Choose the expression vector that best fits your protein and experimental needs.</p>
-            
-            <% @expression_vectors.each do |vector| %>
-              <div class="form-check mb-3">
-                <%= form.radio_button :selected_vector_id, vector.id, class: "form-check-input", id: "vector_#{vector.id}" %>
-                <%= form.label :selected_vector_id, class: "form-check-label w-100", for: "vector_#{vector.id}" do %>
-                  <div class="card">
-                    <div class="card-body py-3">
-                      <div class="d-flex justify-content-between align-items-start">
-                        <div class="flex-grow-1">
-                          <h6 class="mb-1"><%= vector.display_name %></h6>
-                          <p class="text-muted mb-2"><%= vector.description %></p>
-                          
-                          <div class="row">
-                            <div class="col-sm-6">
-                              <small>
-                                <strong>Backbone:</strong> <%= vector.backbone %><br>
-                                <strong>Cloning Sites:</strong> <%= vector.cloning_sites %>
-                              </small>
-                            </div>
-                            <div class="col-sm-6">
-                              <small>
-                                <% if vector.feature_list.any? %>
-                                  <strong>Features:</strong> <%= vector.feature_list.join(', ') %>
-                                <% end %>
-                              </small>
-                            </div>
-                          </div>
-                          
-                          <% if vector.additional_notes.present? %>
-                            <small class="text-info"><%= vector.additional_notes %></small>
-                          <% end %>
+          <div class="p-6">
+            <p class="text-gray-600 mb-4">Choose the expression vector that best fits your protein and experimental needs.</p>
+
+            <div class="space-y-3">
+              <% @expression_vectors.each do |vector| %>
+                <label class="block cursor-pointer">
+                  <div class="flex items-start gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-bio-green transition-colors">
+                    <%= form.radio_button :selected_vector_id, vector.id, class: "mt-1 h-4 w-4 text-bio-green focus:ring-bio-green border-gray-300", id: "vector_#{vector.id}" %>
+                    <div class="flex-grow">
+                      <div class="flex justify-between items-start mb-2">
+                        <div class="flex-grow">
+                          <h6 class="font-semibold text-charcoal"><%= vector.display_name %></h6>
+                          <p class="text-gray-600 text-sm mt-1"><%= vector.description %></p>
                         </div>
-                        <div class="text-end ms-3">
-                          <h6 class="text-primary mb-0"><%= vector.formatted_price %></h6>
-                          <small class="text-muted">per vector</small>
+                        <div class="text-right ml-4">
+                          <p class="text-xl font-bold text-bio-green"><%= vector.formatted_price %></p>
+                          <p class="text-xs text-gray-500">per vector</p>
                         </div>
                       </div>
+
+                      <div class="grid grid-cols-2 gap-4 text-sm mt-3">
+                        <div>
+                          <strong class="text-gray-700">Backbone:</strong> <span class="text-gray-600"><%= vector.backbone %></span><br>
+                          <strong class="text-gray-700">Cloning Sites:</strong> <span class="text-gray-600"><%= vector.cloning_sites %></span>
+                        </div>
+                        <div>
+                          <% if vector.feature_list.any? %>
+                            <strong class="text-gray-700">Features:</strong> <span class="text-gray-600"><%= vector.feature_list.join(', ') %></span>
+                          <% end %>
+                        </div>
+                      </div>
+
+                      <% if vector.additional_notes.present? %>
+                        <p class="text-sm text-cyan-600 mt-2"><%= vector.additional_notes %></p>
+                      <% end %>
                     </div>
                   </div>
-                <% end %>
-              </div>
-            <% end %>
+                </label>
+              <% end %>
+            </div>
           </div>
         </div>
 
         <!-- Additional Notes -->
-        <div class="card mb-4">
-          <div class="card-header">
-            <h5 class="mb-0">Additional Information</h5>
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h5 class="text-lg font-semibold text-charcoal">Additional Information</h5>
           </div>
-          <div class="card-body">
-            <div class="mb-3">
-              <%= form.label :notes, "Special Requirements or Notes (Optional)", class: "form-label" %>
-              <%= form.text_area :notes, rows: 4, class: "form-control", 
+          <div class="p-6">
+            <div>
+              <%= form.label :notes, "Special Requirements or Notes (Optional)", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= form.text_area :notes, rows: 4, class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bio-green focus:border-bio-green transition-colors",
                   placeholder: "Any special requirements, timeline constraints, expression conditions, or questions?" %>
-              <small class="form-text text-muted">Help us understand your specific needs</small>
+              <p class="mt-1 text-sm text-gray-500">Help us understand your specific needs</p>
             </div>
           </div>
         </div>
 
         <!-- Next Steps -->
-        <div class="alert alert-success">
-          <h5 class="alert-heading"><i class="fas fa-lightbulb me-2"></i>What happens next?</h5>
-          <ol class="mb-0">
+        <div class="bg-green-50 border border-green-200 rounded-xl p-6">
+          <h5 class="text-lg font-semibold text-charcoal mb-3 flex items-center gap-2">
+            <i class="bi bi-lightbulb text-bio-green"></i>
+            What happens next?
+          </h5>
+          <ol class="space-y-2 text-gray-700 list-decimal list-inside">
             <li><strong>Submit Request:</strong> Submit your protein sequence and vector choice</li>
             <li><strong>DNA Generation:</strong> We'll generate the codon-optimized DNA sequence (24-48 hours)</li>
             <li><strong>Sequence Approval:</strong> Review and approve the DNA sequence we provide</li>
@@ -205,60 +199,60 @@
         </div>
 
         <!-- Submit Buttons -->
-        <div class="d-grid gap-2 d-md-block mb-5">
+        <div class="flex flex-col sm:flex-row gap-3 pb-8">
           <% if authenticated? %>
-            <%= form.submit "Submit Protein Expression Request", class: "btn btn-success btn-lg" %>
-            <%= link_to "Cancel", custom_projects_path, class: "btn btn-outline-secondary btn-lg" %>
+            <%= form.submit "Submit Protein Expression Request", class: "inline-flex items-center justify-center px-8 py-4 bg-bio-green text-white text-lg font-semibold rounded-lg hover:bg-bio-green-dark transition-colors shadow-md hover:shadow-lg" %>
+            <%= link_to "Cancel", custom_projects_path, class: "inline-flex items-center justify-center px-8 py-4 border-2 border-gray-300 text-gray-700 text-lg font-medium rounded-lg hover:bg-gray-50 transition-colors" %>
           <% else %>
-            <%= link_to "Sign In to Submit Request", new_session_path, class: "btn btn-success btn-lg" %>
-            <%= link_to "Back to Projects", custom_projects_path, class: "btn btn-outline-secondary btn-lg" %>
+            <%= link_to "Sign In to Submit Request", new_session_path, class: "inline-flex items-center justify-center px-8 py-4 bg-bio-green text-white text-lg font-semibold rounded-lg hover:bg-bio-green-dark transition-colors shadow-md hover:shadow-lg" %>
+            <%= link_to "Back to Projects", custom_projects_path, class: "inline-flex items-center justify-center px-8 py-4 border-2 border-gray-300 text-gray-700 text-lg font-medium rounded-lg hover:bg-gray-50 transition-colors" %>
           <% end %>
         </div>
       <% end %>
     </div>
 
     <!-- Sidebar -->
-    <div class="col-lg-4">
-      <div class="card position-sticky" style="top: 20px;">
-        <div class="card-header">
-          <h6 class="mb-0">Protein Expression Services</h6>
+    <div class="lg:col-span-1">
+      <div class="bg-white rounded-xl border border-gray-200 overflow-hidden sticky top-20">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h6 class="font-semibold text-charcoal">Protein Expression Services</h6>
         </div>
-        <div class="card-body">
-          <div class="mb-3">
-            <h6 class="text-primary">✓ Codon Optimization</h6>
-            <small class="text-muted">Proprietary Pichia pastoris codon optimization for maximum expression</small>
-          </div>
-          
-          <div class="mb-3">
-            <h6 class="text-primary">✓ Vector Cloning</h6>
-            <small class="text-muted">Professional cloning into your selected expression vector</small>
-          </div>
-          
-          <div class="mb-3">
-            <h6 class="text-primary">✓ Strain Transformation</h6>
-            <small class="text-muted">Pichia pastoris transformation and strain isolation</small>
-          </div>
-          
-          <div class="mb-3">
-            <h6 class="text-primary">✓ Quality Control</h6>
-            <small class="text-muted">Sequence verification and expression confirmation</small>
-          </div>
-          
-          <hr>
-          
-          <div class="text-center">
-            <h6 class="text-success">Starting at $750</h6>
-            <small class="text-muted">Final pricing depends on vector choice and complexity</small>
-          </div>
-          
-          <hr>
-          
+        <div class="p-6 space-y-4">
           <div>
-            <h6>Need Help?</h6>
-            <small class="text-muted">
-              Not sure which vector to choose? Have questions about your protein? 
-              <%= link_to "Contact our team", "#", class: "text-primary" %> for personalized guidance.
-            </small>
+            <h6 class="text-blue-600 font-semibold mb-1">✓ Codon Optimization</h6>
+            <p class="text-sm text-gray-600">Proprietary Pichia pastoris codon optimization for maximum expression</p>
+          </div>
+
+          <div>
+            <h6 class="text-blue-600 font-semibold mb-1">✓ Vector Cloning</h6>
+            <p class="text-sm text-gray-600">Professional cloning into your selected expression vector</p>
+          </div>
+
+          <div>
+            <h6 class="text-blue-600 font-semibold mb-1">✓ Strain Transformation</h6>
+            <p class="text-sm text-gray-600">Pichia pastoris transformation and strain isolation</p>
+          </div>
+
+          <div>
+            <h6 class="text-blue-600 font-semibold mb-1">✓ Quality Control</h6>
+            <p class="text-sm text-gray-600">Sequence verification and expression confirmation</p>
+          </div>
+
+          <hr class="border-gray-200">
+
+          <div class="text-center">
+            <p class="text-xl font-bold text-bio-green">Starting at $750</p>
+            <p class="text-sm text-gray-500">Final pricing depends on vector choice and complexity</p>
+          </div>
+
+          <hr class="border-gray-200">
+
+          <div>
+            <h6 class="font-semibold text-charcoal mb-2">Need Help?</h6>
+            <p class="text-sm text-gray-600">
+              Not sure which vector to choose? Have questions about your protein?
+              <%= link_to "Contact our team", "#", class: "text-bio-green hover:text-bio-green-dark font-medium" %> for personalized guidance.
+            </p>
           </div>
         </div>
       </div>
@@ -269,7 +263,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const sequenceTextarea = document.querySelector('textarea[name="custom_project[amino_acid_sequence]"]');
-  
+
   if (sequenceTextarea) {
     sequenceTextarea.addEventListener('input', function() {
       // Auto-format sequence as user types

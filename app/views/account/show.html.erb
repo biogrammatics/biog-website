@@ -1,82 +1,86 @@
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-md-3">
-      <div class="card">
-        <div class="card-header">
-          <h5>Account Menu</h5>
+<div class="container-custom py-8">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div class="md:col-span-1">
+      <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h5 class="text-lg font-semibold text-gray-900">Account Menu</h5>
         </div>
-        <div class="list-group list-group-flush">
-          <a href="#overview" class="list-group-item list-group-item-action active">
+        <div class="divide-y divide-gray-200">
+          <a href="#overview" class="block px-6 py-3 hover:bg-gray-50 transition-colors bg-blue-50 text-blue-700 font-medium">
             Overview
           </a>
-          <a href="#subscriptions" class="list-group-item list-group-item-action">
+          <a href="#subscriptions" class="block px-6 py-3 hover:bg-gray-50 transition-colors text-gray-700">
             Subscriptions
           </a>
-          <a href="#orders" class="list-group-item list-group-item-action">
+          <a href="#orders" class="block px-6 py-3 hover:bg-gray-50 transition-colors text-gray-700">
             Order History
           </a>
-          <a href="#custom-projects" class="list-group-item list-group-item-action">
+          <a href="#custom-projects" class="block px-6 py-3 hover:bg-gray-50 transition-colors text-gray-700">
             Custom Projects
           </a>
-          <a href="#cart" class="list-group-item list-group-item-action">
+          <a href="#cart" class="block px-6 py-3 hover:bg-gray-50 transition-colors text-gray-700">
             Shopping Cart
           </a>
-          <a href="#profile" class="list-group-item list-group-item-action">
+          <a href="#profile" class="block px-6 py-3 hover:bg-gray-50 transition-colors text-gray-700">
             Profile
           </a>
-          <a href="#security" class="list-group-item list-group-item-action">
+          <a href="#security" class="block px-6 py-3 hover:bg-gray-50 transition-colors text-gray-700">
             Security
           </a>
         </div>
       </div>
     </div>
-    
-    <div class="col-md-9">
+
+    <div class="md:col-span-3">
       <!-- Overview Section -->
-      <div id="overview" class="mb-5">
-        <div class="card">
-          <div class="card-header">
-            <h3>Account Overview</h3>
+      <div id="overview" class="mb-8">
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h3 class="text-2xl font-semibold text-gray-900">Account Overview</h3>
           </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <h5>Welcome, <%= @user.full_name.presence || @user.email_address %>!</h5>
-                <p class="text-muted">Here's a summary of your BioGrammatics account activity.</p>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <h5 class="text-xl font-semibold text-gray-900 mb-2">Welcome, <%= @user.full_name.presence || @user.email_address %>!</h5>
+                <p class="text-gray-600">Here's a summary of your BioGrammatics account activity.</p>
               </div>
-              <div class="col-md-6">
-                <div class="row text-center">
-                  <div class="col-3">
-                    <h4 class="text-primary"><%= @subscriptions.count %></h4>
-                    <p class="small text-muted">Subscriptions</p>
+              <div>
+                <div class="grid grid-cols-4 gap-4 text-center">
+                  <div>
+                    <h4 class="text-2xl font-bold text-blue-600"><%= @subscriptions.count %></h4>
+                    <p class="text-sm text-gray-600">Subscriptions</p>
                   </div>
-                  <div class="col-3">
-                    <h4 class="text-warning"><%= @orders.count %></h4>
-                    <p class="small text-muted">Orders</p>
+                  <div>
+                    <h4 class="text-2xl font-bold text-yellow-600"><%= @orders.count %></h4>
+                    <p class="text-sm text-gray-600">Orders</p>
                   </div>
-                  <div class="col-3">
-                    <h4 class="text-success"><%= @custom_projects.count %></h4>
-                    <p class="small text-muted">Custom Projects</p>
+                  <div>
+                    <h4 class="text-2xl font-bold text-bio-green"><%= @custom_projects.count %></h4>
+                    <p class="text-sm text-gray-600">Custom Projects</p>
                   </div>
-                  <div class="col-3">
-                    <h4 class="text-info"><%= @cart_items.count %></h4>
-                    <p class="small text-muted">Cart Items</p>
+                  <div>
+                    <h4 class="text-2xl font-bold text-cyan-600"><%= @cart_items.count %></h4>
+                    <p class="text-sm text-gray-600">Cart Items</p>
                   </div>
                 </div>
               </div>
             </div>
-            
+
             <% if @current_subscription %>
-              <div class="alert alert-success" role="alert">
-                <strong>Active Twist Subscription</strong><br>
-                You have an active subscription with <%= @current_subscription.vectors.count %> vectors.
-                Renewal date: <%= @current_subscription.renewal_date.strftime("%B %d, %Y") %>
+              <div class="bg-green-50 border border-green-200 rounded-xl p-6">
+                <p class="font-semibold text-green-900">Active Twist Subscription</p>
+                <p class="text-green-800 mt-1">
+                  You have an active subscription with <%= @current_subscription.vectors.count %> vectors.
+                  Renewal date: <%= @current_subscription.renewal_date.strftime("%B %d, %Y") %>
+                </p>
               </div>
             <% else %>
-              <div class="alert alert-info" role="alert">
-                <strong>Start a Twist Subscription</strong><br>
-                Subscribe to our vectors for seamless DNA synthesis through Twist Bioscience.
-                <%= link_to "Learn More", subscriptions_path, class: "alert-link" %>
+              <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                <p class="font-semibold text-blue-900">Start a Twist Subscription</p>
+                <p class="text-blue-800 mt-1">
+                  Subscribe to our vectors for seamless DNA synthesis through Twist Bioscience.
+                  <%= link_to "Learn More", subscriptions_path, class: "text-blue-700 font-medium hover:text-blue-800 underline" %>
+                </p>
               </div>
             <% end %>
           </div>
@@ -84,53 +88,53 @@
       </div>
 
       <!-- Subscriptions Section -->
-      <div id="subscriptions" class="mb-5">
-        <div class="card">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h3>Your Subscriptions</h3>
+      <div id="subscriptions" class="mb-8">
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+            <h3 class="text-2xl font-semibold text-gray-900">Your Subscriptions</h3>
             <% unless @current_subscription %>
-              <%= link_to "Start Subscription", new_subscription_path, class: "btn btn-primary btn-sm" %>
+              <%= link_to "Start Subscription", new_subscription_path, class: "inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors" %>
             <% end %>
           </div>
-          <div class="card-body">
+          <div class="p-6">
             <% if @subscriptions.any? %>
               <% @subscriptions.each do |subscription| %>
-                <div class="card mb-3">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden mb-4 last:mb-0">
+                  <div class="p-6">
+                    <div class="flex justify-between items-start">
                       <div>
-                        <h5>
+                        <h5 class="text-lg font-semibold text-gray-900 mb-2">
                           Twist Subscription
-                          <span class="badge <%= subscription.active? ? 'bg-success' : 'bg-warning' %>">
+                          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium <%= subscription.active? ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' %>">
                             <%= subscription.status.titleize %>
                           </span>
                         </h5>
-                        <p class="text-muted mb-1">
+                        <p class="text-gray-600 mb-1">
                           <strong>Twist Username:</strong> <%= subscription.twist_username %>
                         </p>
-                        <p class="text-muted mb-1">
+                        <p class="text-gray-600 mb-1">
                           <strong>Vectors:</strong> <%= subscription.vectors.count %>
                         </p>
                         <% if subscription.renewal_date %>
-                          <p class="text-muted mb-0">
+                          <p class="text-gray-600 mb-0">
                             <strong>Renewal:</strong> <%= subscription.renewal_date.strftime("%b %d, %Y") %>
                           </p>
                         <% end %>
                       </div>
-                      <div class="text-end">
-                        <h5 class="text-primary">$<%= (subscription.onboarding_fee + subscription.total_subscription_cost).round(2) %></h5>
-                        <%= link_to "Manage", subscription, class: "btn btn-outline-primary btn-sm" %>
+                      <div class="text-right">
+                        <h5 class="text-xl font-bold text-blue-600 mb-2">$<%= (subscription.onboarding_fee + subscription.total_subscription_cost).round(2) %></h5>
+                        <%= link_to "Manage", subscription, class: "inline-flex items-center justify-center px-4 py-2 border-2 border-blue-600 text-blue-600 text-sm font-medium rounded-lg hover:bg-blue-50 transition-colors" %>
                       </div>
                     </div>
                   </div>
                 </div>
               <% end %>
             <% else %>
-              <div class="text-center py-5">
-                <i class="fas fa-dna fa-3x text-muted mb-3"></i>
-                <h4>No Subscriptions Yet</h4>
-                <p class="text-muted">Start a Twist subscription to access our vector library.</p>
-                <%= link_to "Browse Vectors", subscriptions_path, class: "btn btn-primary" %>
+              <div class="text-center py-12">
+                <i class="bi bi-wallet2 text-6xl text-gray-400 mb-4"></i>
+                <h4 class="text-xl font-semibold text-gray-900 mb-2">No Subscriptions Yet</h4>
+                <p class="text-gray-600 mb-4">Start a Twist subscription to access our vector library.</p>
+                <%= link_to "Browse Vectors", subscriptions_path, class: "inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" %>
               </div>
             <% end %>
           </div>
@@ -138,71 +142,71 @@
       </div>
 
       <!-- Order History Section -->
-      <div id="orders" class="mb-5">
-        <div class="card">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h3>Order History</h3>
-            <%= link_to "Continue Shopping", vectors_path, class: "btn btn-primary btn-sm" %>
+      <div id="orders" class="mb-8">
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+            <h3 class="text-2xl font-semibold text-gray-900">Order History</h3>
+            <%= link_to "Continue Shopping", vectors_path, class: "inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors" %>
           </div>
-          <div class="card-body">
+          <div class="p-6">
             <% if @orders.any? %>
               <% @orders.each do |order| %>
-                <div class="card mb-3">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
-                      <div class="flex-grow-1">
-                        <h5>
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden mb-4 last:mb-0">
+                  <div class="p-6">
+                    <div class="flex justify-between items-start">
+                      <div class="flex-grow">
+                        <h5 class="text-lg font-semibold text-gray-900 mb-3">
                           Order #<%= order.order_number %>
-                          <span class="badge <%= case order.status
-                            when 'pending' then 'bg-warning text-dark'
-                            when 'processing' then 'bg-info'
-                            when 'shipped' then 'bg-primary'
-                            when 'delivered' then 'bg-success'
-                            when 'cancelled' then 'bg-danger'
-                            else 'bg-secondary'
-                          end %> ms-2">
+                          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ml-2 <%= case order.status
+                            when 'pending' then 'bg-yellow-100 text-yellow-800'
+                            when 'processing' then 'bg-blue-100 text-blue-800'
+                            when 'shipped' then 'bg-purple-100 text-purple-800'
+                            when 'delivered' then 'bg-green-100 text-green-800'
+                            when 'cancelled' then 'bg-red-100 text-red-800'
+                            else 'bg-gray-100 text-gray-800'
+                          end %>">
                             <%= order.display_status %>
                           </span>
                         </h5>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <p class="text-muted mb-1">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <p class="text-gray-600 mb-1">
                               <strong>Order Date:</strong> <%= order.ordered_at.strftime("%b %d, %Y at %I:%M %p") %>
                             </p>
-                            <p class="text-muted mb-1">
+                            <p class="text-gray-600 mb-1">
                               <strong>Items:</strong> <%= pluralize(order.order_items.sum(:quantity), 'item') %>
                             </p>
                             <% if order.shipping_address.present? %>
-                              <p class="text-muted mb-0">
+                              <p class="text-gray-600 mb-0">
                                 <strong>Ship to:</strong> <%= order.shipping_address.split("\n").first %>
                               </p>
                             <% end %>
                           </div>
-                          <div class="col-md-6">
-                            <div class="text-end">
-                              <h5 class="text-primary mb-2">$<%= sprintf("%.2f", order.total_amount) %></h5>
+                          <div>
+                            <div class="text-right">
+                              <h5 class="text-xl font-bold text-blue-600 mb-2">$<%= sprintf("%.2f", order.total_amount) %></h5>
                               <% if order.status == 'shipped' && order.tracking_number %>
-                                <p class="text-muted mb-1">
+                                <p class="text-gray-600 mb-1">
                                   <strong>Tracking:</strong> <%= order.tracking_number %>
                                 </p>
                               <% end %>
                             </div>
                           </div>
                         </div>
-                        
+
                         <!-- Order Items -->
-                        <div class="mt-3">
-                          <h6 class="border-bottom pb-1 mb-2">Items Ordered:</h6>
+                        <div class="mt-4">
+                          <h6 class="border-b border-gray-200 pb-2 mb-3 font-semibold text-gray-900">Items Ordered:</h6>
                           <% order.order_items.each do |item| %>
-                            <div class="d-flex justify-content-between align-items-center py-1">
+                            <div class="flex justify-between items-center py-2">
                               <div>
-                                <span class="fw-bold"><%= item.item_name %></span>
+                                <span class="font-semibold text-gray-900"><%= item.item_name %></span>
                                 <% if item.item_description.present? %>
-                                  <br><small class="text-muted"><%= item.item_description %></small>
+                                  <br><small class="text-gray-600"><%= item.item_description %></small>
                                 <% end %>
                               </div>
-                              <div class="text-end">
-                                <span>Qty: <%= item.quantity %> × $<%= item.price %> = $<%= item.total_price %></span>
+                              <div class="text-right">
+                                <span class="text-gray-700">Qty: <%= item.quantity %> × $<%= item.price %> = $<%= item.total_price %></span>
                               </div>
                             </div>
                           <% end %>
@@ -213,13 +217,13 @@
                 </div>
               <% end %>
             <% else %>
-              <div class="text-center py-5">
-                <i class="fas fa-shopping-bag fa-3x text-muted mb-3"></i>
-                <h4>No Orders Yet</h4>
-                <p class="text-muted">When you place orders, they'll appear here.</p>
-                <div>
-                  <%= link_to "Browse Vectors", vectors_path, class: "btn btn-primary me-2" %>
-                  <%= link_to "Browse Strains", pichia_strains_path, class: "btn btn-primary" %>
+              <div class="text-center py-12">
+                <i class="bi bi-bag text-6xl text-gray-400 mb-4"></i>
+                <h4 class="text-xl font-semibold text-gray-900 mb-2">No Orders Yet</h4>
+                <p class="text-gray-600 mb-4">When you place orders, they'll appear here.</p>
+                <div class="flex justify-center gap-3">
+                  <%= link_to "Browse Vectors", vectors_path, class: "inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" %>
+                  <%= link_to "Browse Strains", pichia_strains_path, class: "inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" %>
                 </div>
               </div>
             <% end %>
@@ -228,62 +232,62 @@
       </div>
 
       <!-- Custom Projects Section -->
-      <div id="custom-projects" class="mb-5">
-        <div class="card">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h3>Your Custom Projects</h3>
-            <%= link_to "Start New Project", new_custom_project_path, class: "btn btn-success btn-sm" %>
+      <div id="custom-projects" class="mb-8">
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+            <h3 class="text-2xl font-semibold text-gray-900">Your Custom Projects</h3>
+            <%= link_to "Start New Project", new_custom_project_path, class: "inline-flex items-center justify-center px-4 py-2 bg-bio-green text-white text-sm font-medium rounded-lg hover:bg-bio-green-dark transition-colors" %>
           </div>
-          <div class="card-body">
+          <div class="p-6">
             <% if @custom_projects.any? %>
               <% @custom_projects.each do |project| %>
-                <div class="card mb-3">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
-                      <div class="flex-grow-1">
-                        <h5>
-                          <%= link_to project.project_name, custom_project_path(project), class: "text-decoration-none" %>
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden mb-4 last:mb-0">
+                  <div class="p-6">
+                    <div class="flex justify-between items-start">
+                      <div class="flex-grow">
+                        <h5 class="text-lg font-semibold text-gray-900 mb-2">
+                          <%= link_to project.project_name, custom_project_path(project), class: "text-blue-600 hover:text-blue-700 no-underline" %>
                           <% case project.status %>
                           <% when 'pending' %>
-                            <span class="badge bg-warning text-dark ms-2"><%= project.display_status %></span>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800 ml-2"><%= project.display_status %></span>
                           <% when 'in_progress' %>
-                            <span class="badge bg-primary ms-2"><%= project.display_status %></span>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 ml-2"><%= project.display_status %></span>
                           <% when 'completed' %>
-                            <span class="badge bg-success ms-2"><%= project.display_status %></span>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 ml-2"><%= project.display_status %></span>
                           <% when 'cancelled' %>
-                            <span class="badge bg-danger ms-2"><%= project.display_status %></span>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800 ml-2"><%= project.display_status %></span>
                           <% else %>
-                            <span class="badge bg-secondary ms-2"><%= project.display_status %></span>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 ml-2"><%= project.display_status %></span>
                           <% end %>
                         </h5>
                         <% if project.project_type.present? %>
-                          <p class="text-muted mb-1">
+                          <p class="text-gray-600 mb-1">
                             <strong>Type:</strong> <%= project.project_type.humanize %>
                           </p>
                         <% end %>
                         <% if project.total_services.any? %>
-                          <p class="text-muted mb-1">
+                          <p class="text-gray-600 mb-1">
                             <strong>Services:</strong> <%= project.total_services.join(", ") %>
                           </p>
                         <% end %>
-                        <p class="text-muted mb-0">
+                        <p class="text-gray-600 mb-0">
                           <strong>Submitted:</strong> <%= project.created_at.strftime("%b %d, %Y") %>
                         </p>
                         <% if project.estimated_cost.present? %>
-                          <p class="text-muted mb-0">
+                          <p class="text-gray-600 mb-0">
                             <strong>Estimated Cost:</strong> $<%= number_with_precision(project.estimated_cost, precision: 2) %>
                           </p>
                         <% end %>
                         <% if project.estimated_completion_date.present? %>
-                          <p class="text-muted mb-0">
+                          <p class="text-gray-600 mb-0">
                             <strong>Expected Completion:</strong> <%= project.estimated_completion_date.strftime("%b %d, %Y") %>
                           </p>
                         <% end %>
                       </div>
-                      <div class="text-end ms-3">
-                        <%= link_to "View Details", custom_project_path(project), class: "btn btn-outline-primary btn-sm d-block mb-2" %>
+                      <div class="text-right ml-4">
+                        <%= link_to "View Details", custom_project_path(project), class: "inline-flex items-center justify-center px-4 py-2 border-2 border-blue-600 text-blue-600 text-sm font-medium rounded-lg hover:bg-blue-50 transition-colors block mb-2" %>
                         <% if project.status == 'pending' || project.status == 'cancelled' %>
-                          <%= link_to "Edit", edit_custom_project_path(project), class: "btn btn-outline-secondary btn-sm d-block" %>
+                          <%= link_to "Edit", edit_custom_project_path(project), class: "inline-flex items-center justify-center px-4 py-2 border-2 border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors block" %>
                         <% end %>
                       </div>
                     </div>
@@ -291,11 +295,11 @@
                 </div>
               <% end %>
             <% else %>
-              <div class="text-center py-5">
-                <i class="bi bi-gear-fill fs-1 text-muted mb-3"></i>
-                <h4>No Custom Projects Yet</h4>
-                <p class="text-muted">Start a custom project for tailored Pichia pastoris solutions.</p>
-                <%= link_to "Start Your First Project", new_custom_project_path, class: "btn btn-success" %>
+              <div class="text-center py-12">
+                <i class="bi bi-gear-fill text-6xl text-gray-400 mb-4"></i>
+                <h4 class="text-xl font-semibold text-gray-900 mb-2">No Custom Projects Yet</h4>
+                <p class="text-gray-600 mb-4">Start a custom project for tailored Pichia pastoris solutions.</p>
+                <%= link_to "Start Your First Project", new_custom_project_path, class: "inline-flex items-center justify-center px-6 py-3 bg-bio-green text-white font-medium rounded-lg hover:bg-bio-green-dark transition-colors" %>
               </div>
             <% end %>
           </div>
@@ -303,48 +307,48 @@
       </div>
 
       <!-- Shopping Cart Section -->
-      <div id="cart" class="mb-5">
-        <div class="card">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h3>Shopping Cart</h3>
-            <%= link_to "View Full Cart", cart_path, class: "btn btn-outline-primary btn-sm" %>
+      <div id="cart" class="mb-8">
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+            <h3 class="text-2xl font-semibold text-gray-900">Shopping Cart</h3>
+            <%= link_to "View Full Cart", cart_path, class: "inline-flex items-center justify-center px-4 py-2 border-2 border-blue-600 text-blue-600 text-sm font-medium rounded-lg hover:bg-blue-50 transition-colors" %>
           </div>
-          <div class="card-body">
+          <div class="p-6">
             <% if @cart_items.any? %>
-              <div class="table-responsive">
-                <table class="table table-sm">
-                  <thead>
+              <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                  <thead class="bg-gray-50">
                     <tr>
-                      <th>Item</th>
-                      <th>Type</th>
-                      <th>Quantity</th>
-                      <th>Price</th>
+                      <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
+                      <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                      <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                      <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody class="bg-white divide-y divide-gray-200">
                     <% @cart_items.each do |cart_item| %>
                       <tr>
-                        <td><%= cart_item.item_name %></td>
-                        <td><%= cart_item.item_type %></td>
-                        <td><%= cart_item.quantity %></td>
-                        <td>$<%= cart_item.total_price %></td>
+                        <td class="px-4 py-3 text-sm text-gray-900"><%= cart_item.item_name %></td>
+                        <td class="px-4 py-3 text-sm text-gray-600"><%= cart_item.item_type %></td>
+                        <td class="px-4 py-3 text-sm text-gray-600"><%= cart_item.quantity %></td>
+                        <td class="px-4 py-3 text-sm text-gray-900 font-semibold">$<%= cart_item.total_price %></td>
                       </tr>
                     <% end %>
                   </tbody>
-                  <tfoot>
-                    <tr class="table-info">
-                      <th colspan="3">Total</th>
-                      <th>$<%= @user.current_cart.total_price %></th>
+                  <tfoot class="bg-blue-50">
+                    <tr>
+                      <th colspan="3" class="px-4 py-3 text-sm font-semibold text-gray-900 text-left">Total</th>
+                      <th class="px-4 py-3 text-sm font-bold text-gray-900 text-left">$<%= @user.current_cart.total_price %></th>
                     </tr>
                   </tfoot>
                 </table>
               </div>
             <% else %>
-              <div class="text-center py-4">
-                <p class="text-muted">Your cart is empty.</p>
-                <div>
-                  <%= link_to "Browse Vectors", vectors_path, class: "btn btn-primary btn-sm me-2" %>
-                  <%= link_to "Browse Strains", pichia_strains_path, class: "btn btn-primary btn-sm" %>
+              <div class="text-center py-10">
+                <p class="text-gray-600 mb-4">Your cart is empty.</p>
+                <div class="flex justify-center gap-3">
+                  <%= link_to "Browse Vectors", vectors_path, class: "inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors" %>
+                  <%= link_to "Browse Strains", pichia_strains_path, class: "inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors" %>
                 </div>
               </div>
             <% end %>
@@ -353,42 +357,45 @@
       </div>
 
       <!-- Profile Section -->
-      <div id="profile" class="mb-5">
-        <div class="card">
-          <div class="card-header">
-            <h3>Profile Information</h3>
+      <div id="profile" class="mb-8">
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h3 class="text-2xl font-semibold text-gray-900">Profile Information</h3>
           </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <p><strong>Email:</strong> <%= @user.email_address %></p>
-                <p><strong>First Name:</strong> <%= @user.first_name || "Not provided" %></p>
-                <p><strong>Last Name:</strong> <%= @user.last_name || "Not provided" %></p>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <p class="mb-3"><strong class="text-gray-700">Email:</strong> <span class="text-gray-900"><%= @user.email_address %></span></p>
+                <p class="mb-3"><strong class="text-gray-700">First Name:</strong> <span class="text-gray-900"><%= @user.first_name || "Not provided" %></span></p>
+                <p class="mb-3"><strong class="text-gray-700">Last Name:</strong> <span class="text-gray-900"><%= @user.last_name || "Not provided" %></span></p>
                 <% if @user.twist_username %>
-                  <p><strong>Twist Username:</strong> <%= @user.twist_username %></p>
+                  <p class="mb-3"><strong class="text-gray-700">Twist Username:</strong> <span class="text-gray-900"><%= @user.twist_username %></span></p>
                 <% end %>
               </div>
-              <div class="col-md-6">
-                <p><strong>Account Type:</strong> 
-                  <span class="badge <%= @user.admin? ? 'bg-danger' : 'bg-success' %>">
+              <div>
+                <p class="mb-3">
+                  <strong class="text-gray-700">Account Type:</strong>
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium <%= @user.admin? ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' %>">
                     <%= @user.admin? ? 'Administrator' : 'Customer' %>
                   </span>
                 </p>
-                <p><strong>Member Since:</strong> <%= @user.created_at.strftime("%B %Y") %></p>
+                <p class="mb-3"><strong class="text-gray-700">Member Since:</strong> <span class="text-gray-900"><%= @user.created_at.strftime("%B %Y") %></span></p>
               </div>
             </div>
-            
-            <hr>
-            
-            <div class="d-flex justify-content-between">
+
+            <div class="border-t border-gray-200 pt-6"></div>
+
+            <div class="flex justify-between items-center">
               <div>
-                <button class="btn btn-outline-secondary" disabled>
-                  Edit Profile
-                  <small class="d-block">Coming Soon</small>
+                <button class="inline-flex items-center justify-center px-6 py-3 border-2 border-gray-300 text-gray-400 font-medium rounded-lg cursor-not-allowed opacity-60" disabled>
+                  <span>
+                    Edit Profile
+                    <small class="block text-xs">Coming Soon</small>
+                  </span>
                 </button>
               </div>
               <div>
-                <%= button_to "Sign Out", session_path, method: :delete, class: "btn btn-outline-danger" %>
+                <%= button_to "Sign Out", session_path, method: :delete, class: "inline-flex items-center justify-center px-6 py-3 border-2 border-red-600 text-red-600 font-medium rounded-lg hover:bg-red-50 transition-colors" %>
               </div>
             </div>
           </div>
@@ -396,121 +403,125 @@
       </div>
 
       <!-- Security Section -->
-      <div id="security" class="mb-5">
-        <div class="card">
-          <div class="card-header">
-            <h3>Security Settings</h3>
+      <div id="security" class="mb-8">
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h3 class="text-2xl font-semibold text-gray-900">Security Settings</h3>
           </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-12">
-                <h5>Two-Factor Authentication</h5>
-                <% if @user.two_factor_enabled? %>
-                  <div class="alert alert-success d-flex justify-content-between align-items-center">
-                    <div>
-                      <i class="fas fa-shield-alt me-2"></i>
-                      <strong>Two-factor authentication is enabled</strong>
-                      <p class="mb-0 mt-1 text-sm">
-                        Method: <%= @user.otp_delivery_method == 'totp' ? 'Authenticator App' : 'SMS to ' + @user.phone_number.gsub(/(\d{3})(\d{3})(\d{4})/, '(\\1) \\2-\\3') %>
-                      </p>
+          <div class="p-6">
+            <div>
+              <h5 class="text-lg font-semibold text-gray-900 mb-3">Two-Factor Authentication</h5>
+              <% if @user.two_factor_enabled? %>
+                <div class="bg-green-50 border border-green-200 rounded-xl p-6 flex justify-between items-center mb-6">
+                  <div>
+                    <div class="flex items-center mb-2">
+                      <i class="bi bi-shield-check text-green-600 mr-2"></i>
+                      <strong class="text-green-900">Two-factor authentication is enabled</strong>
                     </div>
-                    <%= link_to "Manage 2FA Settings", setup_path, class: "btn btn-outline-success btn-sm" %>
+                    <p class="mb-0 mt-1 text-sm text-green-800">
+                      Method: <%= @user.otp_delivery_method == 'totp' ? 'Authenticator App' : 'SMS to ' + @user.phone_number.gsub(/(\d{3})(\d{3})(\d{4})/, '(\\1) \\2-\\3') %>
+                    </p>
                   </div>
-                <% else %>
-                  <div class="alert alert-warning d-flex justify-content-between align-items-center">
-                    <div>
-                      <i class="fas fa-exclamation-triangle me-2"></i>
-                      <strong>Two-factor authentication is not enabled</strong>
-                      <p class="mb-0 mt-1">
-                        <% if @user.admin? %>
-                          <span class="text-danger">As an administrator, you are required to enable 2FA.</span>
-                        <% else %>
-                          Add an extra layer of security to your account.
-                        <% end %>
-                      </p>
+                  <%= link_to "Manage 2FA Settings", setup_path, class: "inline-flex items-center justify-center px-4 py-2 border-2 border-green-600 text-green-600 text-sm font-medium rounded-lg hover:bg-green-50 transition-colors" %>
+                </div>
+              <% else %>
+                <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-6 flex justify-between items-center mb-6">
+                  <div>
+                    <div class="flex items-center mb-2">
+                      <i class="bi bi-exclamation-triangle text-yellow-600 mr-2"></i>
+                      <strong class="text-yellow-900">Two-factor authentication is not enabled</strong>
                     </div>
-                    <%= link_to "Enable 2FA", setup_path, class: "btn btn-warning btn-sm text-dark" %>
+                    <p class="mb-0 mt-1 text-yellow-800">
+                      <% if @user.admin? %>
+                        <span class="text-red-600">As an administrator, you are required to enable 2FA.</span>
+                      <% else %>
+                        Add an extra layer of security to your account.
+                      <% end %>
+                    </p>
                   </div>
-                <% end %>
+                  <%= link_to "Enable 2FA", setup_path, class: "inline-flex items-center justify-center px-4 py-2 bg-yellow-600 text-white text-sm font-medium rounded-lg hover:bg-yellow-700 transition-colors" %>
+                </div>
+              <% end %>
 
-                <hr>
+              <div class="border-t border-gray-200 pt-6 mb-6"></div>
 
-                <h5>Password</h5>
-                <p class="text-muted">Keep your account secure with a strong, unique password.</p>
-                <%= link_to "Change Password", new_password_path, class: "btn btn-outline-secondary" %>
+              <h5 class="text-lg font-semibold text-gray-900 mb-3">Password</h5>
+              <p class="text-gray-600 mb-4">Keep your account secure with a strong, unique password.</p>
+              <%= link_to "Change Password", new_password_path, class: "inline-flex items-center justify-center px-6 py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" %>
 
-                <hr>
+              <div class="border-t border-gray-200 pt-6 mt-6"></div>
 
-                <h5>Active Sessions</h5>
-                <p class="text-muted">
-                  You are currently signed in on <%= pluralize(@user.sessions.count, 'device') %>.
-                </p>
-                <% if @user.sessions.count > 1 %>
-                  <button class="btn btn-outline-danger btn-sm" disabled>
+              <h5 class="text-lg font-semibold text-gray-900 mb-3">Active Sessions</h5>
+              <p class="text-gray-600 mb-4">
+                You are currently signed in on <%= pluralize(@user.sessions.count, 'device') %>.
+              </p>
+              <% if @user.sessions.count > 1 %>
+                <button class="inline-flex items-center justify-center px-4 py-2 border-2 border-gray-300 text-gray-400 text-sm font-medium rounded-lg cursor-not-allowed opacity-60" disabled>
+                  <span>
                     Sign out other devices
-                    <small class="d-block">Coming Soon</small>
-                  </button>
-                <% end %>
-              </div>
+                    <small class="block text-xs">Coming Soon</small>
+                  </span>
+                </button>
+              <% end %>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Saved Addresses -->
-      <div class="card mt-4">
-        <div class="card-header">
-          <h3>Saved Addresses</h3>
+      <div class="bg-white rounded-xl border border-gray-200 overflow-hidden mt-6">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h3 class="text-2xl font-semibold text-gray-900">Saved Addresses</h3>
         </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-6">
-              <h5>Default Billing Address</h5>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h5 class="text-lg font-semibold text-gray-900 mb-3">Default Billing Address</h5>
               <% if @billing_address %>
-                <div class="p-3 bg-light rounded mb-3">
-                  <strong><%= @billing_address.full_name %></strong><br>
+                <div class="p-4 bg-gray-50 rounded-lg mb-4">
+                  <strong class="text-gray-900"><%= @billing_address.full_name %></strong><br>
                   <% if @billing_address.company.present? %>
-                    <%= @billing_address.company %><br>
+                    <span class="text-gray-700"><%= @billing_address.company %></span><br>
                   <% end %>
-                  <%= @billing_address.address_line_1 %><br>
+                  <span class="text-gray-700"><%= @billing_address.address_line_1 %></span><br>
                   <% if @billing_address.address_line_2.present? %>
-                    <%= @billing_address.address_line_2 %><br>
+                    <span class="text-gray-700"><%= @billing_address.address_line_2 %></span><br>
                   <% end %>
-                  <%= @billing_address.city %>, <%= @billing_address.state %> <%= @billing_address.postal_code %><br>
-                  <%= @billing_address.country %><br>
-                  <small class="text-muted">Phone: <%= @billing_address.phone %></small>
+                  <span class="text-gray-700"><%= @billing_address.city %>, <%= @billing_address.state %> <%= @billing_address.postal_code %></span><br>
+                  <span class="text-gray-700"><%= @billing_address.country %></span><br>
+                  <small class="text-gray-600">Phone: <%= @billing_address.phone %></small>
                 </div>
               <% else %>
-                <p class="text-muted">No default billing address saved. It will be added during your next checkout.</p>
+                <p class="text-gray-600">No default billing address saved. It will be added during your next checkout.</p>
               <% end %>
             </div>
-            
-            <div class="col-md-6">
-              <h5>Default Shipping Address</h5>
+
+            <div>
+              <h5 class="text-lg font-semibold text-gray-900 mb-3">Default Shipping Address</h5>
               <% if @shipping_address %>
-                <div class="p-3 bg-light rounded mb-3">
-                  <strong><%= @shipping_address.full_name %></strong><br>
+                <div class="p-4 bg-gray-50 rounded-lg mb-4">
+                  <strong class="text-gray-900"><%= @shipping_address.full_name %></strong><br>
                   <% if @shipping_address.company.present? %>
-                    <%= @shipping_address.company %><br>
+                    <span class="text-gray-700"><%= @shipping_address.company %></span><br>
                   <% end %>
-                  <%= @shipping_address.address_line_1 %><br>
+                  <span class="text-gray-700"><%= @shipping_address.address_line_1 %></span><br>
                   <% if @shipping_address.address_line_2.present? %>
-                    <%= @shipping_address.address_line_2 %><br>
+                    <span class="text-gray-700"><%= @shipping_address.address_line_2 %></span><br>
                   <% end %>
-                  <%= @shipping_address.city %>, <%= @shipping_address.state %> <%= @shipping_address.postal_code %><br>
-                  <%= @shipping_address.country %><br>
-                  <small class="text-muted">Phone: <%= @shipping_address.phone %></small>
+                  <span class="text-gray-700"><%= @shipping_address.city %>, <%= @shipping_address.state %> <%= @shipping_address.postal_code %></span><br>
+                  <span class="text-gray-700"><%= @shipping_address.country %></span><br>
+                  <small class="text-gray-600">Phone: <%= @shipping_address.phone %></small>
                 </div>
               <% else %>
-                <p class="text-muted">No default shipping address saved. It will be added during your next checkout.</p>
+                <p class="text-gray-600">No default shipping address saved. It will be added during your next checkout.</p>
               <% end %>
             </div>
           </div>
-          
+
           <% if @saved_addresses.any? %>
-            <hr>
-            <h5>All Saved Addresses (<%= @saved_addresses.count %>)</h5>
-            <div class="text-muted">
+            <div class="border-t border-gray-200 pt-6 mt-6"></div>
+            <h5 class="text-lg font-semibold text-gray-900 mb-2">All Saved Addresses (<%= @saved_addresses.count %>)</h5>
+            <div class="text-gray-600">
               <small>Your addresses are automatically saved during checkout and used to prefill forms for faster ordering.</small>
             </div>
           <% end %>
@@ -524,18 +535,22 @@
 <script>
   // Simple anchor navigation for account sections
   document.addEventListener('DOMContentLoaded', function() {
-    const links = document.querySelectorAll('.list-group-item-action');
-    links.forEach(link => {
+    const menuLinks = document.querySelectorAll('[href^="#"]');
+    menuLinks.forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();
-        
-        // Remove active class from all links
-        links.forEach(l => l.classList.remove('active'));
-        
-        // Add active class to clicked link
-        this.classList.add('active');
-        
-        // Scroll to section (optional smooth behavior)
+
+        // Remove active classes from all links
+        menuLinks.forEach(l => {
+          l.classList.remove('bg-blue-50', 'text-blue-700', 'font-medium');
+          l.classList.add('text-gray-700');
+        });
+
+        // Add active classes to clicked link
+        this.classList.remove('text-gray-700');
+        this.classList.add('bg-blue-50', 'text-blue-700', 'font-medium');
+
+        // Scroll to section (smooth behavior)
         const targetId = this.getAttribute('href');
         if (targetId && targetId !== '#') {
           const target = document.querySelector(targetId);

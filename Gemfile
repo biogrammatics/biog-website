@@ -23,8 +23,8 @@ gem "turbo-rails"
 gem "stimulus-rails"
 # Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
 gem "tailwindcss-rails"
-# Heroicons SVG icon library [https://github.com/bharget/heroicon]
-gem "heroicon"
+# Heroicons SVG icon library [https://github.com/najnaj/rails_heroicons]
+gem "rails_heroicon"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 

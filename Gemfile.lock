@@ -129,8 +129,6 @@ GEM
       raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    heroicon (1.0.0)
-      rails (>= 5.2)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     image_processing (1.14.0)
@@ -279,6 +277,9 @@ GEM
     rails-html-sanitizer (1.6.2)
       loofah (~> 2.21)
       nokogiri (>= 1.15.7, != 1.16.7, != 1.16.6, != 1.16.5, != 1.16.4, != 1.16.3, != 1.16.2, != 1.16.1, != 1.16.0.rc1, != 1.16.0)
+    rails_heroicon (2.3.0)
+      actionview
+      railties
     railties (8.0.2.1)
       actionpack (= 8.0.2.1)
       activesupport (= 8.0.2.1)
@@ -439,7 +440,6 @@ DEPENDENCIES
   cancancan
   capybara
   debug
-  heroicon
   image_processing (~> 1.2)
   importmap-rails
   jbuilder
@@ -449,6 +449,7 @@ DEPENDENCIES
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.2, >= 8.0.2.1)
+  rails_heroicon
   ransack
   rotp
   rqrcode

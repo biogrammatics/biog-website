@@ -98,7 +98,7 @@
       </ul>
 
       <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start gap-3">
-        <i class="bi bi-info-circle text-blue-600 text-xl flex-shrink-0 mt-0.5"></i>
+        <%= heroicon "information-circle", variant: :outline, class: "w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" %>
         <p class="text-gray-700">
           To exercise these rights, contact us at <a href="mailto:privacy@biogrammatics.com" class="text-bio-green hover:text-bio-green-dark font-medium">privacy@biogrammatics.com</a>
         </p>
@@ -198,7 +198,7 @@
   <div class="text-center flex flex-col sm:flex-row justify-center gap-3 mb-8">
     <%= link_to "Cookie Policy", cookies_policy_path, class: "inline-flex items-center justify-center px-6 py-3 border-2 border-blue-600 text-blue-600 font-medium rounded-lg hover:bg-blue-50 transition-colors" %>
     <button type="button" class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" onclick="manageCookies()">
-      <i class="bi bi-gear mr-2"></i>Manage Cookie Settings
+      <%= heroicon "cog-6-tooth", variant: :outline, class: "w-5 h-5 mr-2" %>Manage Cookie Settings
     </button>
   </div>
 </div>

@@ -15,7 +15,7 @@
   <div class="max-w-6xl mx-auto">
     <% if @selections.empty? %>
       <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
-        <i class="bi bi-exclamation-triangle text-yellow-600 text-4xl mb-3"></i>
+        <%= heroicon "exclamation-triangle", variant: :outline, class: "w-12 h-12 text-yellow-600 mb-3" %>
         <p class="text-gray-700 mb-3">
           You haven't made any selections yet.
         </p>
@@ -26,7 +26,7 @@
       <div class="bg-white rounded-xl border border-gray-200 overflow-hidden mb-6">
         <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
           <h3 class="text-lg font-semibold text-charcoal flex items-center gap-2">
-            <i class="bi bi-list-check text-bio-green"></i>
+            <%= heroicon "clipboard-document-list", variant: :outline, class: "w-5 h-5 text-bio-green" %>
             Your Selections
           </h3>
         </div>
@@ -46,14 +46,14 @@
                     <% if selection.diy? %>
                       <div class="flex items-center gap-2 mb-2">
                         <span class="inline-flex items-center px-3 py-1 rounded-md bg-blue-100 text-blue-700 text-sm font-medium">
-                          <i class="bi bi-person-workspace mr-1"></i> DIY
+                          <%= heroicon "user", variant: :outline, class: "w-4 h-4 mr-1" %> DIY
                         </span>
                       </div>
                       <p class="text-sm text-gray-600">You'll handle this step in your own lab</p>
                     <% else %>
                       <div class="flex items-center gap-2 mb-2">
                         <span class="inline-flex items-center px-3 py-1 rounded-md bg-green-100 text-green-700 text-sm font-medium">
-                          <i class="bi bi-gear-wide-connected mr-1"></i> Service
+                          <%= heroicon "cog-6-tooth", variant: :outline, class: "w-4 h-4 mr-1" %> Service
                         </span>
                       </div>
                       <div class="text-sm text-gray-700">
@@ -67,7 +67,7 @@
 
                 <div>
                   <%= link_to protein_pathway_step_path(step: selection.step_number), class: "inline-flex items-center gap-2 px-3 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors" do %>
-                    <i class="bi bi-pencil"></i> Edit
+                    <%= heroicon "pencil", variant: :outline, class: "w-5 h-5" %> Edit
                   <% end %>
                 </div>
               </div>
@@ -81,7 +81,7 @@
         <div class="bg-white rounded-xl border-2 border-bio-green overflow-hidden mb-6">
           <div class="px-6 py-4 border-b border-bio-green bg-bio-green text-white">
             <h3 class="text-lg font-semibold flex items-center gap-2">
-              <i class="bi bi-calculator"></i>
+              <%= heroicon "calculator", variant: :outline, class: "w-5 h-5" %>
               Service Estimate
             </h3>
           </div>
@@ -103,7 +103,7 @@
 
               <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <div class="flex gap-2 items-start">
-                  <i class="bi bi-info-circle text-blue-600 flex-shrink-0 mt-0.5"></i>
+                  <%= heroicon "information-circle", variant: :outline, class: "w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" %>
                   <p class="text-sm text-gray-700">
                     This is an estimate. Final pricing will be provided in your detailed quote based on your specific requirements.
                   </p>
@@ -115,7 +115,7 @@
       <% else %>
         <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
           <div class="flex gap-3 items-start">
-            <i class="bi bi-info-circle text-blue-600 text-xl flex-shrink-0"></i>
+            <%= heroicon "information-circle", variant: :outline, class: "w-6 h-6 text-blue-600 flex-shrink-0" %>
             <p class="text-gray-700">
               You've chosen to DIY all steps. You can purchase reagents directly from our catalog.
             </p>
@@ -126,16 +126,16 @@
       <!-- CTA Buttons -->
       <div class="flex flex-col sm:flex-row gap-3">
         <%= link_to protein_pathway_step_path(step: 1), class: "inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" do %>
-          <i class="bi bi-arrow-left"></i> Back to Steps
+          <%= heroicon "arrow-left", variant: :outline, class: "w-5 h-5" %> Back to Steps
         <% end %>
 
         <% if @service_selections.any? %>
           <%= link_to protein_pathway_quote_form_path, class: "flex-grow inline-flex items-center justify-center gap-2 px-6 py-3 bg-bio-green text-white font-semibold rounded-lg hover:bg-bio-green-dark transition-colors shadow-md hover:shadow-lg" do %>
-            Request Detailed Quote <i class="bi bi-arrow-right"></i>
+            Request Detailed Quote <%= heroicon "arrow-right", variant: :outline, class: "w-5 h-5" %>
           <% end %>
         <% else %>
           <%= link_to vectors_path, class: "flex-grow inline-flex items-center justify-center gap-2 px-6 py-3 bg-bio-green text-white font-semibold rounded-lg hover:bg-bio-green-dark transition-colors shadow-md hover:shadow-lg" do %>
-            Browse Reagents <i class="bi bi-arrow-right"></i>
+            Browse Reagents <%= heroicon "arrow-right", variant: :outline, class: "w-5 h-5" %>
           <% end %>
         <% end %>
       </div>

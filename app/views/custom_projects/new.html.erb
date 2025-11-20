@@ -3,9 +3,9 @@
   <nav class="mb-6">
     <ol class="flex items-center gap-2 text-sm text-gray-600">
       <li><%= link_to "Home", root_path, class: "hover:text-gray-900" %></li>
-      <li><i class="bi bi-chevron-right text-xs"></i></li>
+      <li><%= heroicon "chevron-right", variant: :outline, class: "w-3 h-3 text-xs" %></li>
       <li><%= link_to "Services", services_custom_projects_path, class: "hover:text-gray-900" %></li>
-      <li><i class="bi bi-chevron-right text-xs"></i></li>
+      <li><%= heroicon "chevron-right", variant: :outline, class: "w-3 h-3 text-xs" %></li>
       <li class="text-gray-900 font-medium">Custom Project</li>
     </ol>
   </nav>
@@ -14,7 +14,7 @@
     <div>
       <div class="text-center mb-8">
         <h1 class="flex items-center justify-center text-3xl font-bold mb-4">
-          <i class="bi bi-diagram-3 mr-3 text-blue-600"></i>Custom Project Request
+          <%= heroicon "chart-bar", variant: :outline, class: "w-8 h-8 mr-3 text-blue-600" %>Custom Project Request
         </h1>
         <p class="text-xl text-gray-600 mb-6">Tell us about your complex protein expression needs</p>
 

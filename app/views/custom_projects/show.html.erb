@@ -3,9 +3,9 @@
     <div class="lg:col-span-2">
       <h1 class="flex items-center text-3xl font-bold mb-4">
         <% if @custom_project.protein_expression_project? %>
-          <i class="bi bi-dna mr-3 text-blue-600"></i>
+          <%= heroicon "beaker", variant: :outline, class: "w-8 h-8 mr-3 text-blue-600" %>
         <% else %>
-          <i class="bi bi-balloon mr-3 text-bio-green"></i>
+          <%= heroicon "cube", variant: :outline, class: "w-8 h-8 mr-3 text-bio-green" %>
         <% end %>
         <%= @custom_project.project_name %>
       </h1>

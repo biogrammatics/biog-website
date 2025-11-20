@@ -2,7 +2,7 @@
   <div class="flex justify-between items-center mb-6">
     <h1 class="text-3xl font-bold text-charcoal"><%= @pichia_strain.name %></h1>
     <%= link_to pichia_strains_path, class: "inline-flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" do %>
-      <i class="bi bi-arrow-left"></i>
+      <%= heroicon "arrow-left", variant: :outline, class: "w-5 h-5" %>
       Back to Strains
     <% end %>
   </div>

@@ -12,7 +12,7 @@
           <%= title %>
         </h3>
         <button type="button" onclick="document.getElementById('<%= modal_id %>').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 transition-colors">
-          <i class="bi bi-x-lg text-xl"></i>
+          <%= heroicon "x-mark", variant: :outline, class: "w-6 h-6" %>
         </button>
       </div>
 
@@ -33,7 +33,7 @@
         </button>
         <% if download_url.present? %>
           <%= link_to download_url, class: "inline-flex items-center gap-2 px-4 py-2 bg-bio-green text-white font-medium rounded-lg hover:bg-bio-green-dark transition-colors" do %>
-            <i class="bi bi-download"></i>
+            <%= heroicon "arrow-down-tray", variant: :outline, class: "w-5 h-5" %>
             Download Full Resolution
           <% end %>
         <% end %>

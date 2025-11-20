@@ -5,7 +5,7 @@
     <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
       <h5 class="text-xl font-semibold text-charcoal">Cookie Preferences</h5>
       <button type="button" class="text-gray-400 hover:text-gray-600 transition-colors" onclick="closeCookieModal()" aria-label="Close">
-        <i class="bi bi-x-lg text-xl"></i>
+        <%= heroicon "x-mark", variant: :outline, class: "w-6 h-6" %>
       </button>
     </div>
 
@@ -72,7 +72,7 @@
       </div>
 
       <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start gap-3">
-        <i class="bi bi-info-circle text-blue-600 text-xl flex-shrink-0 mt-0.5"></i>
+        <%= heroicon "information-circle", variant: :outline, class: "text-blue-600 w-5 h-5 flex-shrink-0 mt-0.5" %>
         <p class="text-gray-700 text-sm">
           You can change your preferences at any time by clicking the "Cookie Settings" link in the footer.
         </p>

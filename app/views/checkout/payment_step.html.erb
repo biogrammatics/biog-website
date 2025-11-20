@@ -7,7 +7,7 @@
           <div class="bg-bio-green h-2 rounded-full transition-all duration-500" style="width: 66%"></div>
         </div>
         <div class="flex justify-between text-sm">
-          <span class="text-green-600 font-medium"><i class="bi bi-check-circle-fill"></i> Address</span>
+          <span class="text-green-600 font-medium"><%= heroicon "check-circle", variant: :solid, class: "w-4 h-4 inline" %> Address</span>
           <span class="text-bio-green font-semibold">2. Payment</span>
           <span class="text-gray-400">3. Review & Place Order</span>
         </div>
@@ -21,7 +21,7 @@
           <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
             <div class="flex gap-3">
               <div class="flex-shrink-0">
-                <i class="bi bi-info-circle text-blue-600 text-xl"></i>
+                <%= heroicon "information-circle", variant: :outline, class: "w-6 h-6 text-blue-600" %>
               </div>
               <div>
                 <strong class="text-blue-900 block mb-1">Payment Processing</strong>
@@ -33,7 +33,7 @@
           <%= form_with url: payment_step_checkout_index_path, method: :post, local: true do |form| %>
             <div class="mb-6">
               <div class="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200">
-                <i class="bi bi-credit-card text-bio-green text-xl"></i>
+                <%= heroicon "credit-card", variant: :outline, class: "w-6 h-6 text-bio-green" %>
                 <h4 class="text-lg font-semibold text-charcoal">Payment Method</h4>
               </div>
 
@@ -41,7 +41,7 @@
                 <label class="flex items-center gap-3 p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors has-[:checked]:border-bio-green has-[:checked]:bg-bio-green/5">
                   <input class="w-4 h-4 text-bio-green border-gray-300 focus:ring-bio-green" type="radio" name="payment_method" id="credit_card" value="credit_card" checked>
                   <div class="flex items-center gap-2 flex-grow">
-                    <i class="bi bi-credit-card-2-front text-xl text-gray-600"></i>
+                    <%= heroicon "credit-card", variant: :outline, class: "w-6 h-6 text-gray-600" %>
                     <span class="font-medium text-charcoal">Credit Card</span>
                   </div>
                 </label>
@@ -49,7 +49,7 @@
                 <label class="flex items-center gap-3 p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors has-[:checked]:border-bio-green has-[:checked]:bg-bio-green/5">
                   <input class="w-4 h-4 text-bio-green border-gray-300 focus:ring-bio-green" type="radio" name="payment_method" id="paypal" value="paypal">
                   <div class="flex items-center gap-2 flex-grow">
-                    <i class="bi bi-paypal text-xl text-gray-600"></i>
+                    <%= heroicon "credit-card", variant: :outline, class: "w-6 h-6 text-gray-600" %>
                     <span class="font-medium text-charcoal">PayPal</span>
                   </div>
                 </label>
@@ -58,7 +58,7 @@
 
             <div id="credit-card-form" class="mb-6">
               <div class="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200">
-                <i class="bi bi-lock-fill text-bio-green text-xl"></i>
+                <%= heroicon "lock-closed", variant: :solid, class: "w-6 h-6 text-bio-green" %>
                 <h4 class="text-lg font-semibold text-charcoal">Card Information</h4>
               </div>
 
@@ -94,7 +94,7 @@
 
             <div class="flex flex-col sm:flex-row gap-4 justify-between items-center mt-6 pt-6 border-t border-gray-200">
               <%= link_to address_step_checkout_index_path, class: "inline-flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors w-full sm:w-auto justify-center" do %>
-                <i class="bi bi-arrow-left"></i>
+                <%= heroicon "arrow-left", variant: :outline, class: "w-5 h-5" %>
                 Back to Address
               <% end %>
               <%= form.submit "Continue to Review", class: "inline-flex items-center gap-2 px-8 py-3 bg-bio-green text-white font-semibold rounded-lg hover:bg-bio-green-dark transition-colors shadow-md hover:shadow-lg w-full sm:w-auto justify-center" %>
@@ -136,7 +136,7 @@
 
           <div class="mt-4 pt-4 border-t border-gray-200">
             <h6 class="font-semibold text-charcoal mb-3 flex items-center gap-2">
-              <i class="bi bi-truck text-bio-green"></i>
+              <%= heroicon "truck", variant: :outline, class: "w-5 h-5 text-bio-green" %>
               Shipping To:
             </h6>
             <address class="not-italic text-sm text-gray-700 leading-relaxed">

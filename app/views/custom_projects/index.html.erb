@@ -3,7 +3,7 @@
   <nav aria-label="breadcrumb" class="mb-6">
     <ol class="flex items-center gap-2 text-sm text-gray-600">
       <li><%= link_to "Home", root_path, class: "hover:text-bio-green transition-colors" %></li>
-      <li><i class="bi bi-chevron-right text-gray-400"></i></li>
+      <li><%= heroicon "chevron-right", variant: :outline, class: "w-3 h-3 text-gray-400" %></li>
       <li class="text-gray-900 font-medium">My Projects</li>
     </ol>
   </nav>
@@ -21,11 +21,11 @@
       Start General Project
     <% end %>
     <%= link_to protein_expression_custom_projects_path, class: "inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" do %>
-      <i class="bi bi-diagram-3"></i>
+      <%= heroicon "chart-bar", variant: :outline, class: "w-5 h-5" %>
       Protein Expression
     <% end %>
     <%= link_to root_path, class: "inline-flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" do %>
-      <i class="bi bi-arrow-left"></i>
+      <%= heroicon "arrow-left", variant: :outline, class: "w-5 h-5" %>
       Back to Home
     <% end %>
   </div>
@@ -62,7 +62,7 @@
                     <div class="space-y-1">
                       <% project.total_services.each do |service| %>
                         <div class="text-sm text-gray-700">
-                          <i class="bi bi-check-circle text-bio-green"></i> <%= service %>
+                          <%= heroicon "check-circle", variant: :outline, class: "w-4 h-4 text-bio-green" %> <%= service %>
                         </div>
                       <% end %>
                     </div>

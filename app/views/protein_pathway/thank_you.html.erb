@@ -2,7 +2,7 @@
 <div class="container-custom py-16">
   <div class="max-w-2xl mx-auto text-center">
     <div class="mb-6 animate-bounce">
-      <i class="bi bi-check-circle-fill text-bio-green" style="font-size: 6rem;"></i>
+      <%= heroicon "check-circle", variant: :solid, class: "w-24 h-24 text-bio-green" %>
     </div>
 
     <h1 class="text-4xl font-bold text-charcoal mb-4">Thank You!</h1>
@@ -12,7 +12,7 @@
 
     <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 text-left inline-block max-w-lg">
       <div class="flex items-start gap-3">
-        <i class="bi bi-info-circle text-blue-600 text-xl flex-shrink-0 mt-0.5"></i>
+        <%= heroicon "information-circle", variant: :outline, class: "w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" %>
         <div>
           <strong class="text-gray-900 block mb-3">What happens next?</strong>
           <ol class="space-y-2 text-gray-700">
@@ -41,15 +41,15 @@
       <h3 class="text-lg font-semibold text-charcoal mb-4">While you wait...</h3>
       <div class="flex flex-col sm:flex-row gap-3 justify-center">
         <%= link_to vectors_path, class: "inline-flex items-center justify-center gap-2 px-6 py-3 bg-bio-green text-white font-semibold rounded-lg hover:bg-bio-green-dark transition-colors shadow-md hover:shadow-lg" do %>
-          <i class="bi bi-diagram-3"></i>
+          <%= heroicon "chart-bar", variant: :outline, class: "w-5 h-5" %>
           Browse Vectors
         <% end %>
         <%= link_to pichia_strains_path, class: "inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" do %>
-          <i class="bi bi-droplet-fill"></i>
+          <%= heroicon "beaker", variant: :solid, class: "w-5 h-5" %>
           View Strains
         <% end %>
         <%= link_to root_path, class: "inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" do %>
-          <i class="bi bi-house"></i>
+          <%= heroicon "home", variant: :outline, class: "w-5 h-5" %>
           Return Home
         <% end %>
       </div>

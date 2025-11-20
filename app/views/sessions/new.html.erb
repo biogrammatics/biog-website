@@ -51,7 +51,7 @@
                       maxlength: 72,
                       id: "signin-password" %>
                   <button class="inline-flex items-center justify-center px-4 border-2 border-l-0 border-gray-300 text-gray-700 rounded-r-lg hover:bg-gray-50 transition-colors" type="button" id="toggle-signin-password">
-                    <i class="bi bi-eye" id="signin-password-icon"></i>
+                    <span id="signin-password-icon"><%= heroicon "eye", variant: :outline, class: "w-5 h-5" %></span>
                   </button>
                 </div>
               </div>
@@ -112,7 +112,7 @@
                       autocomplete: "new-password",
                       id: "signup-password" %>
                   <button class="inline-flex items-center justify-center px-4 border-2 border-l-0 #{ @user.errors[:password].any? ? 'border-red-500' : 'border-gray-300' } text-gray-700 rounded-r-lg hover:bg-gray-50 transition-colors" type="button" id="toggle-signup-password">
-                    <i class="bi bi-eye" id="signup-password-icon"></i>
+                    <span id="signup-password-icon"><%= heroicon "eye", variant: :outline, class: "w-5 h-5" %></span>
                   </button>
                 </div>
                 <% if @user.errors[:password].any? %>
@@ -131,7 +131,7 @@
                       autocomplete: "new-password",
                       id: "signup-password-confirm" %>
                   <button class="inline-flex items-center justify-center px-4 border-2 border-l-0 border-gray-300 text-gray-700 rounded-r-lg hover:bg-gray-50 transition-colors" type="button" id="toggle-signup-password-confirm">
-                    <i class="bi bi-eye" id="signup-password-confirm-icon"></i>
+                    <span id="signup-password-confirm-icon"><%= heroicon "eye", variant: :outline, class: "w-5 h-5" %></span>
                   </button>
                 </div>
               </div>
@@ -155,59 +155,56 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  const eyeIcon = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>';
+  const eyeSlashIcon = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>';
+
   // Toggle sign-in password visibility
   const toggleSigninPassword = document.getElementById('toggle-signin-password');
   if (toggleSigninPassword) {
     toggleSigninPassword.addEventListener('click', function() {
       const passwordField = document.getElementById('signin-password');
-      const icon = document.getElementById('signin-password-icon');
-      
+      const iconContainer = document.getElementById('signin-password-icon');
+
       if (passwordField.type === 'password') {
         passwordField.type = 'text';
-        icon.classList.remove('bi-eye');
-        icon.classList.add('bi-eye-slash');
+        iconContainer.innerHTML = eyeSlashIcon;
       } else {
         passwordField.type = 'password';
-        icon.classList.remove('bi-eye-slash');
-        icon.classList.add('bi-eye');
+        iconContainer.innerHTML = eyeIcon;
       }
     });
   }
-  
+
   // Toggle sign-up password visibility
   const toggleSignupPassword = document.getElementById('toggle-signup-password');
   if (toggleSignupPassword) {
     toggleSignupPassword.addEventListener('click', function() {
       const passwordField = document.getElementById('signup-password');
-      const icon = document.getElementById('signup-password-icon');
-      
+      const iconContainer = document.getElementById('signup-password-icon');
+
       if (passwordField.type === 'password') {
         passwordField.type = 'text';
-        icon.classList.remove('bi-eye');
-        icon.classList.add('bi-eye-slash');
+        iconContainer.innerHTML = eyeSlashIcon;
       } else {
         passwordField.type = 'password';
-        icon.classList.remove('bi-eye-slash');
-        icon.classList.add('bi-eye');
+        iconContainer.innerHTML = eyeIcon;
       }
     });
   }
-  
+
   // Toggle sign-up password confirmation visibility
   const toggleSignupPasswordConfirm = document.getElementById('toggle-signup-password-confirm');
   if (toggleSignupPasswordConfirm) {
     toggleSignupPasswordConfirm.addEventListener('click', function() {
       const passwordField = document.getElementById('signup-password-confirm');
-      const icon = document.getElementById('signup-password-confirm-icon');
-      
+      const iconContainer = document.getElementById('signup-password-confirm-icon');
+
       if (passwordField.type === 'password') {
         passwordField.type = 'text';
-        icon.classList.remove('bi-eye');
-        icon.classList.add('bi-eye-slash');
+        iconContainer.innerHTML = eyeSlashIcon;
       } else {
         passwordField.type = 'password';
-        icon.classList.remove('bi-eye-slash');
-        icon.classList.add('bi-eye');
+        iconContainer.innerHTML = eyeIcon;
       }
     });
   }

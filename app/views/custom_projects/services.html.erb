@@ -2,7 +2,7 @@
 <div class="bg-gradient-to-br from-gray-50 to-white py-12 border-b border-gray-200">
   <div class="container-custom text-center">
     <h1 class="text-4xl font-bold text-charcoal mb-3">
-      <i class="bi bi-gear-wide-connected text-bio-green"></i>
+      <%= heroicon "cog-6-tooth", variant: :outline, class: "w-8 h-8 text-bio-green" %>
       Choose Your Service
     </h1>
     <p class="text-lg text-gray-600">
@@ -18,7 +18,7 @@
     <div class="bg-white rounded-xl border-2 border-bio-green overflow-hidden hover:shadow-xl transition-all flex flex-col">
       <div class="bg-bio-green text-white p-6">
         <div class="flex items-start gap-3">
-          <i class="bi bi-star-fill text-3xl flex-shrink-0"></i>
+          <%= heroicon "star", variant: :solid, class: "w-8 h-8 flex-shrink-0" %>
           <div>
             <h3 class="text-xl font-bold mb-1">Enhanced Strain Construction</h3>
             <p class="text-sm opacity-90">NEW: FASTA upload + modification tools</p>
@@ -29,19 +29,19 @@
         <h4 class="text-bio-green font-semibold mb-3">Perfect for:</h4>
         <ul class="space-y-2 mb-6">
           <li class="flex items-start gap-2 text-gray-700">
-            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <%= heroicon "check-circle", variant: :solid, class: "w-5 h-5 text-bio-green flex-shrink-0 mt-0.5" %>
             <span>Multiple gene constructs in one request</span>
           </li>
           <li class="flex items-start gap-2 text-gray-700">
-            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <%= heroicon "check-circle", variant: :solid, class: "w-5 h-5 text-bio-green flex-shrink-0 mt-0.5" %>
             <span>FASTA file batch upload</span>
           </li>
           <li class="flex items-start gap-2 text-gray-700">
-            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <%= heroicon "check-circle", variant: :solid, class: "w-5 h-5 text-bio-green flex-shrink-0 mt-0.5" %>
             <span>Secretion signal addition</span>
           </li>
           <li class="flex items-start gap-2 text-gray-700">
-            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <%= heroicon "check-circle", variant: :solid, class: "w-5 h-5 text-bio-green flex-shrink-0 mt-0.5" %>
             <span>Purification tag insertion</span>
           </li>
         </ul>
@@ -79,7 +79,7 @@
           Start Enhanced Request
         <% end %>
         <p class="text-center text-sm text-gray-500 mt-3">
-          <i class="bi bi-clock"></i> Delivers: Plate with single colony isolates
+          <%= heroicon "clock", variant: :outline, class: "w-4 h-4" %> Delivers: Plate with single colony isolates
         </p>
       </div>
     </div>
@@ -88,7 +88,7 @@
     <div class="bg-white rounded-xl border-2 border-blue-600 overflow-hidden hover:shadow-xl transition-all flex flex-col">
       <div class="bg-blue-600 text-white p-6">
         <div class="flex items-start gap-3">
-          <i class="bi bi-diagram-3-fill text-3xl flex-shrink-0"></i>
+          <%= heroicon "chart-bar", variant: :solid, class: "w-8 h-8 flex-shrink-0" %>
           <div>
             <h3 class="text-xl font-bold mb-1">Standard Strain Construction</h3>
             <p class="text-sm opacity-90">Single gene, manual entry</p>
@@ -99,19 +99,19 @@
         <h4 class="text-blue-600 font-semibold mb-3">Perfect for:</h4>
         <ul class="space-y-2 mb-6">
           <li class="flex items-start gap-2 text-gray-700">
-            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <%= heroicon "check-circle", variant: :solid, class: "w-5 h-5 text-bio-green flex-shrink-0 mt-0.5" %>
             <span>Single gene integration projects</span>
           </li>
           <li class="flex items-start gap-2 text-gray-700">
-            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <%= heroicon "check-circle", variant: :solid, class: "w-5 h-5 text-bio-green flex-shrink-0 mt-0.5" %>
             <span>Simple protein sequence to strain conversion</span>
           </li>
           <li class="flex items-start gap-2 text-gray-700">
-            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <%= heroicon "check-circle", variant: :solid, class: "w-5 h-5 text-bio-green flex-shrink-0 mt-0.5" %>
             <span>Standard workflow projects</span>
           </li>
           <li class="flex items-start gap-2 text-gray-700">
-            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <%= heroicon "check-circle", variant: :solid, class: "w-5 h-5 text-bio-green flex-shrink-0 mt-0.5" %>
             <span>Default BG11 strain transformation</span>
           </li>
         </ul>
@@ -143,7 +143,7 @@
           Start Standard Request
         <% end %>
         <p class="text-center text-sm text-gray-500 mt-3">
-          <i class="bi bi-clock"></i> Typical turnaround: 2-3 weeks
+          <%= heroicon "clock", variant: :outline, class: "w-4 h-4" %> Typical turnaround: 2-3 weeks
         </p>
       </div>
     </div>
@@ -152,7 +152,7 @@
     <div class="bg-white rounded-xl border-2 border-cyan-600 overflow-hidden hover:shadow-xl transition-all flex flex-col">
       <div class="bg-cyan-600 text-white p-6">
         <div class="flex items-start gap-3">
-          <i class="bi bi-diagram-2-fill text-3xl flex-shrink-0"></i>
+          <%= heroicon "squares-2x2", variant: :solid, class: "w-8 h-8 flex-shrink-0" %>
           <div>
             <h3 class="text-xl font-bold mb-1">Custom Project</h3>
             <p class="text-sm opacity-90">Tailored solutions for complex needs</p>
@@ -163,19 +163,19 @@
         <h4 class="text-cyan-600 font-semibold mb-3">Perfect for:</h4>
         <ul class="space-y-2 mb-6">
           <li class="flex items-start gap-2 text-gray-700">
-            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <%= heroicon "check-circle", variant: :solid, class: "w-5 h-5 text-bio-green flex-shrink-0 mt-0.5" %>
             <span>Complex multi-step projects</span>
           </li>
           <li class="flex items-start gap-2 text-gray-700">
-            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <%= heroicon "check-circle", variant: :solid, class: "w-5 h-5 text-bio-green flex-shrink-0 mt-0.5" %>
             <span>Expression optimization studies</span>
           </li>
           <li class="flex items-start gap-2 text-gray-700">
-            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <%= heroicon "check-circle", variant: :solid, class: "w-5 h-5 text-bio-green flex-shrink-0 mt-0.5" %>
             <span>Custom strain development</span>
           </li>
           <li class="flex items-start gap-2 text-gray-700">
-            <i class="bi bi-check-circle-fill text-bio-green flex-shrink-0 mt-0.5"></i>
+            <%= heroicon "check-circle", variant: :solid, class: "w-5 h-5 text-bio-green flex-shrink-0 mt-0.5" %>
             <span>Consultation and troubleshooting</span>
           </li>
         </ul>
@@ -201,7 +201,7 @@
           Start Custom Project
         <% end %>
         <p class="text-center text-sm text-gray-500 mt-3">
-          <i class="bi bi-clock"></i> Timeline varies by project scope
+          <%= heroicon "clock", variant: :outline, class: "w-4 h-4" %> Timeline varies by project scope
         </p>
       </div>
     </div>
@@ -261,7 +261,7 @@
     <div class="bg-blue-50 border border-blue-200 rounded-xl p-8">
       <div class="text-center">
         <h3 class="text-xl font-semibold text-charcoal mb-3 flex items-center justify-center gap-2">
-          <i class="bi bi-question-circle text-blue-600"></i>
+          <%= heroicon "question-mark-circle", variant: :outline, class: "w-6 h-6 text-blue-600" %>
           Not sure which service you need?
         </h3>
         <p class="text-gray-700 mb-6">
@@ -269,11 +269,11 @@
         </p>
         <div class="flex flex-col sm:flex-row justify-center gap-3">
           <a href="mailto:info@biogrammatics.com" class="inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-blue-600 text-blue-600 font-medium rounded-lg hover:bg-blue-600 hover:text-white transition-colors">
-            <i class="bi bi-envelope"></i>
+            <%= heroicon "envelope", variant: :outline, class: "w-5 h-5" %>
             Email Us
           </a>
           <a href="tel:+1234567890" class="inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-blue-600 text-blue-600 font-medium rounded-lg hover:bg-blue-600 hover:text-white transition-colors">
-            <i class="bi bi-telephone"></i>
+            <%= heroicon "phone", variant: :outline, class: "w-5 h-5" %>
             Call Us
           </a>
         </div>
@@ -284,7 +284,7 @@
   <!-- Navigation -->
   <div class="text-center">
     <%= link_to root_path, class: "inline-flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" do %>
-      <i class="bi bi-arrow-left"></i>
+      <%= heroicon "arrow-left", variant: :outline, class: "w-5 h-5" %>
       Back to Home
     <% end %>
     <% if authenticated? %>

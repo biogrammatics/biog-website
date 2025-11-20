@@ -14,12 +14,12 @@
       <div class="inline-flex rounded-lg border border-gray-300 p-1 bg-gray-50">
         <%= link_to vectors_path(vector_type: 'sale', category: @category),
                     class: "inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all #{@vector_type == 'sale' ? 'bg-bio-green text-white shadow-sm' : 'text-gray-700 hover:bg-gray-100'}" do %>
-          <i class="bi bi-cart3"></i>
+          <%= heroicon "shopping-cart", variant: :outline, class: "w-5 h-5" %>
           For Sale
         <% end %>
         <%= link_to vectors_path(vector_type: 'subscription', category: @category),
                     class: "inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all #{@vector_type == 'subscription' ? 'bg-bio-green text-white shadow-sm' : 'text-gray-700 hover:bg-gray-100'}" do %>
-          <i class="bi bi-arrow-repeat"></i>
+          <%= heroicon "arrow-path", variant: :outline, class: "w-5 h-5" %>
           Subscription (Twist)
         <% end %>
       </div>
@@ -28,12 +28,12 @@
       <div class="inline-flex rounded-lg border border-gray-300 p-1 bg-gray-50">
         <%= link_to vectors_path(vector_type: @vector_type, category: 'expression'),
                     class: "inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all #{@category == 'expression' ? 'bg-bio-green text-white shadow-sm' : 'text-gray-700 hover:bg-gray-100'}" do %>
-          <i class="bi bi-cpu"></i>
+          <%= heroicon "cpu-chip", variant: :outline, class: "w-5 h-5" %>
           Protein Expression
         <% end %>
         <%= link_to vectors_path(vector_type: @vector_type, category: 'engineering'),
                     class: "inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all #{@category == 'engineering' ? 'bg-bio-green text-white shadow-sm' : 'text-gray-700 hover:bg-gray-100'}" do %>
-          <i class="bi bi-tools"></i>
+          <%= heroicon "wrench-screwdriver", variant: :outline, class: "w-5 h-5" %>
           Genome Engineering
         <% end %>
       </div>
@@ -46,7 +46,7 @@
   <% if @vectors.empty? %>
     <div class="max-w-2xl mx-auto">
       <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
-        <i class="bi bi-info-circle text-blue-600 text-4xl mb-3"></i>
+        <%= heroicon "information-circle", variant: :outline, class: "w-10 h-10 text-blue-600 mb-3 mx-auto" %>
         <p class="text-gray-700">
           <% if @category == 'expression' %>
             <% if @vector_type == 'subscription' %>
@@ -72,19 +72,19 @@
           <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-200">
             <% if promoter.nil? %>
               <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
-                <i class="bi bi-dash-circle text-2xl text-gray-400"></i>
+                <%= heroicon "minus-circle", variant: :outline, class: "w-8 h-8 text-gray-400" %>
               </div>
             <% elsif promoter.name.downcase == "none" %>
               <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
-                <i class="bi bi-dash-circle text-2xl text-gray-400"></i>
+                <%= heroicon "minus-circle", variant: :outline, class: "w-8 h-8 text-gray-400" %>
               </div>
             <% elsif promoter.inducible? %>
               <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0">
-                <i class="bi bi-lightning-fill text-2xl text-yellow-600"></i>
+                <%= heroicon "bolt", variant: :solid, class: "w-8 h-8 text-yellow-600" %>
               </div>
             <% else %>
               <div class="w-12 h-12 rounded-full bg-bio-green/10 flex items-center justify-center flex-shrink-0">
-                <i class="bi bi-play-fill text-2xl text-bio-green"></i>
+                <%= heroicon "play", variant: :solid, class: "w-8 h-8 text-bio-green" %>
               </div>
             <% end %>
 
@@ -127,7 +127,7 @@
                     <% rescue => e %>
                       <div class="w-full h-48 flex items-center justify-center bg-gray-100">
                         <div class="text-center text-gray-400">
-                          <i class="bi bi-image text-4xl mb-2"></i>
+                          <%= heroicon "photo", variant: :outline, class: "w-10 h-10 mb-2 mx-auto" %>
                           <p class="text-sm">Image unavailable</p>
                         </div>
                       </div>
@@ -179,7 +179,7 @@
                     <% if vector.has_lox_sites? %>
                       <div class="pt-2">
                         <span class="inline-flex items-center px-2 py-1 rounded-md bg-yellow-100 text-yellow-800 text-xs font-medium">
-                          <i class="bi bi-star-fill mr-1"></i>Lox sites
+                          <%= heroicon "star", variant: :solid, class: "w-3 h-3 mr-1 inline" %>Lox sites
                         </span>
                       </div>
                     <% end %>
@@ -205,7 +205,7 @@
                     </div>
                     <%= link_to vector, class: "inline-flex items-center gap-2 px-4 py-2 bg-bio-green text-white text-sm font-medium rounded-lg hover:bg-bio-green-dark transition-colors" do %>
                       Details
-                      <i class="bi bi-arrow-right"></i>
+                      <%= heroicon "arrow-right", variant: :outline, class: "w-5 h-5" %>
                     <% end %>
                   </div>
                 </div>
